@@ -1,0 +1,88 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/libs/boost/Makefile	2015-09-21 12:01:28.351056705 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/boost/Makefile	2015-09-22 14:22:46.710199070 +0300
+@@ -177,7 +177,7 @@
+ CONFIGURE_PREFIX:=$(PKG_INSTALL_DIR)
+ TARGET_LDFLAGS += -pthread -lrt
+ 
+-TARGET_CFLAGS += $(if $(CONFIG_SOFT_FLOAT),-DBOOST_NO_FENV_H)
++TARGET_CFLAGS += -DBOOST_NO_FENV_H
+ 
+ ifneq ($(findstring mips,$(ARCH)),)
+     BOOST_ABI = o32
+@@ -194,11 +194,11 @@
+ 
+ 
+ define Build/Compile
+-	$(info Selected Boost API $(BOOST_ABI) for architecture $(ARCH) and cpu $(CPU_TYPE) $(CPU_SUBTYPE))
++	$(info Selected Boost API $(BOOST_ABI) for architecture $(ARCH))
+ 	( cd $(PKG_BUILD_DIR) ; \
+-		echo "using gcc : $(ARCH) : $(GNU_TARGET_NAME)-gcc : <compileflags>\"$(TARGET_CFLAGS)\" <cxxflags>\"$(TARGET_CXXFLAGS)\" <linkflags>\"$(TARGET_LDFLAGS)\" ;" > tools/build/src/user-config.jam ; \
++		echo "using gcc : $(ARCH) : $(TARGET_CROSS)gcc : <compileflags>\"$(TARGET_CFLAGS)\" <cxxflags>\"$(TARGET_CXXFLAGS)\" <linkflags>\"$(TARGET_LDFLAGS)\" ;" > tools/build/src/user-config.jam ; \
+ 		$(if $(CONFIG_PACKAGE_boost-python), \
+-			echo "using python : : $(STAGING_DIR_ROOT)/usr/bin/python :	$(STAGING_DIR)/usr/include/python2.7/ ;" >> \
++			echo "using python : : $(STAGING_DIR_ROOT)/opt/bin/python :	$(STAGING_DIR)/opt/include/python2.7/ ;" >> \
+ 				tools/build/src/user-config.jam; \
+ 		) \
+ 		bjam \
+@@ -214,24 +214,24 @@
+ 			$(if $(CONFIG_PACKAGE_boost-locale),boost.locale.iconv=on -sICONV_PATH=$(ICONV_PREFIX) boost.locale.posix=$(if $(USE_UCLIBC),on,off), \
+ 				boost.locale.iconv=off) \
+ 			\
+-			$(if $(CONFIG_PACKAGE_boost-iostreams),-sNO_BZIP2=1 -sZLIB_INCLUDE=$(STAGING_DIR)/usr/include \
+-				-sZLIB_LIBPATH=$(STAGING_DIR)/usr/lib) \
++			$(if $(CONFIG_PACKAGE_boost-iostreams),-sNO_BZIP2=1 -sZLIB_INCLUDE=$(STAGING_DIR)/opt/include \
++				-sZLIB_LIBPATH=$(STAGING_DIR)/opt/lib) \
+ 			install \
+ 	)
+ endef
+ 
+ define Build/InstallDev
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/include/boost/
++		$(1)/opt/include/boost/
+ 
+ 	$(CP) \
+ 		$(PKG_INSTALL_DIR)/include/boost/* \
+-		$(1)/usr/include/boost/ \
++		$(1)/opt/include/boost/ \
+ 		# copies _all_ header files - independent of <--with-library>-argument above
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	-$(CP) $(PKG_INSTALL_DIR)/lib/*.a $(1)/usr/lib/
+-	-$(CP) $(PKG_INSTALL_DIR)/lib/*.so* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	-$(CP) $(PKG_INSTALL_DIR)/lib/*.a $(1)/opt/lib/
++	-$(CP) $(PKG_INSTALL_DIR)/lib/*.so* $(1)/opt/lib/
+ endef
+ 
+ define Host/Install
+@@ -245,24 +245,24 @@
+ 
+ define Package/boost/Default/install
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/lib
++		$(1)/opt/lib
+ 
+ 	$(CP) \
+ 		$(PKG_INSTALL_DIR)/lib/libboost_$(2)*.so* \
+-		$(1)/usr/lib/
++		$(1)/opt/lib/
+ endef
+ 
+ define Package/boost-test/install
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/lib
++		$(1)/opt/lib
+ 
+ 	$(CP) \
+ 		$(PKG_INSTALL_DIR)/lib/libboost_unit_test_framework*.so* \
+-		$(1)/usr/lib/
++		$(1)/opt/lib/
+ 
+ 	$(CP) \
+ 		$(PKG_INSTALL_DIR)/lib/libboost_prg_exec_monitor*.so* \
+-		$(1)/usr/lib/
++		$(1)/opt/lib/
+ endef
+ 
+ define BuildBoostLibrary

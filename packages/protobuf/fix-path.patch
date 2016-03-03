@@ -1,0 +1,49 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/libs/protobuf/Makefile	2015-07-14 10:55:19.770308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/protobuf/Makefile	2015-07-14 10:55:50.382308682 +0300
+@@ -45,33 +45,33 @@
+ 
+ define Build/InstallDev
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/lib \
+-		$(1)/usr/include
++		$(1)/opt/lib \
++		$(1)/opt/include
+ 
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/* \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/* \
++		$(1)/opt/include/
+ 
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/* \
++		$(1)/opt/lib/
+ endef
+ 
+ define Package/protobuf/install
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/lib
++		$(1)/opt/lib
+ 
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libprotoc.so*  \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libprotoc.so*  \
++		$(1)/opt/lib/
+ 
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libprotobuf-lite.so* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libprotobuf-lite.so* \
++		$(1)/opt/lib/
+ 
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libprotobuf.so* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libprotobuf.so* \
++		$(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,protobuf))

@@ -1,0 +1,30 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/libs/libtasn1/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libtasn1/Makefile
+@@ -40,18 +40,18 @@
+ 		--enable-static
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/libtasn1.h $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libtasn1.{a,so*} $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/libtasn1*.pc $(1)/usr/lib/pkgconfig/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/libtasn1.h $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libtasn1.{a,so*} $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/libtasn1*.pc $(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/libtasn1/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libtasn1.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libtasn1.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libtasn1))

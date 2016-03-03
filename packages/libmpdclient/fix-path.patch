@@ -1,0 +1,41 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/libs/libmpdclient/Makefile	2014-12-10 12:26:32.922951682 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libmpdclient/Makefile	2014-12-10 12:49:04.918927054 +0300
+@@ -44,26 +44,26 @@
+ 
+ define Build/InstallDev
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/include \
+-		$(1)/usr/lib \
+-		$(1)/usr/lib/pkgconfig
++		$(1)/opt/include \
++		$(1)/opt/lib \
++		$(1)/opt/lib/pkgconfig
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/* \
++		$(1)/opt/lib/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/* \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/* \
++		$(1)/opt/include/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/pkgconfig \
++		$(1)/opt/lib/
+ endef
+ 
+ define Package/libmpdclient/install
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/lib
++		$(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libmpdclient.so* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libmpdclient.so* \
++		$(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libmpdclient))

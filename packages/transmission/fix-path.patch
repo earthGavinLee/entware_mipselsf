@@ -1,0 +1,65 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/net/transmission/Makefile	2015-09-15 12:24:40.778451661 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/transmission/Makefile	2015-09-21 11:35:57.227031221 +0300
+@@ -73,11 +73,11 @@
+ endef
+ 
+ define Package/transmission-daemon/conffiles
+-/etc/config/transmission
++/opt/etc/transmission/settings.json
+ endef
+ 
+ CONFIGURE_VARS += \
+-	LIBEVENT_LIBS="$(STAGING_DIR)/usr/lib/libevent-2.0.so.5"
++	LIBEVENT_LIBS="$(STAGING_DIR)/opt/lib/libevent-2.0.so.5"
+ 
+ CONFIGURE_ARGS += \
+ 	--enable-daemon \
+@@ -90,31 +90,32 @@
+ 	CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
+ 
+ define Package/transmission-daemon/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/transmission-daemon $(1)/usr/bin/
+-	$(INSTALL_DIR) $(1)/etc/init.d/
+-	$(INSTALL_BIN) files/transmission.init $(1)/etc/init.d/transmission
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_CONF) files/transmission.config $(1)/etc/config/transmission
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/transmission-daemon $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/etc/transmission $(1)/opt/etc/transmission/blocklists $(1)/opt/etc/transmission/resume $(1)/opt/etc/transmission/torrents $(1)/opt/etc/transmission/watchdir
++	$(INSTALL_CONF) files/settings.json $(1)/opt/etc/transmission
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S88transmission $(1)/opt/etc/init.d
++	$(INSTALL_DIR) $(1)/opt/downloads/torrent/incomplete
+ endef
+ 
+ define Package/transmission-cli/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/transmission-cli \
+-			$(PKG_INSTALL_DIR)/usr/bin/transmission-create \
+-			$(PKG_INSTALL_DIR)/usr/bin/transmission-edit \
+-			$(PKG_INSTALL_DIR)/usr/bin/transmission-show \
+-			$(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/transmission-cli \
++			$(PKG_INSTALL_DIR)/opt/bin/transmission-create \
++			$(PKG_INSTALL_DIR)/opt/bin/transmission-edit \
++			$(PKG_INSTALL_DIR)/opt/bin/transmission-show \
++			$(1)/opt/bin/
+ endef
+ 
+ define Package/transmission-remote/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/transmission-remote $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/transmission-remote $(1)/opt/bin/
+ endef
+ 
+ define Package/transmission-web/install
+-	$(INSTALL_DIR) $(1)/usr/share/transmission
+-	$(CP) $(PKG_INSTALL_DIR)/usr/share/transmission/web $(1)/usr/share/transmission/
++	$(INSTALL_DIR) $(1)/opt/share/transmission
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/transmission/web $(1)/opt/share/transmission/
+ endef
+ 
+ $(eval $(call BuildPackage,transmission-daemon))

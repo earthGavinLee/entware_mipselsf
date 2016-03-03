@@ -1,0 +1,24 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/package/libs/libreadline/Makefile	2015-04-20 10:09:29.146135355 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/libs/libreadline/Makefile	2015-04-20 10:09:47.226135026 +0300
+@@ -57,15 +57,15 @@
+ TARGET_CFLAGS += $(FPIC)
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/readline $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib{history,readline}.{a,so,so.6,so.6.3} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/readline $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/lib{history,readline}.{a,so,so.6,so.6.3} $(1)/opt/lib/
+ endef
+ 
+ define Package/libreadline/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib{history,readline}.{so,so.6,so.6.3} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/lib{history,readline}.{so,so.6,so.6.3} $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libreadline))

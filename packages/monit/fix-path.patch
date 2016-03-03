@@ -1,0 +1,47 @@
+diff -ur ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/admin/monit/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/admin/monit/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/admin/monit/Makefile	2014-10-06 15:46:23.769250644 +0400
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/admin/monit/Makefile	2014-10-07 11:59:30.747924747 +0400
+@@ -67,7 +67,7 @@
+ ifeq ($(BUILD_VARIANT),ssl)
+ 	CONFIGURE_ARGS += \
+ 		--with-ssl \
+-		--with-ssl-dir="$(STAGING_DIR)/usr"
++		--with-ssl-dir="$(STAGING_DIR)/opt"
+ endif
+ 
+ ifeq ($(BUILD_VARIANT),nossl)
+@@ -76,16 +76,15 @@
+ endif
+ 
+ define Package/monit/conffiles
+-/etc/monitrc
++/opt/etc/monitrc
+ endef
+ 
+ define Package/monit/install
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/monitrc $(1)/etc/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/monit.init $(1)/etc/init.d/monit
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/monit $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/monitrc $(1)/opt/etc/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/monit $(1)/opt/bin/
++	$(INSTALL_BIN) ./files/S99monit $(1)/opt/etc/init.d
+ endef
+ 
+ Package/monit-nossl/conffiles = $(Package/monit/conffiles)
+diff -ur ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/admin/monit/patches/001-fix-default-piddir.patch ../../../openwrt_chaos_calmer_entware/feeds/packages/admin/monit/patches/001-fix-default-piddir.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/admin/monit/patches/001-fix-default-piddir.patch	2014-10-06 15:46:23.769250644 +0400
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/admin/monit/patches/001-fix-default-piddir.patch	2014-10-08 13:41:47.162739855 +0400
+@@ -12,7 +12,7 @@
+ -elif test -d "/etc"; then
+ -        piddir="/etc"
+ -fi
+-+piddir="/var/run"
+++piddir="/opt/var/run"
+  
+  
+  cat >>confdefs.h <<_ACEOF

@@ -1,0 +1,72 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/libs/openssl/Makefile	2015-09-15 12:24:40.874451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/libs/openssl/Makefile	2015-09-15 12:28:17.094455262 +0300
+@@ -78,7 +78,7 @@
+ endef
+ 
+ define Package/openssl-util/conffiles
+-/etc/ssl/openssl.cnf
++/opt/etc/ssl/openssl.cnf
+ endef
+ 
+ define Package/openssl-util/description
+@@ -135,8 +135,8 @@
+ 	}
+ 	(cd $(PKG_BUILD_DIR); \
+ 		./Configure $(OPENSSL_TARGET) \
+-			--prefix=/usr \
+-			--openssldir=/etc/ssl \
++			--prefix=/opt \
++			--openssldir=/opt/etc/ssl \
+ 			$(TARGET_CPPFLAGS) \
+ 			$(TARGET_LDFLAGS) -ldl \
+ 			-DOPENSSL_SMALL_FOOTPRINT \
+@@ -187,29 +187,32 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/openssl $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/lib{crypto,ssl}.{a,so*} $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/{openssl,libcrypto,libssl}.pc $(1)/usr/lib/pkgconfig/
+-	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/usr/lib/pkgconfig/{openssl,libcrypto,libssl}.pc || true
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/openssl $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/lib{crypto,ssl}.{a,so*} $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/{openssl,libcrypto,libssl}.pc $(1)/opt/lib/pkgconfig/
++	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/opt/lib/pkgconfig/openssl.pc || true
++	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/opt/lib/pkgconfig/libcrypto.pc || true
++	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/opt/lib/pkgconfig/libssl.pc || true
+ endef
+ 
+ define Package/libopenssl/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libcrypto.so.* $(1)/usr/lib/
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libssl.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/lib/libcrypto.so.* $(1)/opt/lib/
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/lib/libssl.so.* $(1)/opt/lib/
+ endef
+ 
+ define Package/openssl-util/install
+-	$(INSTALL_DIR) $(1)/etc/ssl
+-	$(CP) $(PKG_INSTALL_DIR)/etc/ssl/openssl.cnf $(1)/etc/ssl/
+-	$(INSTALL_DIR) $(1)/etc/ssl/certs
+-	$(INSTALL_DIR) $(1)/etc/ssl/private
+-	chmod 0700 $(1)/etc/ssl/private
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/openssl $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/etc
++	$(INSTALL_DIR) $(1)/opt/etc/ssl
++	$(CP) $(PKG_INSTALL_DIR)/opt/etc/ssl/openssl.cnf $(1)/opt/etc/ssl/
++	$(INSTALL_DIR) $(1)/opt/etc/ssl/certs
++	$(INSTALL_DIR) $(1)/opt/etc/ssl/private
++	chmod 0700 $(1)/opt/etc/ssl/private
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/openssl $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,libopenssl))

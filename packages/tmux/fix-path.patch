@@ -1,0 +1,18 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/tmux/Makefile	2015-09-15 12:24:40.806451662 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/tmux/Makefile	2015-09-15 12:28:26.954455426 +0300
+@@ -37,12 +37,12 @@
+ endef
+ 
+ MAKE_FLAGS += \
+-	PREFIX="/usr" \
++	PREFIX="/opt" \
+ 	PLATFORM="linux"
+ 
+ define Package/tmux/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/tmux $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/tmux $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,tmux))

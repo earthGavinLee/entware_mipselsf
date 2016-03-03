@@ -1,0 +1,38 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/package/libs/gettext-full/Makefile	2014-12-10 12:26:33.282951674 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/libs/gettext-full/Makefile	2014-12-10 12:49:03.598927078 +0300
+@@ -52,6 +52,7 @@
+ 	--disable-java \
+ 	--disable-native-java \
+ 	--disable-openmp \
++	--disable-curses \
+ 	--with-included-gettext \
+ 	--without-libintl-prefix \
+ 	--without-libexpat-prefix \
+@@ -61,19 +62,19 @@
+ 	--with-included-libxml --without-libxml2-prefix --with-included-libcroco
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/lib/libintl-full/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/libintl.h $(1)/usr/lib/libintl-full/include/
++	$(INSTALL_DIR) $(1)/opt/lib/libintl-full/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/libintl.h $(1)/opt/lib/libintl-full/include/
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib/libintl-full/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libintl.{a,so*} $(1)/usr/lib/libintl-full/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/libintl-full/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libintl.{a,so*} $(1)/opt/lib/libintl-full/lib/
+ 
+-	$(INSTALL_DIR) $(1)/usr/share/aclocal
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/aclocal/* $(1)/usr/share/aclocal/
++	$(INSTALL_DIR) $(1)/opt/share/aclocal
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/share/aclocal/* $(1)/opt/share/aclocal/
+ endef
+ 
+ define Package/libintl-full/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libintl.so* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libintl.so* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call HostBuild))

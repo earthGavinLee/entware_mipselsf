@@ -1,0 +1,53 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/libs/libaudiofile/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libaudiofile/Makefile
+@@ -26,9 +26,9 @@
+ define Package/libaudiofile
+   SECTION:=libs
+   CATEGORY:=Libraries
++  DEPENDS:=+libflac +libstdcpp +alsa-lib
+   TITLE:=Audio File library
+   URL:=http://www.68k.org/~michael/audiofile/
+-  DEPENDS:=+libflac +libstdcpp
+ endef
+ 
+ define Package/libaudiofile/description
+@@ -46,27 +46,27 @@
+ TARGET_CFLAGS+= $(FPIC)
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
++	$(INSTALL_DIR) $(1)/opt/include
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/{af_vfs,audiofile,aupvlist}.h \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/{af_vfs,audiofile,aupvlist}.h \
++		$(1)/opt/include/
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libaudiofile.{la,a,so*} \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libaudiofile.{la,a,so*} \
++		$(1)/opt/lib/
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/audiofile.pc \
+-		$(1)/usr/lib/pkgconfig/
++		$(PKG_INSTALL_DIR)/opt/lib/pkgconfig/audiofile.pc \
++		$(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/libaudiofile/install
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libaudiofile.so.* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libaudiofile.so.* \
++		$(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libaudiofile))

@@ -1,0 +1,22 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/admin/htop/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/admin/htop/Makefile
+@@ -27,7 +27,7 @@
+   SECTION:=admin
+   CATEGORY:=Administration
+   TITLE:=Interactive processes viewer
+-  DEPENDS:=+libncurses
++  DEPENDS:=+libncurses +libncursesw
+   URL:=http://htop.sourceforge.net/
+   MAINTAINER:=Etienne CHAMPETIER <champetier.etienne@gmail.com>
+ endef
+@@ -50,8 +50,8 @@
+ 	ac_cv_func_realloc_0_nonnull=yes
+ 
+ define Package/htop/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/$(PKG_NAME) $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/$(PKG_NAME) $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,htop))

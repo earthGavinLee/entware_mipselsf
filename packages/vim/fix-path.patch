@@ -1,0 +1,68 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/utils/vim/Makefile	2015-04-21 10:37:38.252588032 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/vim/Makefile	2015-04-21 16:03:20.008231161 +0300
+@@ -64,8 +64,7 @@
+ endef
+ 
+ define Package/vim/conffiles
+-/usr/share/vim/vimrc
+-/root/.vimrc
++/opt/share/vim/vimrc
+ endef
+ 
+ define Package/vim/description
+@@ -147,9 +146,9 @@
+ 
+ define Build/Compile/vim-runtime
+ 	$(MAKE) -C $(PKG_BUILD_DIR)/src DESTDIR="$(PKG_INSTALL_DIR)" installrtbase
+-	(cd $(PKG_INSTALL_DIR) && tar -cf $(PKG_BUILD_DIR)/docs.tar ./usr/share/vim/vim$(VIMVER)/doc)
+-	rm -rf $(PKG_INSTALL_DIR)/usr/share/vim/vim$(VIMVER)/doc
+-	rm -rf $(PKG_INSTALL_DIR)/usr/man
++	(cd $(PKG_INSTALL_DIR) && tar -cf $(PKG_BUILD_DIR)/docs.tar ./opt/share/vim/vim$(VIMVER)/doc)
++	rm -rf $(PKG_INSTALL_DIR)/opt/share/vim/vim$(VIMVER)/doc
++	rm -rf $(PKG_INSTALL_DIR)/opt/man
+ endef
+ 
+ define Build/Compile
+@@ -160,22 +159,22 @@
+ endef
+ 
+ define Package/vim/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/vim_tiny $(1)/usr/bin/vim
+-	$(INSTALL_DIR) $(1)/usr/share/vim
+-	$(INSTALL_CONF) ./files/vimrc $(1)/usr/share/vim/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/vim_tiny $(1)/opt/bin/vim
++	$(INSTALL_DIR) $(1)/opt/share/vim
++	$(INSTALL_CONF) ./files/vimrc $(1)/opt/share/vim/
+ endef
+ 
+ define Package/vim-full/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/vim_normal $(1)/usr/bin/vim
+-	$(INSTALL_DIR) $(1)/usr/share/vim
+-	$(INSTALL_CONF) ./files/vimrc.full $(1)/usr/share/vim/vimrc
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/vim_normal $(1)/opt/bin/vim
++	$(INSTALL_DIR) $(1)/opt/share/vim
++	$(INSTALL_CONF) ./files/vimrc.full $(1)/opt/share/vim/vimrc
+ endef
+ 
+ define Package/vim-runtime/install
+ 	$(CP) $(PKG_INSTALL_DIR)/* $(1)
+-	rm -rf $(1)/usr/share/vim/vim$(VIMVER)/doc
++	rm -rf $(1)/opt/share/vim/vim$(VIMVER)/doc
+ endef
+ 
+ define Package/vim-help/install
+@@ -183,8 +182,8 @@
+ endef
+ 
+ define Package/xxd/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/xxd/xxd $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/xxd/xxd $(1)/opt/bin
+ endef
+ 
+ $(eval $(call BuildPackage,vim))

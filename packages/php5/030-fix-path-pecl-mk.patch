@@ -1,0 +1,35 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/php5/pecl.mk	2015-07-14 10:55:19.754308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/php5/pecl.mk	2015-07-14 16:12:29.694623963 +0300
+@@ -15,11 +15,11 @@
+ 
+ define Build/Prepare
+ 	$(Build/Prepare/Default)
+-	( cd $(PKG_BUILD_DIR); $(STAGING_DIR_HOST)/usr/bin/phpize )
++	( cd $(PKG_BUILD_DIR); $(STAGING_DIR_HOST)/opt/bin/phpize )
+ endef
+ 
+ CONFIGURE_ARGS+= \
+-	--with-php-config=$(STAGING_DIR_HOST)/usr/bin/php-config
++	--with-php-config=$(STAGING_DIR_HOST)/opt/bin/php-config
+ 
+ define PECLPackage
+ 
+@@ -33,13 +33,13 @@
+   endef
+ 
+   define Package/php5-pecl-$(1)/install
+-	$(INSTALL_DIR) $$(1)/usr/lib/php
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/modules/$(subst -,_,$(1)).so $$(1)/usr/lib/php/
+-	$(INSTALL_DIR) $$(1)/etc/php5
++	$(INSTALL_DIR) $$(1)/opt/lib/php
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/modules/$(subst -,_,$(1)).so $$(1)/opt/lib/php/
++	$(INSTALL_DIR) $$(1)/opt/etc/php5
+     ifeq ($(4),zend)
+-	echo "zend_extension=/usr/lib/php/$(subst -,_,$(1)).so" > $$(1)/etc/php5/$(subst -,_,$(1)).ini
++	echo "zend_extension=/opt/lib/php/$(subst -,_,$(1)).so" > $$(1)/opt/etc/php5/$(subst -,_,$(1)).ini
+     else
+-	echo "extension=$(subst -,_,$(1)).so" > $$(1)/etc/php5/$(subst -,_,$(1)).ini
++	echo "extension=$(subst -,_,$(1)).so" > $$(1)/opt/etc/php5/$(subst -,_,$(1)).ini
+     endif
+   endef
+ 

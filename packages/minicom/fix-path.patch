@@ -1,0 +1,20 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/utils/minicom/Makefile	2015-07-14 10:55:19.830308174 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/minicom/Makefile	2015-07-14 15:02:03.626554904 +0300
+@@ -34,13 +34,13 @@
+ endef
+ 
+ define Package/minicom/conffiles
+-/etc/minirc.dfl
++/opt/etc/minirc.dfl
+ endef
+ 
+ define Package/minicom/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/$(PKG_NAME) $(1)/usr/sbin/
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ascii-xfr $(1)/usr/sbin/
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/$(PKG_NAME) $(1)/opt/sbin/
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ascii-xfr $(1)/opt/sbin/
+ endef
+ 
+ $(eval $(call BuildPackage,minicom))

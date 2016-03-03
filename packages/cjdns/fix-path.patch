@@ -1,0 +1,92 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/routing/cjdns/Makefile	2015-07-14 10:55:19.722308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/routing/cjdns/Makefile	2015-07-14 11:39:18.586352132 +0300
+@@ -38,8 +38,7 @@
+ 	TITLE:=Encrypted near-zero-conf mesh routing protocol
+ 	URL:=https://github.com/hyperboria/cjdns
+ 	MAINTAINER:=Lars Gierth <larsg@systemli.org>
+-	DEPENDS:=+kmod-tun +kmod-ipv6 +libnl-tiny +libpthread +librt \
+-		+libuci-lua +lua-bencode +dkjson +luasocket +lua-sha2
++	DEPENDS:=+librt
+ endef
+ 
+ define Package/cjdns/description
+@@ -68,10 +67,6 @@
+ 
+ PKG_DO_VARS:=
+ 
+-ifneq ($(CONFIG_KERNEL_SECCOMP_FILTER),y)
+-PKG_DO_VARS+= Seccomp_NO=1
+-endif
+-
+ ifneq ($(CONFIG_USE_UCLIBC),)
+ PKG_DO_VARS+= UCLIBC=1
+ endif
+@@ -81,7 +76,7 @@
+ 	CC="$(TARGET_CC)" \
+ 	AR="$(TARGET_AR)" \
+ 	RANLIB="$(TARGET_RANLIB)" \
+-	CFLAGS="$(TARGET_CFLAGS)" \
++	CFLAGS="$(TARGET_CFLAGS) -I$(KERNEL_DIR)/include" \
+ 	LDFLAGS="$(TARGET_LDFLAGS)" \
+ 	SYSTEM="linux" \
+ 	TARGET_ARCH="$(CONFIG_ARCH)" \
+@@ -93,53 +88,23 @@
+ 
+ define Package/cjdns/install
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/sbin \
+-		$(1)/usr/bin \
+-		$(1)/etc/config \
+-		$(1)/etc/init.d \
+-		$(1)/etc/uci-defaults \
+-		$(1)/usr/lib/lua/cjdns
+-
+-	$(INSTALL_BIN) \
+-		./files/cjdrouteconf \
+-		$(1)/usr/bin
++		$(1)/opt/sbin \
++		$(1)/opt/bin
+ 
+ 	$(INSTALL_BIN) \
+ 		$(PKG_BUILD_DIR)/cjdroute \
+-		$(1)/usr/sbin
++		$(1)/opt/sbin
+ 
+ 	$(INSTALL_BIN) \
+ 		$(PKG_BUILD_DIR)/publictoip6 \
+-		$(1)/usr/bin
+-
+-	$(INSTALL_BIN) \
+-		./files/cjdns.init \
+-		$(1)/etc/init.d/cjdns
+-
+-	$(INSTALL_BIN) \
+-		./files/cjdns.defaults \
+-		$(1)/etc/uci-defaults/cjdns
+-
+-	$(CP) \
+-		./lua/cjdns/* \
+-		$(1)/usr/lib/lua/cjdns
+-endef
+-
+-define Package/cjdns/postinst
+-#!/bin/sh
+-if [ -z $${IPKG_INSTROOT} ] ; then
+-	( . /etc/uci-defaults/cjdns ) && rm -f /etc/uci-defaults/cjdns
+-	# TODO: we should have an 'Enable' button instead
+-	/etc/init.d/cjdns enabled || /etc/init.d/cjdns enable
+-	exit 0
+-fi
++		$(1)/opt/bin
+ endef
+ 
+ define Package/cjdns-tests/install
+-	$(INSTALL_DIR) $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
+ 	$(INSTALL_BIN) \
+ 		$(PKG_BUILD_DIR)/build_linux/test_testcjdroute_c \
+-		$(1)/usr/bin
++		$(1)/opt/bin
+ endef
+ 
+ $(eval $(call BuildPackage,cjdns))

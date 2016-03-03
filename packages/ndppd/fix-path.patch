@@ -1,0 +1,37 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/routing/ndppd/Makefile	2014-12-10 12:26:32.822951684 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/routing/ndppd/Makefile	2014-12-10 12:49:07.766927002 +0300
+@@ -32,7 +32,7 @@
+   TITLE:=NDP Proxy Daemon
+   URL:=http://www.priv.nu/projects/ndppd/
+   MAINTAINER:=Gabriel Kerneis <gabriel@kerneis.info>
+-  DEPENDS:=+kmod-ipv6 $(CXX_DEPENDS)
++  DEPENDS:=$(CXX_DEPENDS)
+ endef
+ 
+ define Package/ndppd/description
+@@ -47,7 +47,7 @@
+ endef
+ 
+ define Package/ndppd/conffiles
+-/etc/ndppd.conf
++/opt/etc/ndppd.conf
+ endef
+ 
+ define Build/Compile
+@@ -60,11 +60,11 @@
+ endef
+ 
+ define Package/ndppd/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/ndppd $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/ndppd.init $(1)/etc/init.d/ndppd
+-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/ndppd.conf-dist $(1)/etc/ndppd.conf
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/ndppd $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S33ndppd $(1)/opt/etc/init.d/
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/ndppd.conf-dist $(1)/opt/etc/ndppd.conf
+ endef
+ 
+ $(eval $(call BuildPackage,ndppd))

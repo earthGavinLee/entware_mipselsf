@@ -1,0 +1,55 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/tor/Makefile	2015-07-14 10:55:19.798308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/tor/Makefile	2015-07-14 17:08:37.838679647 +0300
+@@ -72,16 +72,16 @@
+ endef
+ 
+ define Package/tor/conffiles
+-/etc/tor/torrc
++/opt/etc/tor/torrc
+ endef
+ 
+ CONFIGURE_ARGS += \
+-	--with-libevent-dir="$(STAGING_DIR)/usr" \
+-	--with-ssl-dir="$(STAGING_DIR)/usr" \
++	--with-libevent-dir="$(STAGING_DIR)/opt" \
++	--with-ssl-dir="$(STAGING_DIR)/opt" \
+ 	--enable-upnp \
+-	--with-libminiupnpc-dir="$(STAGING_DIR)/usr" \
++	--with-libminiupnpc-dir="$(STAGING_DIR)/opt" \
+ 	--enable-nat-pmp \
+-	--with-libnatpmp-dir="$(STAGING_DIR)/usr" \
++	--with-libnatpmp-dir="$(STAGING_DIR)/opt" \
+ 	--disable-asciidoc \
+ 	--disable-seccomp
+ 
+@@ -99,22 +99,20 @@
+ 	CROSS_COMPILE="yes"
+ 
+ define Package/tor/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/tor $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/tor.init $(1)/etc/init.d/tor
+-	$(INSTALL_DIR) $(1)/etc/tor
+-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/tor/torrc.sample $(1)/etc/tor/torrc
++	$(INSTALL_DIR) $(1)/opt/sbin $(1)/opt/var/lib/tor
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/tor $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/tor
++	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/opt/etc/tor/torrc.sample $(1)/opt/etc/tor/torrc
+ endef
+ 
+ define Package/tor-fw-helper/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/tor-fw-helper $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/tor-fw-helper $(1)/opt/bin/
+ endef
+ 
+ define Package/tor-geoip/install
+-	$(INSTALL_DIR) $(1)/usr/share/tor
+-	$(CP) $(PKG_INSTALL_DIR)/usr/share/tor/geoip $(1)/usr/share/tor/
++	$(INSTALL_DIR) $(1)/opt/share/tor
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/tor/geoip $(1)/opt/share/tor/
+ endef
+ 
+ $(eval $(call BuildPackage,tor))

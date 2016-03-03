@@ -1,0 +1,61 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/package/boot/kexec-tools/Makefile	2015-04-20 10:09:30.634135328 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/boot/kexec-tools/Makefile	2015-04-20 12:52:56.185956761 +0300
+@@ -24,7 +24,7 @@
+ define Package/kexec-tools
+   SECTION:=utils
+   CATEGORY:=Utilities
+-  DEPENDS:=@KERNEL_KEXEC @armeb||@arm||@i386||@powerpc64||@mipsel||@mips +KEXEC_ZLIB:zlib +KEXEC_LZMA:liblzma
++  DEPENDS:=+KEXEC_ZLIB:zlib +KEXEC_LZMA:liblzma
+   TITLE:=Kernel boots kernel
+   URL:=http://kernel.org/pub/linux/kernel/people/horms/kexec-tools/
+   MAINTAINER:=Florian Fainelli <florian@openwrt.org>
+@@ -40,7 +40,7 @@
+ 	source "$(SOURCE)/Config.in"
+ endef
+ 
+-KEXEC_TARGET_NAME:=$(call qstrip,$(CONFIG_KEXEC_TOOLS_TARGET_NAME))-linux-$(TARGET_SUFFIX)
++KEXEC_TARGET_NAME:=$(call qstrip,$(CONFIG_KEXEC_TOOLS_TARGET_NAME))-linux-gnu
+ 
+ CONFIGURE_ARGS = \
+ 		--target=$(KEXEC_TARGET_NAME) \
+@@ -48,12 +48,12 @@
+ 		--build=$(GNU_HOST_NAME) \
+ 		--program-prefix="" \
+ 		--program-suffix="" \
+-		--prefix=/usr \
+-		--exec-prefix=/usr \
+-		--bindir=/usr/bin \
+-		--sbindir=/usr/sbin \
+-		--libexecdir=/usr/lib \
+-		--sysconfdir=/etc \
++		--prefix=/opt \
++		--exec-prefix=/opt \
++		--bindir=/opt/bin \
++		--sbindir=/opt/sbin \
++		--libexecdir=/opt/lib \
++		--sysconfdir=/opt/etc \
+ 		$(if $(CONFIG_KEXEC_ZLIB),--with,--without)-zlib \
+ 		$(if $(CONFIG_KEXEC_LZMA),--with,--without)-lzma
+ 
+@@ -71,17 +71,13 @@
+ endef
+ 
+ define Package/kexec-tools/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
++	$(INSTALL_DIR) $(1)/opt/sbin
+ 	$(INSTALL_BIN) \
+-		$(addprefix $(PKG_INSTALL_DIR)/usr/sbin/, \
++		$(addprefix $(PKG_INSTALL_DIR)/opt/sbin/, \
+ 			$(kexec-extra-sbin-y)) \
+ 		$(kexec-extra-bin-y) \
+-		$(PKG_INSTALL_DIR)/usr/sbin/kexec \
+-		$(1)/usr/sbin
+-
+-# make a link for compatability with other distros
+-	$(INSTALL_DIR) $(1)/sbin
+-	$(LN) ../usr/sbin/kexec $(1)/sbin/kexec
++		$(PKG_INSTALL_DIR)/opt/sbin/kexec \
++		$(1)/opt/sbin
+ endef
+ 
+ $(eval $(call BuildPackage,kexec-tools))

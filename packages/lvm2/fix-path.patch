@@ -1,0 +1,189 @@
+diff -Nurx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/lvm2/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lvm2/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/lvm2/Makefile	2015-09-15 12:24:40.798451662 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lvm2/Makefile	2015-07-30 13:10:52.000000000 +0300
+@@ -9,13 +9,13 @@
+ include $(TOPDIR)/rules.mk
+ 
+ PKG_NAME:=LVM2
+-PKG_VERSION:=2.02.130
++PKG_VERSION:=2.02.118
+ PKG_RELEASE:=1
+ PKG_LICENSE:=GPL-2.0 LGPL-2.1
+ 
+ PKG_SOURCE:=$(PKG_NAME).$(PKG_VERSION).tgz
+ PKG_SOURCE_URL:=ftp://sources.redhat.com/pub/lvm2
+-PKG_MD5SUM:=e7ae07e413120713549cc6dd2a558c75
++PKG_MD5SUM:=27f028974e8f067a9791d685b4e0fa90
+ PKG_MAINTAINER:=Daniel Golle <daniel@makrotopia.org>
+ PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME).$(PKG_VERSION)
+ 
+@@ -26,7 +26,7 @@
+   CATEGORY:=Libraries
+   TITLE:=The Linux Kernel Device Mapper userspace library
+   URL:=http://sourceware.org/dm/
+-  DEPENDS:=+kmod-dm +libpthread
++  DEPENDS:=+libpthread
+ endef
+ 
+ define Package/libdevmapper/description
+@@ -59,36 +59,32 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/include/libdevmapper.h $(1)/usr/include
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libdevmapper.so* $(1)/usr/lib
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_BUILD_DIR)/libdm/libdevmapper.pc $(1)/usr/lib/pkgconfig
++	$(INSTALL_DIR) $(1)/opt/include
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/include/libdevmapper.h $(1)/opt/include
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libdevmapper.so* $(1)/opt/lib
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(CP) $(PKG_BUILD_DIR)/libdm/libdevmapper.pc $(1)/opt/lib/pkgconfig
+ endef
+ 
+ define Package/libdevmapper/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/libdevmapper.so.* $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/lib/libdevmapper.so.* $(1)/opt/lib
+ endef
+ 
+ define Package/lvm2/install
+-	$(INSTALL_DIR) $(1)/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/lvm $(1)/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/dmsetup $(1)/sbin
+-	$(INSTALL_DIR) $(1)/etc/lvm
+-	$(SED) '/^[[:space:]]*\(#\|$$$$\)/d; /cache_dir/s@.*@	cache_dir = "/tmp/lvm/cache"@' $(PKG_INSTALL_DIR)/etc/lvm/lvm.conf
+-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/lvm/lvm.conf $(1)/etc/lvm/
+-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/lvm/lvmlocal.conf $(1)/etc/lvm/
+-	$(INSTALL_DIR) $(1)/etc/lvm/profile
+-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/lvm/profile/* $(1)/etc/lvm/profile/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/lvm2.init $(1)/etc/init.d/lvm2
+-	$(FIND) $(PKG_INSTALL_DIR)/usr/sbin/ -type l -exec $(CP) -a {} $(1)/sbin/ \;
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tools/lvm $(1)/opt/sbin
++	$(INSTALL_DIR) $(1)/opt/etc/lvm
++	$(SED) '/^[[:space:]]*\(#\|$$$$\)/d; /cache_dir/s@.*@    cache_dir = "/opt/tmp/lvm/cache"@' $(PKG_BUILD_DIR)/conf/example.conf
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/conf/example.conf $(1)/opt/etc/lvm/lvm.conf
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S06lvm2 $(1)/opt/etc/init.d
++	$(FIND) $(PKG_INSTALL_DIR)/opt/sbin/ -type l -exec $(CP) -a {} $(1)/opt/sbin/ \;
+ endef
+ 
+ define Package/lvm2/conffiles
+-/etc/lvm/lvm.conf
++/opt/etc/lvm/lvm.conf
+ endef
+ 
+ $(eval $(call BuildPackage,libdevmapper))
+diff -Nurx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/lvm2/patches/002-const-stdio.patch ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lvm2/patches/002-const-stdio.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/lvm2/patches/002-const-stdio.patch	2015-09-15 12:24:40.798451662 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lvm2/patches/002-const-stdio.patch	1970-01-01 03:00:00.000000000 +0300
+@@ -1,54 +0,0 @@
+---- a/lib/commands/toolcontext.c
+-+++ b/lib/commands/toolcontext.c
+-@@ -1728,8 +1728,10 @@ struct cmd_context *create_toolcontext(u
+- 				       unsigned set_filters)
+- {
+- 	struct cmd_context *cmd;
+-+#if defined(__GLIBC__) && !defined(VALGRIND_POOL)
+- 	FILE *new_stream;
+- 	int flags;
+-+#endif
+- 
+- #ifdef M_MMAP_MAX
+- 	mallopt(M_MMAP_MAX, 0);
+-@@ -1765,7 +1767,7 @@ struct cmd_context *create_toolcontext(u
+- 	/* FIXME Make this configurable? */
+- 	reset_lvm_errno(1);
+- 
+--#ifndef VALGRIND_POOL
+-+#if defined(__GLIBC__) && !defined(VALGRIND_POOL)
+- 	/* Set in/out stream buffering before glibc */
+- 	if (set_buffering) {
+- 		/* Allocate 2 buffers */
+-@@ -2148,7 +2150,7 @@ void destroy_toolcontext(struct cmd_cont
+- 	if (cmd->libmem)
+- 		dm_pool_destroy(cmd->libmem);
+- 
+--#ifndef VALGRIND_POOL
+-+#if defined(__GLIBC__) && !defined(VALGRIND_POOL)
+- 	if (cmd->linebuffer) {
+- 		/* Reset stream buffering to defaults */
+- 		if (is_valid_fd(STDIN_FILENO) &&
+---- a/tools/lvmcmdline.c
+-+++ b/tools/lvmcmdline.c
+-@@ -1735,6 +1735,7 @@ int lvm_split(char *str, int *argc, char
+- /* Make sure we have always valid filedescriptors 0,1,2 */
+- static int _check_standard_fds(void)
+- {
+-+#ifdef __GLIBC__
+- 	int err = is_valid_fd(STDERR_FILENO);
+- 
+- 	if (!is_valid_fd(STDIN_FILENO) &&
+-@@ -1761,6 +1762,12 @@ static int _check_standard_fds(void)
+- 		       strerror(errno));
+- 		return 0;
+- 	}
+-+#else
+-+	if (!is_valid_fd(STDERR_FILENO) ||
+-+	    !is_valid_fd(STDOUT_FILENO) ||
+-+	    !is_valid_fd(STDIN_FILENO))
+-+		return 0;
+-+#endif
+- 
+- 	return 1;
+- }
+diff -Nurx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/lvm2/patches/003-no-mallinfo.patch ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lvm2/patches/003-no-mallinfo.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/utils/lvm2/patches/003-no-mallinfo.patch	2015-09-15 12:24:40.798451662 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lvm2/patches/003-no-mallinfo.patch	1970-01-01 03:00:00.000000000 +0300
+@@ -1,45 +0,0 @@
+---- a/lib/mm/memlock.c
+-+++ b/lib/mm/memlock.c
+-@@ -161,12 +161,15 @@ static void _allocate_memory(void)
+-          *  memory on free(), this is good enough for our purposes.
+-          */
+- 	while (missing > 0) {
+-+#ifdef __GLIBC__
+- 		struct mallinfo inf = mallinfo();
+- 		hblks = inf.hblks;
+-+#endif
+- 
+- 		if ((areas[area] = malloc(_size_malloc_tmp)))
+- 			_touch_memory(areas[area], _size_malloc_tmp);
+- 
+-+#ifdef __GLIBC__
+- 		inf = mallinfo();
+- 
+- 		if (hblks < inf.hblks) {
+-@@ -176,9 +179,12 @@ static void _allocate_memory(void)
+- 			free(areas[area]);
+- 			_size_malloc_tmp /= 2;
+- 		} else {
+-+#endif
+- 			++ area;
+- 			missing -= _size_malloc_tmp;
+-+#ifdef __GLIBC__
+- 		}
+-+#endif
+- 
+- 		if (area == max_areas && missing > 0) {
+- 			/* Too bad. Warn the user and proceed, as things are
+-@@ -467,8 +473,13 @@ static void _lock_mem(struct cmd_context
+- 	 * will not block memory locked thread
+- 	 * Note: assuming _memlock_count_daemon is updated before _memlock_count
+- 	 */
+-+#ifdef __GLIBC__
+- 	_use_mlockall = _memlock_count_daemon ? 1 :
+- 		find_config_tree_bool(cmd, activation_use_mlockall_CFG, NULL);
+-+#else
+-+	/* always use mlockall on musl */
+-+	_use_mlockall = 1;
+-+#endif
+- 
+- 	if (!_use_mlockall) {
+- 		if (!*_procselfmaps &&

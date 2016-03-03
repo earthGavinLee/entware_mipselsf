@@ -1,0 +1,135 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/libs/gnutls/Makefile	2015-09-21 12:01:28.355056705 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/gnutls/Makefile	2015-09-22 11:45:24.358041912 +0300
+@@ -15,13 +15,14 @@
+ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.xz
+ PKG_SOURCE_URL:=ftp://ftp.gnutls.org/gcrypt/gnutls/v3.4
+ PKG_MD5SUM:=474efaba6fd6c6c6c0ebac2a3f431946
+-#PKG_FIXUP:=autoreconf gettext-version
++PKG_FIXUP:=autoreconf gettext-version
+ PKG_MAINTAINER:=Nikos Mavrogiannopoulos <nmav@gnutls.org>
+ PKG_LICENSE:=LGPLv2.1+
+ 
+ PKG_INSTALL:=1
+ PKG_LIBTOOL_PATHS:=. lib
+ PKG_CHECK_FORMAT_SECURITY:=0
++PKG_BUILD_DEPENDS:=argp-standalone
+ 
+ PKG_CONFIG_DEPENDS:= \
+ 	CONFIG_GNUTLS_ALPN \
+@@ -93,7 +94,7 @@
+ define Package/libgnutls
+ $(call Package/gnutls/Default)
+   TITLE+= (library)
+-  DEPENDS+= +libnettle +!LIBNETTLE_MINI:libgmp +GNUTLS_EXT_LIBTASN1:libtasn1 +GNUTLS_PKCS11:p11-kit
++  DEPENDS+= +libnettle +!LIBNETTLE_MINI:libgmp +GNUTLS_EXT_LIBTASN1:libtasn1 +GNUTLS_PKCS11:p11-kit +libidn
+ endef
+ 
+ define Package/libgnutls/description
+@@ -110,12 +111,15 @@
+ 	--disable-guile \
+ 	--disable-nls \
+ 	--without-zlib \
++	--disable-cxx \
+ 	--enable-local-libopts \
+ 	--disable-doc \
+ 	--disable-tests \
+-	--with-default-trust-store-dir=/etc/ssl/certs/ \
++	--with-default-trust-store-dir=/opt/etc/ssl/certs/ \
+ 	--disable-crywrap \
+-	--with-librt-prefix="$(LIBRT_ROOT_DIR)/"
++	--with-librt-prefix="$(LIBRT_ROOT_DIR)/" \
++	--with-unbound-root-key-file=/opt/etc/unbound/root.key \
++	--with-system-priority-file=/opt/etc/gnutls/default-priorities
+ 
+ ifneq ($(CONFIG_GNUTLS_EXT_LIBTASN1),y)
+ CONFIGURE_ARGS += --with-included-libtasn1
+@@ -168,64 +172,64 @@
+ TARGET_CFLAGS += $(FPIC)
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include $(1)/usr/lib/pkgconfig
++	$(INSTALL_DIR) $(1)/opt/include $(1)/opt/lib/pkgconfig
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libgnutls.so* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libgnutls.so* \
++		$(1)/opt/lib/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/gnutls \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/gnutls \
++		$(1)/opt/include/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/gnutls.pc \
+-		$(1)/usr/lib/pkgconfig/
++		$(PKG_INSTALL_DIR)/opt/lib/pkgconfig/gnutls.pc \
++		$(1)/opt/lib/pkgconfig/
+ endef
+ 
+ 
+ define Package/certtool/conffiles
+-/etc/gnutls/certtool.cfg
++/opt/etc/gnutls/certtool.cfg
+ endef
+ 
+ define Package/certtool/install
+-	$(INSTALL_DIR) $(1)/etc/gnutls
+-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/doc/certtool.cfg $(1)/etc/gnutls/
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/certtool $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/etc/gnutls
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/doc/certtool.cfg $(1)/opt/etc/gnutls/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/certtool $(1)/opt/bin/
+ endef
+ 
+ 
+ define Package/gnutls-utils/install
+-	$(INSTALL_DIR) $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
+ ifeq ($(CONFIG_GNUTLS_OCSP),y)
+ ifeq ($(CONFIG_GNUTLS_ANON),y)
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/bin/gnutls-{cli,serv} \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/gnutls-{cli,serv} \
++		$(1)/opt/bin/
+ endif
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/bin/ocsptool \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/ocsptool \
++		$(1)/opt/bin/
+ endif
+ ifeq ($(CONFIG_GNUTLS_SRP),y)
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/bin/srptool \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/srptool \
++		$(1)/opt/bin/
+ endif
+ ifeq ($(CONFIG_GNUTLS_PSK),y)
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/bin/psktool \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/psktool \
++		$(1)/opt/bin/
+ endif
+ ifeq ($(CONFIG_GNUTLS_PKCS11),y)
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/bin/p11tool \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/p11tool \
++		$(1)/opt/bin/
+ endif
+ endef
+ 
+ 
+ define Package/libgnutls/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libgnutls.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libgnutls.so.* $(1)/opt/lib/
+ endef
+ 
+ 

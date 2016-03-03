@@ -1,0 +1,21 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44497/feeds/packages/lang/simplejson/Makefile	2015-02-20 12:39:13.361134248 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/simplejson/Makefile	2015-02-20 20:59:14.643486203 +0300
+@@ -15,7 +15,8 @@
+ PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+ PKG_SOURCE_URL:=http://pypi.python.org/packages/source/s/simplejson/
+ PKG_MD5SUM:=b65dc21c7aaad14c6b4ad0d9179e437d
+-PKG_BUILD_DEPENDS:=python python-setuptools
++PKG_BUILD_DEPENDS:=python
++# python-setuptools
+ 
+ include $(INCLUDE_DIR)/package.mk
+ $(call include_mk, python-package.mk)
+@@ -35,7 +36,7 @@
+ endef
+ 
+ define Build/Compile
+-	$(call Build/Compile/PyMod,,install --prefix=/usr --root=$(PKG_INSTALL_DIR))
++	$(call Build/Compile/PyMod,,install --prefix=/opt --root=$(PKG_INSTALL_DIR))
+ endef
+ 
+ define Package/simplejson/install

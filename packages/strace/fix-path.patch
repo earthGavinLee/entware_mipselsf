@@ -1,0 +1,37 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/devel/strace/Makefile	2015-09-15 12:24:40.930451664 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/devel/strace/Makefile	2015-09-21 11:25:51.699021143 +0300
+@@ -6,7 +6,6 @@
+ #
+ 
+ include $(TOPDIR)/rules.mk
+-include $(INCLUDE_DIR)/kernel.mk
+ 
+ PKG_NAME:=strace
+ 
+@@ -27,6 +26,8 @@
+ 
+ include $(INCLUDE_DIR)/package.mk
+ 
++HOST_CFLAGS += -I$(LINUX_DIR)/include
++
+ define Package/strace
+   SECTION:=utils
+   CATEGORY:=Utilities
+@@ -39,12 +40,15 @@
+ system calls a program makes while it is running.
+ endef
+ 
++TARGET_CFLAGS += \
++	-I$(LINUX_DIR)/include
++
+ MAKE_FLAGS := \
+ 	CCOPT="$(TARGET_CFLAGS)"
+ 
+ define Package/strace/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/strace $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/strace $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,strace))

@@ -1,0 +1,52 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/include/package-ipkg.mk	2015-07-14 10:55:19.902308175 +0300
++++ ../../../openwrt_chaos_calmer_entware/include/package-ipkg.mk	2015-07-14 17:34:09.082702743 +0300
+@@ -11,7 +11,7 @@
+ IPKG_BUILD:= \
+   $(SCRIPT_DIR)/ipkg-build -c -o 0 -g 0
+ 
+-IPKG_STATE_DIR:=$(TARGET_DIR)/usr/lib/opkg
++IPKG_STATE_DIR:=$(TARGET_DIR)/opt/lib/opkg
+ 
+ # 1: package name
+ # 2: variable name
+@@ -127,8 +127,8 @@
+ 
+     $(eval $(call BuildIPKGVariable,$(1),conffiles))
+     $(eval $(call BuildIPKGVariable,$(1),preinst,,1))
+-    $(eval $(call BuildIPKGVariable,$(1),postinst,-pkg,1))
+-    $(eval $(call BuildIPKGVariable,$(1),prerm,-pkg,1))
++    $(eval $(call BuildIPKGVariable,$(1),postinst,,1))
++    $(eval $(call BuildIPKGVariable,$(1),prerm,,1))
+     $(eval $(call BuildIPKGVariable,$(1),postrm,,1))
+ 
+     $(STAGING_DIR_ROOT)/stamp/.$(1)_installed: $(STAMP_BUILT)
+@@ -193,18 +193,6 @@
+ 			printf "Description: "; echo "$$$$DESCRIPTION" | sed -e 's,^[[:space:]]*, ,g'; \
+ 		) > control; \
+ 		chmod 644 control; \
+-		( \
+-			echo "#!/bin/sh"; \
+-			echo "[ \"\$$$${IPKG_NO_SCRIPT}\" = \"1\" ] && exit 0"; \
+-			echo ". \$$$${IPKG_INSTROOT}/lib/functions.sh"; \
+-			echo "default_postinst \$$$$0 \$$$$@"; \
+-		) > postinst; \
+-		( \
+-			echo "#!/bin/sh"; \
+-			echo ". \$$$${IPKG_INSTROOT}/lib/functions.sh"; \
+-			echo "default_prerm \$$$$0 \$$$$@"; \
+-		) > prerm; \
+-		chmod 0755 postinst prerm; \
+ 		$($(1)_COMMANDS) \
+ 	)
+ 
+@@ -215,8 +203,8 @@
+ 				[ -f "$$(IDIR_$(1))/$$$$x" ] || keepfiles="$$$${keepfiles:+$$$$keepfiles }$$$$x"; \
+ 			done; \
+ 			[ -z "$$$$keepfiles" ] || { \
+-				mkdir -p $$(IDIR_$(1))/lib/upgrade/keep.d; \
+-				for x in $$$$keepfiles; do echo $$$$x >> $$(IDIR_$(1))/lib/upgrade/keep.d/$(1); done; \
++				mkdir -p $$(IDIR_$(1))/opt/lib/upgrade/keep.d; \
++				for x in $$$$keepfiles; do echo $$$$x >> $$(IDIR_$(1))/opt/lib/upgrade/keep.d/$(1); done; \
+ 			}; \
+ 		)
+     endif

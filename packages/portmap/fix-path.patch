@@ -1,0 +1,31 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43708/feeds/packages/net/portmap/Makefile	2014-12-15 12:19:58.028388958 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/portmap/Makefile	2014-12-15 12:20:24.184388481 +0300
+@@ -25,7 +25,7 @@
+ define Package/portmap
+   SECTION:=net
+   CATEGORY:=Network
+-  DEPENDS:=+libwrap $(LIBRPC_DEPENDS)
++  DEPENDS:=+libwrap
+   TITLE:=The RPC Portmapper
+   URL:=http://neil.brown.name/portmap/
+   MAINTAINER:=Peter Wagner <tripolar@gmx.at>
+@@ -40,14 +40,14 @@
+ MAKE_FLAGS += \
+ 	CFLAGS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS) -DHOSTS_ACCESS -DFACILITY=LOG_DAEMON -DIGNORE_SIGCHLD" \
+ 	RPCUSER="rpc" \
+-	LDLIBS="$(TARGET_LDFLAGS) -lwrap $(LIBRPC)" \
++	LDLIBS="$(TARGET_LDFLAGS) -lwrap" \
+ 	all
+ 
+ define Package/portmap/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/portmap $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/portmap.init $(1)/etc/init.d/portmap
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/portmap $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S55portmap $(1)/opt/etc/init.d/
+ endef
+ 
+ $(eval $(call BuildPackage,portmap))

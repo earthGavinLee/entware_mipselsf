@@ -1,0 +1,296 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/lang/php5/Makefile	2015-09-15 12:24:40.722451661 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/php5/Makefile	2015-09-15 12:28:23.578455370 +0300
+@@ -148,13 +148,13 @@
+ 	--disable-debug \
+ 	--without-pear \
+ 	\
+-	--with-config-file-path=/etc \
+-	--with-config-file-scan-dir=/etc/php5 \
++	--with-config-file-path=/opt/etc \
++	--with-config-file-scan-dir=/opt/etc/php5 \
+ 	--disable-short-tags \
+ 	\
+-	--with-zlib="$(STAGING_DIR)/usr" \
+-	  --with-zlib-dir="$(STAGING_DIR)/usr" \
+-	--with-pcre-regex="$(STAGING_DIR)/usr" \
++	--with-zlib="$(STAGING_DIR)/opt" \
++	  --with-zlib-dir="$(STAGING_DIR)/opt" \
++	--with-pcre-regex="$(STAGING_DIR)/opt" \
+ 	--disable-phar
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-calendar),)
+@@ -170,7 +170,7 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-curl),)
+-  CONFIGURE_ARGS+= --with-curl=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --with-curl=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-curl
+ endif
+@@ -182,7 +182,7 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-gettext),)
+-  CONFIGURE_ARGS+= --with-gettext=shared,"$(STAGING_DIR)/usr/lib/libintl-full"
++  CONFIGURE_ARGS+= --with-gettext=shared,"$(STAGING_DIR)/opt/lib/libintl-full"
+ else
+   CONFIGURE_ARGS+= --without-gettext
+ endif
+@@ -208,9 +208,9 @@
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-gd),)
+   CONFIGURE_ARGS+= \
+ 	--with-gd=shared \
+-	--without-freetype-dir \
+-	--with-jpeg-dir="$(STAGING_DIR)/usr" \
+-	--with-png-dir="$(STAGING_DIR)/usr" \
++	--with-freetype-dir="$(STAGING_DIR)/opt" \
++	--with-jpeg-dir="$(STAGING_DIR)/opt" \
++	--with-png-dir="$(STAGING_DIR)/opt" \
+ 	--without-xpm-dir \
+ 	--without-t1lib \
+ 	--enable-gd-native-ttf \
+@@ -220,7 +220,7 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-gmp),)
+-  CONFIGURE_ARGS+= --with-gmp=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --with-gmp=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-gmp
+ endif
+@@ -245,8 +245,8 @@
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-ldap),)
+   CONFIGURE_ARGS+= \
+-	--with-ldap=shared,"$(STAGING_DIR)/usr" \
+-	--with-ldap-sasl="$(STAGING_DIR)/usr"
++	--with-ldap=shared,"$(STAGING_DIR)/opt" \
++	--with-ldap-sasl="$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-ldap
+ endif
+@@ -258,19 +258,19 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-mcrypt),)
+-  CONFIGURE_ARGS+=  --with-mcrypt=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+=  --with-mcrypt=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-mcrypt
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-mysql),)
+-  CONFIGURE_ARGS+= --with-mysql=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --with-mysql=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-mysql
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-mysqli),)
+-  CONFIGURE_ARGS+= --with-mysqli=shared,"$(STAGING_DIR)/usr/bin/mysql_config"
++  CONFIGURE_ARGS+= --with-mysqli=shared,"$(STAGING_DIR)/opt/bin/mysql_config"
+ else
+   CONFIGURE_ARGS+= --without-mysqli
+ endif
+@@ -283,9 +283,9 @@
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-openssl),)
+   CONFIGURE_ARGS+= \
+-	--with-openssl=shared,"$(STAGING_DIR)/usr" \
++	--with-openssl=shared,"$(STAGING_DIR)/opt" \
+ 	--with-kerberos=no \
+-	--with-openssl-dir="$(STAGING_DIR)/usr"
++	--with-openssl-dir="$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-openssl
+ endif
+@@ -299,17 +299,17 @@
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-pdo),)
+   CONFIGURE_ARGS+= --enable-pdo=shared
+   ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-pdo-mysql),)
+-    CONFIGURE_ARGS+= --with-pdo-mysql=shared,"$(STAGING_DIR)/usr"
++    CONFIGURE_ARGS+= --with-pdo-mysql=shared,"$(STAGING_DIR)/opt"
+   else
+     CONFIGURE_ARGS+= --without-pdo-mysql
+   endif
+   ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-pdo-pgsql),)
+-    CONFIGURE_ARGS+= --with-pdo-pgsql=shared,"$(STAGING_DIR)/usr"
++    CONFIGURE_ARGS+= --with-pdo-pgsql=shared,"$(STAGING_DIR)/opt"
+   else
+     CONFIGURE_ARGS+= --without-pdo-pgsql
+   endif
+   ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-pdo-sqlite),)
+-    CONFIGURE_ARGS+= --with-pdo-sqlite=shared,"$(STAGING_DIR)/usr"
++    CONFIGURE_ARGS+= --with-pdo-sqlite=shared,"$(STAGING_DIR)/opt"
+   else
+     CONFIGURE_ARGS+= --without-pdo-sqlite
+   endif
+@@ -318,7 +318,7 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-pgsql),)
+-  CONFIGURE_ARGS+= --with-pgsql=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --with-pgsql=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-pgsql
+ endif
+@@ -354,7 +354,7 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-sqlite3),)
+-  CONFIGURE_ARGS+= --with-sqlite3=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --with-sqlite3=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --without-sqlite3
+ endif
+@@ -384,24 +384,24 @@
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-xml),)
+-  CONFIGURE_ARGS+= --enable-xml=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --enable-xml=shared,"$(STAGING_DIR)/opt"
+   ifneq ($(CONFIG_PHP5_LIBXML),)
+-    CONFIGURE_ARGS+= --with-libxml-dir="$(STAGING_DIR)/usr/include/libxml2"
++    CONFIGURE_ARGS+= --with-libxml-dir="$(STAGING_DIR)/opt/include/libxml2"
+   else
+-    CONFIGURE_ARGS+= --with-libexpat-dir="$(STAGING_DIR)/usr"
++    CONFIGURE_ARGS+= --with-libexpat-dir="$(STAGING_DIR)/opt"
+   endif
+ else
+   CONFIGURE_ARGS+= --disable-xml
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-xmlreader),)
+-  CONFIGURE_ARGS+= --enable-xmlreader=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --enable-xmlreader=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --disable-xmlreader
+ endif
+ 
+ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-xmlwriter),)
+-  CONFIGURE_ARGS+= --enable-xmlwriter=shared,"$(STAGING_DIR)/usr"
++  CONFIGURE_ARGS+= --enable-xmlwriter=shared,"$(STAGING_DIR)/opt"
+ else
+   CONFIGURE_ARGS+= --disable-xmlwriter
+ endif
+@@ -420,7 +420,7 @@
+ 
+ ifneq ($(SDK)$(CONFIG_PHP5_LIBXML),)
+   CONFIGURE_ARGS+= --enable-libxml
+-  CONFIGURE_ARGS+= --with-libxml-dir="$(STAGING_DIR)/usr/include/libxml2"
++  CONFIGURE_ARGS+= --with-libxml-dir="$(STAGING_DIR)/opt/include/libxml2"
+ else
+   CONFIGURE_ARGS+= --disable-libxml
+ endif
+@@ -438,48 +438,38 @@
+ 	ac_cv_php_xml2_config_path="$(STAGING_DIR)/host/bin/xml2-config" \
+ 
+ define Package/php5/conffiles
+-/etc/php.ini
++/opt/etc/php.ini
+ endef
+ 
+ define Package/php5/install
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_DATA) ./files/php.ini $(1)/etc/
++	$(INSTALL_DIR) $(1)/opt/etc
++	$(INSTALL_DATA) ./files/php.ini $(1)/opt/etc/
+ endef
+ 
+ define Package/php5-cli/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_BUILD_DIR)/sapi/cli/php $(1)/usr/bin/php-cli
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_BUILD_DIR)/sapi/cli/php $(1)/opt/bin/php-cli
+ endef
+ 
+ define Package/php5-cgi/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_BUILD_DIR)/sapi/cgi/php-cgi $(1)/usr/bin/php-cgi
+-	ln -sf php-cgi $(1)/usr/bin/php-fcgi
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_BUILD_DIR)/sapi/cgi/php-cgi $(1)/opt/bin/php-cgi
++	ln -sf php-cgi $(1)/opt/bin/php-fcgi
+ endef
+ 
+ define Package/php5-fastcgi/install
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_DATA) ./files/php5-fastcgi.config $(1)/etc/config/php5-fastcgi
+-
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/php5-fastcgi.init $(1)/etc/init.d/php5-fastcgi
++	true
+ endef
+ 
+ define Package/php5-fpm/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sapi/fpm/php-fpm $(1)/usr/bin/php-fpm
+-
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_DATA) ./files/php5-fpm.conf $(1)/etc/php5-fpm.conf
+-
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_DATA) ./files/php5-fpm.config $(1)/etc/config/php5-fpm
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/sapi/fpm/php-fpm $(1)/opt/bin/php-fpm
+ 
+-	$(INSTALL_DIR) $(1)/etc/php5-fpm.d
+-	$(INSTALL_DATA) ./files/php5-fpm-www.conf $(1)/etc/php5-fpm.d/www.conf
++	$(INSTALL_DIR) $(1)/opt/etc
++	$(INSTALL_DATA) ./files/php5-fpm.conf $(1)/opt/etc/php5-fpm.conf
+ 
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/php5-fpm.init $(1)/etc/init.d/php5-fpm
++	$(INSTALL_DIR) $(1)/opt/etc/php5-fpm.d
++	$(INSTALL_DATA) ./files/php5-fpm-www.conf $(1)/opt/etc/php5-fpm.d/www.conf
+ endef
+ 
+ define Build/Prepare
+@@ -488,13 +478,13 @@
+ endef
+ 
+ define Build/InstallDev
+-	mkdir -p $(PKG_BUILD_DIR)/staging/usr/bin
++	mkdir -p $(PKG_BUILD_DIR)/staging/opt/bin
+ 	make -C $(PKG_BUILD_DIR) install INSTALL_ROOT=$(PKG_BUILD_DIR)/staging
+-	rm -f $(PKG_BUILD_DIR)/staging/usr/bin/php
++	rm -f $(PKG_BUILD_DIR)/staging/opt/bin/php
+ 	$(CP) $(PKG_BUILD_DIR)/staging/* $(STAGING_DIR_HOST)
+-	sed -i -e "s#prefix='/usr'#prefix='$(STAGING_DIR_HOST)/usr'#" $(STAGING_DIR_HOST)/usr/bin/phpize
+-	sed -i -e "s#exec_prefix=\"\`eval echo /usr\`\"#exec_prefix='$(STAGING_DIR_HOST)/usr'#" $(STAGING_DIR_HOST)/usr/bin/phpize
+-	sed -i -e "s#prefix=\"/usr\"#prefix=\"$(STAGING_DIR_HOST)/usr\"#" $(STAGING_DIR_HOST)/usr/bin/php-config
++	sed -i -e "s#prefix='/opt'#prefix='$(STAGING_DIR_HOST)/opt'#" $(STAGING_DIR_HOST)/opt/bin/phpize
++	sed -i -e "s#exec_prefix=\"\`eval echo /opt\`\"#exec_prefix='$(STAGING_DIR_HOST)/opt'#" $(STAGING_DIR_HOST)/opt/bin/phpize
++	sed -i -e "s#prefix=\"/opt\"#prefix=\"$(STAGING_DIR_HOST)/opt\"#" $(STAGING_DIR_HOST)/opt/bin/php-config
+ endef
+ 
+ define BuildModule
+@@ -510,13 +500,13 @@
+   endef
+ 
+   define Package/php5-mod-$(1)/install
+-	$(INSTALL_DIR) $$(1)/usr/lib/php
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/modules/$(subst -,_,$(1)).so $$(1)/usr/lib/php/
+-	$(INSTALL_DIR) $$(1)/etc/php5
++	$(INSTALL_DIR) $$(1)/opt/lib/php
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/modules/$(subst -,_,$(1)).so $$(1)/opt/lib/php/
++	$(INSTALL_DIR) $$(1)/opt/etc/php5
+       ifeq ($(4),zend)
+-	echo "zend_extension=/usr/lib/php/$(subst -,_,$(1)).so" > $$(1)/etc/php5/$(subst -,_,$(1)).ini
++	echo "zend_extension=/opt/lib/php/$(subst -,_,$(1)).so" > $$(1)/opt/etc/php5/$(subst -,_,$(1)).ini
+       else
+-	echo "extension=$(subst -,_,$(1)).so" > $$(1)/etc/php5/$(subst -,_,$(1)).ini
++	echo "extension=$(subst -,_,$(1)).so" > $$(1)/opt/etc/php5/$(subst -,_,$(1)).ini
+     endif
+   endef
+ 
+@@ -538,7 +528,7 @@
+ $(eval $(call BuildModule,exif,EXIF))
+ $(eval $(call BuildModule,fileinfo,Fileinfo))
+ $(eval $(call BuildModule,ftp,FTP,+PACKAGE_php5-mod-ftp:libopenssl))
+-$(eval $(call BuildModule,gd,GD graphics,+PACKAGE_php5-mod-gd:libjpeg +PACKAGE_php5-mod-gd:libpng))
++$(eval $(call BuildModule,gd,GD graphics,+PACKAGE_php5-mod-gd:libjpeg +PACKAGE_php5-mod-gd:libpng +PACKAGE_php5-mod-gd:libfreetype))
+ $(eval $(call BuildModule,gettext,Gettext,+PACKAGE_php5-mod-gettext:libintl-full))
+ $(eval $(call BuildModule,gmp,GMP,+PACKAGE_php5-mod-gmp:libgmp))
+ $(eval $(call BuildModule,hash,Hash))

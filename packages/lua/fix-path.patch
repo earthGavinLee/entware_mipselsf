@@ -1,0 +1,88 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r43593/package/utils/lua/Makefile ../../../openwrt_chaos_calmer_entware/package/utils/lua/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/package/utils/lua/Makefile	2014-12-10 12:26:33.858951667 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/utils/lua/Makefile	2014-12-12 11:20:31.819876279 +0300
+@@ -104,7 +104,7 @@
+ 		CC="$(TARGET_CROSS)gcc" \
+ 		AR="$(TARGET_CROSS)ar rcu" \
+ 		RANLIB="$(TARGET_CROSS)ranlib" \
+-		INSTALL_ROOT=/usr \
++		INSTALL_ROOT=/opt \
+ 		CFLAGS="$(TARGET_CPPFLAGS) $(TARGET_CFLAGS)" \
+ 		MYLDFLAGS="$(TARGET_LDFLAGS)" \
+ 		PKG_VERSION=$(PKG_VERSION) \
+@@ -112,7 +112,7 @@
+ 	rm -rf $(PKG_INSTALL_DIR)
+ 	mkdir -p $(PKG_INSTALL_DIR)
+ 	$(MAKE) -C $(PKG_BUILD_DIR) \
+-		INSTALL_TOP="$(PKG_INSTALL_DIR)/usr" \
++		INSTALL_TOP="$(PKG_INSTALL_DIR)/opt" \
+ 		install
+ endef
+ 
+@@ -143,36 +143,37 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/lua{,lib,conf}.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/lauxlib.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/lnum_config.h $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liblua.{a,so*} $(1)/usr/lib/
+-	$(LN) liblua.so.$(PKG_VERSION) $(1)/usr/lib/liblualib.so
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_BUILD_DIR)/etc/lua.pc $(1)/usr/lib/pkgconfig/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/lua{,lib,conf}.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/lauxlib.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/lnum_config.h $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/liblua.{a,so*} $(1)/opt/lib/
++	$(LN) liblua.so.$(PKG_VERSION) $(1)/opt/lib/liblualib.so
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(SED) 's,/usr/local,/opt,g' $(PKG_BUILD_DIR)/etc/lua.pc
++	$(CP) $(PKG_BUILD_DIR)/etc/lua.pc $(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/liblua/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/liblua.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/liblua.so.* $(1)/opt/lib/
+ endef
+ 
+ define Package/lua/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/lua $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/lua $(1)/opt/bin/
+ endef
+ 
+ define Package/luac/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/luac $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/luac $(1)/opt/bin/
+ endef
+ 
+ define Package/lua-examples/install
+-	$(INSTALL_DIR) $(1)/usr/share/lua/examples
++	$(INSTALL_DIR) $(1)/opt/share/lua/examples
+ 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/test/*.lua \
+-		$(1)/usr/share/lua/examples/
++		$(1)/opt/share/lua/examples/
+ endef
+ 
+ $(eval $(call BuildPackage,liblua))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r43593/package/utils/lua/patches/200-lua-path.patch ../../../openwrt_chaos_calmer_entware/package/utils/lua/patches/200-lua-path.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/package/utils/lua/patches/200-lua-path.patch	2014-12-10 12:26:33.858951667 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/utils/lua/patches/200-lua-path.patch	2014-12-10 12:49:05.430927045 +0300
+@@ -7,7 +7,7 @@
+ -#define LUA_ROOT	"/usr/local/"
+ -#define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
+ -#define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
+-+#define LUA_ROOT	"/usr/"
+++#define LUA_ROOT	"/opt/"
+ +#define LUA_LDIR	LUA_ROOT "share/lua/"
+ +#define LUA_CDIR	LUA_ROOT "lib/lua/"
+  #define LUA_PATH_DEFAULT  \

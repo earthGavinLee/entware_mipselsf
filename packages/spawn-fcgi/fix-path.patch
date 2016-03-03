@@ -1,0 +1,13 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/net/spawn-fcgi/Makefile	2015-04-21 10:37:38.232588034 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/spawn-fcgi/Makefile	2015-04-21 15:01:26.000300193 +0300
+@@ -35,8 +35,8 @@
+ endef
+ 
+ define Package/spawn-fcgi/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/spawn-fcgi $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/spawn-fcgi $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,spawn-fcgi))

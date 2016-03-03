@@ -1,0 +1,65 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44486/feeds/packages/multimedia/minidlna/Makefile	2015-02-18 12:16:57.580306331 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/multimedia/minidlna/Makefile	2015-02-18 12:17:30.544305732 +0300
+@@ -31,7 +31,7 @@
+   TITLE:=UPnP A/V & DLNA Media Server
+   URL:=http://minidlna.sourceforge.net/
+   DEPENDS:= +libpthread +libexif +libjpeg +libsqlite3 +libffmpeg \
+-  	+libid3tag +libflac +libvorbis +libuuid \
++  	+libid3tag +libflac +libvorbis +libuuid +libbz2 \
+   	$(ICONV_DEPENDS) $(INTL_DEPENDS)
+ endef
+ 
+@@ -41,15 +41,15 @@
+ endef
+ 
+ define Package/minidlna/conffiles
+-/etc/config/minidlna
++/opt/etc/minidlna.conf
+ endef
+ 
+ TARGET_CPPFLAGS += \
+-	-I$(STAGING_DIR)/usr/include \
+-	-I$(STAGING_DIR)/usr/include/FLAC \
+-	-I$(STAGING_DIR)/usr/include/libexif \
+-	-I$(STAGING_DIR)/usr/include/uuid \
+-	-I$(STAGING_DIR)/usr/include/vorbis \
++	-I$(STAGING_DIR)/opt/include \
++	-I$(STAGING_DIR)/opt/include/FLAC \
++	-I$(STAGING_DIR)/opt/include/libexif \
++	-I$(STAGING_DIR)/opt/include/uuid \
++	-I$(STAGING_DIR)/opt/include/vorbis \
+ 	-I$(ICONV_PREFIX)/include \
+ 	-I$(INTL_PREFIX)/include \
+ 	-D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 \
+@@ -57,7 +57,6 @@
+ TARGET_LDFLAGS += \
+ 	-L$(ICONV_PREFIX)/lib \
+ 	-L$(INTL_PREFIX)/lib \
+-	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
+ 
+ MAKE_FLAGS +=\
+ 	CFLAGS="$(TARGET_CFLAGS) $(TARGET_CPPFLAGS)" \
+@@ -70,16 +69,15 @@
+ 	--with-os-name="OpenWrt Linux" \
+ 	--with-os-version="$(LINUX_VERSION)" \
+ 	--with-os-url="http://openwrt.org/" \
+-	--with-db-path="/var/run/minidlna" \
+-	--with-log-path="/var/log" \
++	--with-db-path="/opt/var/run/minidlna" \
++	--with-log-path="/opt/var/log" \
+ 
+ define Package/minidlna/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/minidlnad $(1)/usr/bin/minidlna
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/minidlna.init $(1)/etc/init.d/minidlna
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_CONF) ./files/minidlna.config $(1)/etc/config/minidlna
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/minidlnad $(1)/opt/bin/minidlna
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S90minidlna $(1)/opt/etc/init.d
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/minidlna.conf $(1)/opt/etc
+ endef
+ 
+ $(eval $(call BuildPackage,minidlna))

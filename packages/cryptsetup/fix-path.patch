@@ -1,0 +1,42 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/utils/cryptsetup/Makefile	2014-12-10 12:26:33.030951680 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/cryptsetup/Makefile	2014-12-11 11:15:40.545455269 +0300
+@@ -22,13 +22,13 @@
+ 
+ include $(INCLUDE_DIR)/package.mk
+ 
+-TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/usr/lib
++TARGET_LDFLAGS+=-Wl,-rpath-link=$(STAGING_DIR)/opt/lib
+ 
+ define Package/cryptsetup/Default
+   SECTION:=utils
+   CATEGORY:=Utilities
+   TITLE:=Cryptsetup
+-  DEPENDS:=+libblkid +libuuid +libpopt +lvm2 +libdevmapper +@KERNEL_DIRECT_IO
++  DEPENDS:=+libblkid +libuuid +libpopt +libdevmapper
+   URL:=http://code.google.com/p/cryptsetup/
+ endef
+ 
+@@ -60,16 +60,19 @@
+ linked against openssl
+ endef
+ 
++CONFIGURE_ARGS+= \
++	--disable-kernel_crypto
++
+ ifeq ($(BUILD_VARIANT),openssl)
+ CONFIGURE_ARGS+= \
+         --with-crypto_backend=openssl
+ endif
+ 
+ define Package/cryptsetup/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(CP) $(PKG_BUILD_DIR)/src/.libs/cryptsetup $(1)/usr/sbin
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_BUILD_DIR)/lib/.libs/libcryptsetup.so* $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(CP) $(PKG_BUILD_DIR)/src/.libs/cryptsetup $(1)/opt/sbin
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_BUILD_DIR)/lib/.libs/libcryptsetup.so* $(1)/opt/lib
+ endef
+ 
+ Package/cryptsetup-openssl/install = $(Package/cryptsetup/install)

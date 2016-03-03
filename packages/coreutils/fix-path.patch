@@ -1,0 +1,32 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/utils/coreutils/Makefile	2014-12-10 12:26:33.030951680 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/coreutils/Makefile	2014-12-10 12:48:55.578927224 +0300
+@@ -23,7 +23,7 @@
+ 
+ COREUTILS_APPLETS := \
+ 	base64 basename cat chcon chgrp chmod chown chroot cksum comm cp csplit \
+-	cut date dd dir dircolors dirname du echo env expand expr factor	\
++	cut date dd df dir dircolors dirname du echo env expand expr factor	\
+ 	false fmt fold groups head hostid id install join kill link ln logname	\
+ 	ls md5sum mkdir mkfifo mknod mktemp mv nice nl nohup nproc od paste	\
+ 	pathchk pinky pr printenv printf ptx pwd readlink realpath rm rmdir	\
+@@ -80,7 +80,8 @@
+ CONFIGURE_VARS += \
+ 	gl_cv_func_mbrtowc_incomplete_state=yes \
+ 	gl_cv_func_mbrtowc_retval=yes \
+-	gl_cv_func_wcrtomb_retval=yes
++	gl_cv_func_wcrtomb_retval=yes \
++	fu_cv_sys_stat_statfs2_bsize=yes
+ 
+ ifneq ($(CONFIG_USE_UCLIBC),)
+   CONFIGURE_VARS += \
+@@ -104,8 +105,8 @@
+ 
+ define BuildPlugin
+   define Package/$(1)/install
+-	$(INSTALL_DIR) $$(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/$(2) $$(1)/usr/bin/
++	$(INSTALL_DIR) $$(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/$(2) $$(1)/opt/bin/
+   endef
+ 
+   $$(eval $$(call BuildPackage,$(1)))

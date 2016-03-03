@@ -1,0 +1,22 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/include/package.mk	2015-07-15 10:59:15.699750136 +0300
++++ ../../../openwrt_chaos_calmer_entware/include/package.mk	2015-07-15 14:05:30.903937410 +0300
+@@ -141,7 +141,7 @@
+ CONFIG_SITE:=$(INCLUDE_DIR)/site/$(ARCH)
+ CUR_MAKEFILE:=$(filter-out Makefile,$(firstword $(MAKEFILE_LIST)))
+ SUBMAKE:=$(NO_TRACE_MAKE) $(if $(CUR_MAKEFILE),-f $(CUR_MAKEFILE))
+-PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig:$(STAGING_DIR)/usr/share/pkgconfig
++PKG_CONFIG_PATH=$(STAGING_DIR)/opt/lib/pkgconfig:$(STAGING_DIR)/opt/share/pkgconfig
+ unexport QUIET CONFIG_SITE
+ 
+ ifeq ($(DUMP)$(filter prereq clean refresh update,$(MAKECMDGOALS)),)
+@@ -182,8 +182,8 @@
+ endif
+ 
+ define Build/Exports/Default
+-  $(1) : export ACLOCAL_INCLUDE=$$(foreach p,$$(wildcard $$(STAGING_DIR)/usr/share/aclocal $$(STAGING_DIR)/usr/share/aclocal-* $$(STAGING_DIR)/host/share/aclocal $$(STAGING_DIR)/host/share/aclocal-*),-I $$(p))
+-  $(1) : export STAGING_PREFIX=$$(STAGING_DIR)/usr
++  $(1) : export ACLOCAL_INCLUDE=$$(foreach p,$$(wildcard $$(STAGING_DIR)/opt/share/aclocal $$(STAGING_DIR)/opt/share/aclocal-* $$(STAGING_DIR)/host/share/aclocal $$(STAGING_DIR)/host/share/aclocal-*),-I $$(p))
++  $(1) : export STAGING_PREFIX=$$(STAGING_DIR)/opt
+   $(1) : export PATH=$$(TARGET_PATH_PKG)
+   $(1) : export CONFIG_SITE:=$$(CONFIG_SITE)
+   $(1) : export PKG_CONFIG_PATH:=$$(PKG_CONFIG_PATH)

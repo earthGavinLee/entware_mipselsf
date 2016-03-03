@@ -1,0 +1,145 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/package/libs/toolchain/Makefile	2015-07-17 15:58:16.543848889 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/libs/toolchain/Makefile	2015-07-20 17:46:56.516791720 +0300
+@@ -7,19 +7,15 @@
+ 
+ include $(TOPDIR)/rules.mk
+ PKG_NAME:=toolchain
+-PKG_RELEASE:=1
++PKG_RELEASE:=2
+ 
+ PKG_MAINTAINER:=Felix Fietkau <nbd@openwrt.org>
+ PKG_LICENSE:=GPL-3.0-with-GCC-exception
+ 
+ include $(INCLUDE_DIR)/package.mk
+ 
+-ifneq ($(DUMP),1)
+-  LIBGCC_VERSION:=$(GCC_VERSION)
+-else
+-  LIBC_VERSION:=<LIBC_VERSION>
+-  LIBGCC_VERSION:=<LIBGCC_VERSION>
+-endif
++LIBC_VERSION:=0.9.32
++LIBGCC_VERSION:=4.6.4
+ 
+ define Package/gcc/Default
+   SECTION:=libs
+@@ -81,7 +77,6 @@
+ 
+ define Package/libssp
+ $(call Package/gcc/Default)
+-  DEPENDS+=@SSP_SUPPORT
+   TITLE:=GCC support library
+ endef
+ 
+@@ -139,7 +134,6 @@
+   VERSION:=$(LIBC_VERSION)-$(PKG_RELEASE)
+   DEPENDS:=+libgcc
+   URL:=$(LIBC_URL)
+-  PKG_FLAGS:=hold essential
+ endef
+ 
+ 
+@@ -545,8 +539,8 @@
+   define Package/libgcc/install
+ 	for file in $(call qstrip,$(CONFIG_LIBGCC_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBGCC_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBGCC_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done ; \
+ 	exit 0
+   endef
+@@ -554,16 +548,16 @@
+   define Package/libgfortran/install
+ 	for file in $(call qstrip,$(CONFIG_LIBGFORTRAN_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBGFORTRAN_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBGFORTRAN_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done
+   endef
+ 
+   define Package/libssp/install
+ 	for file in $(call qstrip,$(CONFIG_LIBSSP_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBSSP_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBSSP_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done ; \
+ 	exit 0
+   endef
+@@ -571,17 +565,18 @@
+   define Package/libstdcpp/install
+ 	for file in $(call qstrip,$(CONFIG_LIBSTDCPP_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBSTDCPP_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBSTDCPP_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done ; \
++	rm -f $(1)/opt/$$$$dir/*.py ; \
+ 	exit 0
+   endef
+ 
+   define Package/libc/install
+ 	for file in $(call qstrip,$(CONFIG_LIBC_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBC_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBC_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done ; \
+ 	exit 0
+   endef
+@@ -589,17 +584,22 @@
+   define Package/libpthread/install
+ 	for file in $(call qstrip,$(CONFIG_LIBPTHREAD_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBPTHREAD_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBPTHREAD_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done ; \
+ 	exit 0
+   endef
+ 
++  define Package/libthread-db/install
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(call qstrip,$(CONFIG_LIBPTHREAD_ROOT_DIR))/lib/libthread_db{-*.so,.so.*} $(1)/opt/lib/
++  endef
++
+   define Package/librt/install
+ 	for file in $(call qstrip,$(CONFIG_LIBRT_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LIBRT_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/$$$$dir ; \
++		$(CP) $(call qstrip,$(CONFIG_LIBRT_ROOT_DIR))/$$$$file $(1)/opt/$$$$dir/ ; \
+ 	done ; \
+ 	exit 0
+   endef
+@@ -616,8 +616,8 @@
+   define Package/ldd/install
+ 	for file in $(call qstrip,$(CONFIG_LDD_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LDD_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/bin ; \
++		$(CP) $(call qstrip,$(CONFIG_LDD_ROOT_DIR))/$$$$file $(1)/opt/bin/ ; \
+ 	done ; \
+ 	exit 0
+   endef
+@@ -625,8 +625,8 @@
+   define Package/ldconfig/install
+ 	for file in $(call qstrip,$(CONFIG_LDCONFIG_FILE_SPEC)); do \
+ 		dir=`dirname $$$$file` ; \
+-		$(INSTALL_DIR) $(1)/$$$$dir ; \
+-		$(CP) $(call qstrip,$(CONFIG_LDCONFIG_ROOT_DIR))/$$$$file $(1)/$$$$dir/ ; \
++		$(INSTALL_DIR) $(1)/opt/bin ; \
++		$(CP) $(call qstrip,$(CONFIG_LDCONFIG_ROOT_DIR))/$$$$file $(1)/opt/bin/ ; \
+ 	done ; \
+ 	exit 0
+   endef

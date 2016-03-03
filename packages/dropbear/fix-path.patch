@@ -1,0 +1,101 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/dropbear/Makefile ../../../openwrt_chaos_calmer_entware/package/network/services/dropbear/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/dropbear/Makefile	2015-09-15 12:24:40.890451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/services/dropbear/Makefile	2015-09-21 09:58:01.358933424 +0300
+@@ -47,9 +47,9 @@
+ endef
+ 
+ define Package/dropbear/conffiles
+-/etc/dropbear/dropbear_rsa_host_key
+-/etc/dropbear/dropbear_dss_host_key 
+-/etc/config/dropbear 
++/opt/etc/dropbear/dropbear_rsa_host_key
++/opt/etc/dropbear/dropbear_dss_host_key 
++/opt/etc/config/dropbear 
+ endef
+ 
+ define Package/dropbearconvert
+@@ -75,9 +75,6 @@
+ 	--disable-zlib \
+ 	--enable-bundled-libtom
+ 
+-TARGET_CFLAGS += -DARGTYPE=3 -ffunction-sections -fdata-sections
+-TARGET_LDFLAGS += -Wl,--gc-sections
+-
+ define Build/Configure
+ 	$(Build/Configure/Default)
+ 
+@@ -104,26 +101,32 @@
+ endef
+ 
+ define Package/dropbear/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dropbearmulti $(1)/usr/sbin/dropbear
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(LN) ../sbin/dropbear $(1)/usr/bin/scp
+-	$(LN) ../sbin/dropbear $(1)/usr/bin/ssh
+-	$(LN) ../sbin/dropbear $(1)/usr/bin/dbclient
+-	$(LN) ../sbin/dropbear $(1)/usr/bin/dropbearkey
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_DATA) ./files/dropbear.config $(1)/etc/config/dropbear
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/dropbear.init $(1)/etc/init.d/dropbear
+-	$(INSTALL_DIR) $(1)/usr/lib/opkg/info
+-	$(INSTALL_DIR) $(1)/etc/dropbear
+-	touch $(1)/etc/dropbear/dropbear_rsa_host_key
+-	touch $(1)/etc/dropbear/dropbear_dss_host_key
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dropbearmulti $(1)/opt/sbin/dropbear
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(LN) ../sbin/dropbear $(1)/opt/bin/scp
++	$(LN) ../sbin/dropbear $(1)/opt/bin/ssh
++	$(LN) ../sbin/dropbear $(1)/opt/bin/dbclient
++	$(LN) ../sbin/dropbear $(1)/opt/bin/dropbearkey
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S51dropbear $(1)/opt/etc/init.d
+ endef
+ 
+ define Package/dropbearconvert/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dropbearconvert $(1)/usr/bin/dropbearconvert
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/dropbearconvert $(1)/opt/bin/dropbearconvert
++endef
++
++define package/network/services/dropbear/postinst
++#!/bin/sh
++
++if [ ! -f /opt/etc/dropbear/dropbear_rsa_host_key ]; then
++    /opt/bin/dropbearkey -t rsa -f /opt/etc/dropbear/dropbear_rsa_host_key
++fi
++
++if [ ! -f /opt/etc/dropbear/dropbear_dss_host_key ]; then
++    /opt/bin/dropbearkey -t dss -f /opt/etc/dropbear/dropbear_dss_host_key
++fi
+ endef
+ 
+ $(eval $(call BuildPackage,dropbear))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/dropbear/patches/100-pubkey_path.patch ../../../openwrt_chaos_calmer_entware/package/network/services/dropbear/patches/100-pubkey_path.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/dropbear/patches/100-pubkey_path.patch	2015-09-15 12:24:40.890451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/services/dropbear/patches/100-pubkey_path.patch	2015-09-15 12:24:43.182451701 +0300
+@@ -28,7 +28,7 @@
+ +		/* open the file */
+ +		authfile = fopen(filename, "r");
+ +	} else {
+-+		authfile = fopen("/etc/dropbear/authorized_keys","r");
+++		authfile = fopen("/opt/etc/dropbear/authorized_keys","r");
+ +	}
+  	if (authfile == NULL) {
+  		goto out;
+@@ -58,10 +58,10 @@
+ -	if (checkfileperm(filename) != DROPBEAR_SUCCESS) {
+ -		goto out;
+ +	if (ses.authstate.pw_uid == 0) {
+-+		if (checkfileperm("/etc/dropbear") != DROPBEAR_SUCCESS) {
+++		if (checkfileperm("/opt/etc/dropbear") != DROPBEAR_SUCCESS) {
+ +			goto out;
+ +		}
+-+		if (checkfileperm("/etc/dropbear/authorized_keys") != DROPBEAR_SUCCESS) {
+++		if (checkfileperm("/opt/etc/dropbear/authorized_keys") != DROPBEAR_SUCCESS) {
+ +			goto out;
+ +		}
+ +	} else {

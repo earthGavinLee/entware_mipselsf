@@ -1,0 +1,56 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/net/git/Makefile	2015-09-15 12:24:40.754451661 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/git/Makefile	2015-09-21 10:11:06.614946493 +0300
+@@ -82,32 +82,33 @@
+ endef
+ 
+ define Package/git/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/git   $(1)/usr/bin
+-	$(RM) $(PKG_INSTALL_DIR)/usr/bin/git-cvsserver
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/git-* $(1)/usr/bin
+-	$(INSTALL_DIR) $(1)/usr/lib/git-core
+-	$(LN) /usr/bin/git $(1)/usr/lib/git-core/git
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/git   $(1)/opt/bin
++	$(RM) $(PKG_INSTALL_DIR)/opt/bin/git-cvsserver
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/git-* $(1)/opt/bin
++	$(INSTALL_DIR) $(1)/opt/lib/git-core
++	$(LN) /opt/bin/git $(1)/opt/lib/git-core/git
+ 	( cd $(PKG_INSTALL_DIR); $(TAR) \
+-		--exclude=usr/lib/git-core/git-http-backend \
+-		--exclude=usr/lib/git-core/git-http-fetch \
+-		--exclude=usr/lib/git-core/git-remote-ftp \
+-		--exclude=usr/lib/git-core/git-remote-ftps \
+-		--exclude=usr/lib/git-core/git-remote-http \
+-		--exclude=usr/lib/git-core/git-remote-https \
++		--exclude=opt/lib/git-core/git-http-backend \
++		--exclude=opt/lib/git-core/git-http-fetch \
++		--exclude=opt/lib/git-core/git-remote-ftp \
++		--exclude=opt/lib/git-core/git-remote-ftps \
++		--exclude=opt/lib/git-core/git-remote-http \
++		--exclude=opt/lib/git-core/git-remote-https \
+ 		-cf - \
+-		usr/lib/git-core \
++		opt/lib/git-core \
+ 	) | ( cd $(1); $(TAR) -xf - )
++	$(LN) /opt/bin/git $(1)/opt/lib/git-core/git
+ endef
+ 
+ define Package/git-http/install
+-	$(INSTALL_DIR) $(1)/usr/lib/git-core
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/git-core/git-http-backend $(1)/usr/lib/git-core
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/git-core/git-http-fetch $(1)/usr/lib/git-core
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/git-core/git-remote-ftp $(1)/usr/lib/git-core
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/git-core/git-remote-ftps $(1)/usr/lib/git-core
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/git-core/git-remote-http $(1)/usr/lib/git-core
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/git-core/git-remote-https $(1)/usr/lib/git-core
++	$(INSTALL_DIR) $(1)/opt/lib/git-core
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/git-core/git-http-backend $(1)/opt/lib/git-core
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/git-core/git-http-fetch $(1)/opt/lib/git-core
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/git-core/git-remote-ftp $(1)/opt/lib/git-core
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/git-core/git-remote-ftps $(1)/opt/lib/git-core
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/git-core/git-remote-http $(1)/opt/lib/git-core
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/git-core/git-remote-https $(1)/opt/lib/git-core
+ endef
+ 
+ $(eval $(call BuildPackage,git))

@@ -1,0 +1,59 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/openvpn/Makefile	2015-09-15 12:24:40.898451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/services/openvpn/Makefile	2015-09-21 10:31:40.110967024 +0300
+@@ -32,7 +32,7 @@
+   URL:=http://openvpn.net
+   SUBMENU:=VPN
+   MENU:=1
+-  DEPENDS:=+kmod-tun +OPENVPN_$(1)_ENABLE_LZO:liblzo +OPENVPN_$(1)_ENABLE_IPROUTE2:ip $(3)
++  DEPENDS:=+OPENVPN_$(1)_ENABLE_LZO:liblzo +OPENVPN_$(1)_ENABLE_IPROUTE2:ip $(3)
+   VARIANT:=$(1)
+   MAINTAINER:=Mirko Vogt <mirko@openwrt.org>
+ endef
+@@ -63,7 +63,7 @@
+ 	IFCONFIG=/sbin/ifconfig \
+ 	ROUTE=/sbin/route \
+ 	IPROUTE=/usr/sbin/ip \
+-	NETSTAT=/sbin/netstat
++	NETSTAT=/bin/netstat
+ 
+ define Build/Configure
+ 	$(call Build/Configure/Default, \
+@@ -92,32 +92,18 @@
+ 	)
+ endef
+ 
+-define Package/openvpn-$(BUILD_VARIANT)/conffiles
+-/etc/config/openvpn
+-endef
+-
+ define Package/openvpn-$(BUILD_VARIANT)/install
+ 	$(INSTALL_DIR) \
+-		$(1)/usr/sbin \
+-		$(1)/etc/init.d \
+-		$(1)/etc/config \
+-		$(1)/etc/openvpn \
+-		$(1)/lib/upgrade/keep.d
++		$(1)/opt/sbin \
++		$(1)/opt/etc/init.d \
+ 
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/sbin/openvpn \
+-		$(1)/usr/sbin/
++		$(PKG_INSTALL_DIR)/opt/sbin/openvpn \
++		$(1)/opt/sbin/
+ 
+ 	$(INSTALL_BIN) \
+-		files/openvpn.init \
+-		$(1)/etc/init.d/openvpn
+-
+-	$(INSTALL_CONF) files/openvpn.config \
+-		$(1)/etc/config/openvpn
+-
+-	$(INSTALL_DATA) \
+-		files/openvpn.upgrade \
+-		$(1)/lib/upgrade/keep.d/openvpn
++		files/S20openvpn \
++		$(1)/opt/etc/init.d
+ endef
+ 
+ $(eval $(call BuildPackage,openvpn-openssl))

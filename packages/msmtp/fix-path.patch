@@ -1,0 +1,78 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/mail/msmtp/Makefile	2015-07-14 10:55:19.782308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/mail/msmtp/Makefile	2015-07-14 10:55:49.934308675 +0300
+@@ -39,7 +39,7 @@
+  an SMTP server (for example at a free mail provider) which does the
+  delivery. To use this program with your mail user agent (MUA), create
+  a configuration file with your mail account(s) and tell your MUA to
+- call msmtp instead of /usr/sbin/sendmail.
++ call msmtp instead of sendmail.
+ endef
+ 
+ define Package/msmtp
+@@ -50,7 +50,7 @@
+ endef
+ 
+ define Package/msmtp/conffiles
+-/etc/msmtprc
++/opt/etc/msmtprc
+ endef
+ 
+ define Package/msmtp/description
+@@ -87,10 +87,7 @@
+ 	--without-libidn \
+ 	--without-libsecret \
+ 	--without-macosx-keyring \
+-
+-ifneq ($(CONFIG_USE_UCLIBC),)
+-  CONFIGURE_ARGS += --disable-gai-idn
+-endif
++	--disable-gai-idn
+ 
+ MAKE_FLAGS :=
+ 
+@@ -105,23 +102,23 @@
+ endif
+ 
+ define Package/msmtp/install
+-	$(INSTALL_DIR) $(1)/etc
++	$(INSTALL_DIR) $(1)/opt/etc
+ 	$(INSTALL_CONF) $(PKG_BUILD_DIR)/doc/msmtprc-system.example \
+-		$(1)/etc/msmtprc
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/msmtp $(1)/usr/bin/
++		$(1)/opt/etc/msmtprc
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/msmtp $(1)/opt/bin/
+ endef
+ 
+ define Package/msmtp/postinst
+-	[ -e $${IPKG_INSTROOT}/usr/sbin/sendmail ] || {
+-		mkdir -p $${IPKG_INSTROOT}/usr/sbin
+-		ln -sf ../bin/msmtp $${IPKG_INSTROOT}/usr/sbin/sendmail
++	[ -e $${IPKG_INSTROOT}/opt/sbin/sendmail ] || {
++		mkdir -p $${IPKG_INSTROOT}/opt/sbin
++		ln -sf ../bin/msmtp $${IPKG_INSTROOT}/opt/sbin/sendmail
+ 	}
+ endef
+ 
+ define Package/msmtp/prerm
+-	[ "../bin/msmtp" = "$(readlink -qs $${IPKG_INSTROOT}/usr/sbin/sendmail)" ] && {
+-		rm -f $${IPKG_INSTROOT}/usr/sbin/sendmail
++	[ "../bin/msmtp" = "$(readlink -qs $${IPKG_INSTROOT}/opt/sbin/sendmail)" ] && {
++		rm -f $${IPKG_INSTROOT}/opt/sbin/sendmail
+ 	}
+ endef
+ 
+@@ -131,9 +128,9 @@
+ Package/msmtp-nossl/prerm = $(Package/msmtp/prerm)
+ 
+ define Package/msmtp-queue/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/scripts/msmtpq/msmtp{q,-queue} $(1)/usr/bin/
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/scripts/msmtpqueue/msmtp-{en,list,run}queue.sh $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/scripts/msmtpq/msmtp{q,-queue} $(1)/opt/bin/
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/scripts/msmtpqueue/msmtp-{en,list,run}queue.sh $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,msmtp))

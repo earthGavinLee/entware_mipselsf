@@ -1,0 +1,75 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/net/nmap/Makefile	2014-12-10 12:26:33.006951679 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/nmap/Makefile	2014-12-12 16:54:23.452812638 +0300
+@@ -86,52 +86,52 @@
+ CONFIGURE_ARGS += \
+ 	--with-libdnet=included \
+ 	--with-libpcre=included \
+-	--with-libpcap="$(STAGING_DIR)/usr" \
++	--with-libpcap="$(STAGING_DIR)/opt" \
+ 	--without-liblua \
+ 	--without-zenmap
+ 
+ CONFIGURE_VARS += CXXFLAGS="$$$$CXXFLAGS -fno-builtin"
+ 
+ ifeq ($(BUILD_VARIANT),ssl)
+-	CONFIGURE_ARGS += --with-openssl="$(STAGING_DIR)/usr"
++	CONFIGURE_ARGS += --with-openssl="$(STAGING_DIR)/opt"
+ else
+ 	CONFIGURE_ARGS += --without-openssl
+ endif
+ 
+ define Package/nmap/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nmap $(1)/usr/bin/
+-	$(INSTALL_DIR) $(1)/usr/share/nmap
+-	$(CP) $(PKG_INSTALL_DIR)/usr/share/nmap/* $(1)/usr/share/nmap/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/nmap $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/share/nmap
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/nmap/* $(1)/opt/share/nmap/
+ endef
+ 
+ define Package/nmap-ssl/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nmap $(1)/usr/bin/
+-	$(INSTALL_DIR) $(1)/usr/share/nmap
+-	$(CP) $(PKG_INSTALL_DIR)/usr/share/nmap/* $(1)/usr/share/nmap/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/nmap $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/share/nmap
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/nmap/* $(1)/opt/share/nmap/
+ endef
+ 
+ define Package/ncat/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/ncat $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/ncat $(1)/opt/bin/
+ endef
+ 
+ define Package/ncat-ssl/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/ncat $(1)/usr/bin/
+-	$(INSTALL_DIR) $(1)/usr/share/ncat
+-	$(CP) $(PKG_INSTALL_DIR)/usr/share/ncat/ca-bundle.crt $(1)/usr/share/ncat/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/ncat $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/share/ncat
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/ncat/ca-bundle.crt $(1)/opt/share/ncat/
+ endef
+ 
+ define Package/ndiff/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/ndiff $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/ndiff $(1)/opt/bin/
+ endef
+ 
+ define Package/nping/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/nping $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/nping $(1)/opt/bin/
+ endef
+ 
+ 

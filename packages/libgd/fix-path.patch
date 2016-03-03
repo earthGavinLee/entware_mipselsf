@@ -1,0 +1,60 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44486/feeds/packages/libs/libgd/Makefile	2015-02-18 12:16:57.596306332 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libgd/Makefile	2015-02-19 15:04:54.298547520 +0300
+@@ -28,7 +28,7 @@
+ define Package/libgd
+   SECTION:=libs
+   CATEGORY:=Libraries
+-  DEPENDS:=+libjpeg +libpng
++  DEPENDS:=+libjpeg +libpng +libfreetype
+   TITLE:=The GD graphics library
+   URL:=http://www.libgd.org/
+ endef
+@@ -47,8 +47,8 @@
+ 	--without-x \
+ 	--without-fontconfig \
+ 	--without-freetype \
+-	--with-jpeg=$(STAGING_DIR)/usr \
+-	--with-png=$(STAGING_DIR)/usr \
++	--with-jpeg=$(STAGING_DIR)/opt \
++	--with-png=$(STAGING_DIR)/opt \
+ 	--with-vpx=no \
+ 	--without-xpm \
+ 	--without-iconv
+@@ -58,24 +58,24 @@
+ 	ac_cv_header_iconv_h=no
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/gdlib-config $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/gdlib-config $(1)/opt/bin/
+ 	$(SED) \
+-		's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/usr,g' \
+-		$(1)/usr/bin/gdlib-config
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/entities.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/gd{,_io,cache,fontg,fontl,fontmb,fonts,fontt,fx}.h \
+-		$(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libgd.{a,la,so*} $(1)/usr/lib/
++		's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/opt,g' \
++		$(1)/opt/bin/gdlib-config
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/entities.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/gd{,_io,cache,fontg,fontl,fontmb,fonts,fontt,fx}.h \
++		$(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libgd.{a,la,so*} $(1)/opt/lib/
+ 	$(INSTALL_DIR) $(2)/bin
+-	$(LN) ../../usr/bin/gdlib-config $(2)/bin/
++	$(LN) ../../opt/bin/gdlib-config $(2)/bin/
+ endef
+ 
+ define Package/libgd/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libgd.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libgd.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libgd))

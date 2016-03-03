@@ -1,0 +1,28 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/multimedia/motion/Makefile	2014-12-10 12:26:32.882951683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/multimedia/motion/Makefile	2014-12-12 16:43:24.964822382 +0300
+@@ -35,7 +35,7 @@
+ endef
+ 
+ define Package/motion/conffiles
+-  /etc/motion.conf
++  /opt/etc/motion.conf
+ endef
+ 
+ CONFIGURE_ARGS+= \
+@@ -48,11 +48,11 @@
+ 	--without-sqlite3 \
+ 
+ define Package/motion/install
+-	$(INSTALL_DIR) $(1)/etc
+-	$(CP) $(PKG_BUILD_DIR)/motion-dist.conf $(1)/etc/motion.conf
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/motion $(1)/usr/bin/
+-
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(CP) $(PKG_BUILD_DIR)/motion-dist.conf $(1)/opt/etc/motion.conf
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/motion $(1)/opt/bin/
++	$(INSTALL_BIN) ./files/S99motion  $(1)/opt/etc/init.d
+ endef
+ 
+ $(eval $(call BuildPackage,motion))

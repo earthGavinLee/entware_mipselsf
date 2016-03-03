@@ -1,0 +1,41 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/multimedia/tvheadend/Makefile	2015-09-15 12:24:40.746451661 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/multimedia/tvheadend/Makefile	2015-09-21 11:42:19.399037582 +0300
+@@ -32,7 +32,7 @@
+   SECTION:=multimedia
+   CATEGORY:=Multimedia
+   TITLE:=Tvheadend is a TV streaming server for Linux
+-  DEPENDS:=+libopenssl +librt +zlib +TVHEADEND_AVAHI_SUPPORT:libavahi-client
++  DEPENDS:=+libopenssl +librt +zlib +TVHEADEND_AVAHI_SUPPORT:libavahi-client $(ICONV_DEPENDS)
+   URL:=https://tvheadend.org
+   MAINTAINER:=Jan Čermák <jan.cermak@nic.cz>
+ endef
+@@ -79,20 +79,19 @@
+ 	$(call Build/Prepare/Default)
+ 	echo 'Tvheadend $(shell echo $(PKG_SOURCE_VERSION) | sed "s/^v//")~openwrt$(PKG_RELEASE)' \
+ 		> $(PKG_BUILD_DIR)/debian/changelog
+-endef
+-
+-define Package/conffiles
+-/etc/config/tvheadend
++	$(SED) "s|0.0.0~unknown|$(PKG_VERSION)|g" $(PKG_BUILD_DIR)/support/version
+ endef
+ 
+ define Package/tvheadend/install
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/tvheadend.init $(1)/etc/init.d/tvheadend
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_CONF) ./files/tvheadend.config $(1)/etc/config/tvheadend
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S71tvheadend $(1)/opt/etc/init.d/
++
++	$(INSTALL_DIR) $(1)/opt/etc/tvheadend
++	$(INSTALL_CONF) ./files/tv_grab_wl500g_info.{cfg,offset} $(1)/opt/etc/
+ 
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/build.linux/tvheadend $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/build.linux/tvheadend $(1)/opt/bin/
++	$(INSTALL_BIN) ./files/tv_grab_wl500g_info{,_toffset} $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,tvheadend))

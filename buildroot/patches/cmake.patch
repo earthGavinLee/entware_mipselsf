@@ -1,0 +1,11 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44486/include/cmake.mk
++++ ../../../openwrt_chaos_calmer_entware/include/cmake.mk
+@@ -64,7 +64,7 @@
+ 			-DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+ 			-DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+ 			-DCMAKE_STRIP=: \
+-			-DCMAKE_INSTALL_PREFIX=/usr \
++			-DCMAKE_INSTALL_PREFIX=/opt \
+ 			-DDL_LIBRARY=$(STAGING_DIR) \
+ 			-DCMAKE_PREFIX_PATH=$(STAGING_DIR) \
+ 			-DCMAKE_SKIP_RPATH=TRUE  \

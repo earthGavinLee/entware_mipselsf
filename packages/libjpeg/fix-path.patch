@@ -1,0 +1,46 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/libs/libjpeg/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libjpeg/Makefile
+@@ -58,8 +58,8 @@
+ define Build/Compile
+ 	+$(MAKE) $(PKG_JOBS) -C $(PKG_BUILD_DIR) \
+ 		LIBTOOL="./libtool --tag=CC" \
+-		prefix="$(PKG_INSTALL_DIR)/usr" \
+-		exec_prefix="$(PKG_INSTALL_DIR)/usr" \
++		prefix="$(PKG_INSTALL_DIR)/opt" \
++		exec_prefix="$(PKG_INSTALL_DIR)/opt" \
+ 		all
+ 	$(MAKE) -C $(PKG_BUILD_DIR) \
+ 		DESTDIR="$(PKG_INSTALL_DIR)" \
+@@ -67,22 +67,22 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/jpeglib.h $(1)/usr/include/
+-	$(CP) $(PKG_BUILD_DIR)/jpegint.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/j{config,error,morecfg}.h $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libjpeg.{a,so*} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/jpeglib.h $(1)/opt/include/
++	$(CP) $(PKG_BUILD_DIR)/jpegint.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/j{config,error,morecfg}.h $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libjpeg.{a,so*} $(1)/opt/lib/
+ endef
+ 
+ define Package/libjpeg/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libjpeg.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libjpeg.so.* $(1)/opt/lib/
+ endef
+ 
+ define Package/jpeg-tools/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/*jpeg* $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/*jpeg* $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call HostBuild))

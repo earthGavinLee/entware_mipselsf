@@ -1,0 +1,64 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/admin/sudo/Makefile	2015-07-14 10:55:19.818308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/admin/sudo/Makefile	2015-07-14 17:04:42.646677085 +0300
+@@ -39,8 +39,8 @@
+ endef
+ 
+ define Package/sudo/conffiles
+-/etc/sudoers
+-/etc/sudoers.d/
++/opt/etc/sudoers
++/opt/etc/sudoers.d/
+ endef
+ 
+ CONFIGURE_ARGS+= \
+@@ -49,8 +49,8 @@
+ 	--with-editor=/bin/vi \
+ 	--without-lecture \
+ 	--disable-zlib \
+-	--with-rundir=/var/lib/sudo \
+-	--with-vardir=/var/lib/sudo
++	--with-rundir=/opt/var/lib/sudo \
++	--with-vardir=/opt/var/lib/sudo
+ 
+ CONFIGURE_VARS+= \
+ 	sudo_cv_uid_t_len=10 \
+@@ -71,28 +71,17 @@
+ $(eval $(call HostBuild))
+ 
+ define Package/sudo/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/sudo $(1)/usr/bin/
+-	chmod 4755 $(1)/usr/bin/sudo
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/sbin/visudo $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc
+-	$(CP) $(PKG_INSTALL_DIR)/etc/sudoers $(1)/etc/
+-	chmod 0440 $(1)/etc/sudoers
+-	$(INSTALL_DIR) $(1)/etc/sudoers.d
+-	$(INSTALL_DIR) $(1)/usr/lib/sudo
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/sudo/*.so* $(1)/usr/lib/sudo/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/sudo.init $(1)/etc/init.d/sudo
+-endef
+-
+-define Package/sudo/postinst
+-#!/bin/sh
+-
+-[ -n "$$IPKG_INSTROOT" ] || {
+-	/etc/init.d/sudo enable
+-	/etc/init.d/sudo start
+-}
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/sudo $(1)/opt/bin/
++	chmod 4755 $(1)/opt/bin/sudo
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(CP) $(PKG_INSTALL_DIR)/opt/sbin/visudo $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc
++	$(CP) $(PKG_INSTALL_DIR)/opt/etc/sudoers $(1)/opt/etc/
++	chmod 0440 $(1)/opt/etc/sudoers
++	$(INSTALL_DIR) $(1)/opt/etc/sudoers.d
++	$(INSTALL_DIR) $(1)/opt/lib/sudo
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/sudo/*.so* $(1)/opt/lib/sudo/
+ endef
+ 
+ $(eval $(call BuildPackage,sudo))

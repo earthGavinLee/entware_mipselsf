@@ -1,0 +1,31 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/ipv6/aiccu/Makefile	2014-12-10 12:26:33.054951677 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/ipv6/aiccu/Makefile	2014-12-11 10:51:43.737483945 +0300
+@@ -24,7 +24,7 @@
+ define Package/aiccu
+   SECTION:=net
+   CATEGORY:=Network
+-  DEPENDS:=+libpthread +ip +kmod-sit +kmod-tun
++  DEPENDS:=+libpthread
+   TITLE:=SixXS Automatic IPv6 Connectivity Client Utility
+   URL:=http://www.sixxs.net/tools/aiccu/
+   MAINTAINER:=Ondrej Caletka <ondrej@caletka.cz>
+@@ -43,14 +43,14 @@
+ endef
+ 
+ define Package/aiccu/conffiles
+-/etc/config/aiccu
++/opt/etc/aiccu.conf
+ endef
+ 
+ define Package/aiccu/install
+-	$(INSTALL_DIR) $(1)/usr/sbin $(1)/lib/netifd/proto $(1)/etc/hotplug.d/ntp
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/unix-console/$(PKG_NAME) $(1)/usr/sbin/
+-	$(INSTALL_BIN) ./files/aiccu.sh $(1)/lib/netifd/proto/aiccu.sh
+-	$(INSTALL_DATA) ./files/aiccu.hotplug $(1)/etc/hotplug.d/ntp/10-aiccu
++	$(INSTALL_DIR) $(1)/opt/sbin $(1)/opt/etc/init.d
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/unix-console/$(PKG_NAME) $(1)/opt/sbin/
++	$(INSTALL_BIN) ./files/S50aiccu $(1)/opt/etc/init.d/
++	$(INSTALL_CONF) ./files/aiccu.conf $(1)/opt/etc/
+ endef
+ 
+ $(eval $(call BuildPackage,aiccu))

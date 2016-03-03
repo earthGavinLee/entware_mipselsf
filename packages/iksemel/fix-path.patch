@@ -1,0 +1,45 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/telephony/libs/iksemel/Makefile	2014-12-10 12:26:33.206951677 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/telephony/libs/iksemel/Makefile	2014-12-10 12:49:04.298927066 +0300
+@@ -43,33 +43,32 @@
+ 
+ TARGET_CFLAGS += $(FPIC)
+ TARGET_LDFLAGS += \
+-	-Wl,-rpath-link,$(STAGING_DIR)/usr/lib \
+ 	-lgnutls -lgcrypt -lgpg-error
+ 
+ define Build/Configure
+ 	$(call Build/Configure/Default, \
+ 		--enable-shared \
+ 		--enable-static \
+-		--with-libgnutls-prefix="$(STAGING_DIR)/usr" \
++		--with-libgnutls-prefix="$(STAGING_DIR)/opt" \
+ 		, \
+ 		LIBS="$(TARGET_LDFLAGS)" \
+ 	)
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/iksemel.h $(1)/usr/include/
++	$(INSTALL_DIR) $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/iksemel.h $(1)/opt/include/
+ 	
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libiksemel.{a,so*} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libiksemel.{a,so*} $(1)/opt/lib/
+ 	
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/iksemel.pc $(1)/usr/lib/pkgconfig/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/iksemel.pc $(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/libiksemel/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libiksemel.so* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libiksemel.so* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libiksemel))

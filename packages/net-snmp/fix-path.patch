@@ -1,0 +1,108 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/net-snmp/Makefile	2015-07-14 10:55:19.786308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/net-snmp/Makefile	2015-07-14 10:55:50.066308677 +0300
+@@ -157,20 +157,15 @@
+ 	--enable-shared \
+ 	--enable-static \
+ 	--with-endianness=$(if $(CONFIG_BIG_ENDIAN),big,little) \
+-	--with-logfile=/var/log/snmpd.log \
+-	--with-persistent-directory=/usr/lib/snmp/ \
++	--with-logfile=/opt/var/log/snmpd.log \
++	--with-persistent-directory=/opt/lib/snmp/ \
+ 	--with-default-snmp-version=1 \
+ 	--with-sys-contact=root@localhost \
+ 	--with-sys-location=Unknown \
+ 	--enable-applications \
+ 	--disable-debugging \
+ 	--disable-manuals \
+-	--disable-mibs \
+ 	--disable-scripts \
+-	--with-out-mib-modules="$(SNMP_MIB_MODULES_EXCLUDED)" \
+-	--with-mib-modules="$(SNMP_MIB_MODULES_INCLUDED)" \
+-	--with-out-transports="$(SNMP_TRANSPORTS_EXCLUDED)" \
+-	--with-transports="$(SNMP_TRANSPORTS_INCLUDED)" \
+ 	--without-openssl \
+ 	--without-libwrap \
+ 	--without-rpm \
+@@ -181,8 +176,6 @@
+ SNMP_TRANSPORTS_INCLUDED+= UDPIPv6
+ endif
+ 
+-TARGET_LDFLAGS += -L$(TOOLCHAIN_DIR)/usr/lib
+-
+ ifdef CONFIG_PACKAGE_snmpd-static
+   define Build/Compile/static
+ 	$(MAKE) -C $(PKG_BUILD_DIR)/agent \
+@@ -202,53 +195,45 @@
+ 
+ define Build/InstallDev
+ 	$(INSTALL_DIR) $(2)/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/net-snmp-config $(2)/bin/
+-	$(SED) 's,=/usr,=$(STAGING_DIR)/usr,g' $(2)/bin/net-snmp-config
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/net-snmp-config $(2)/bin/
++	$(SED) 's,=/opt,=$(STAGING_DIR)/opt,g' $(2)/bin/net-snmp-config
+ 
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/net-snmp $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libnetsnmp{,agent,helpers,mibs}.{a,so*} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/net-snmp $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libnetsnmp{,agent,helpers,mibs}.{a,so*} $(1)/opt/lib/
+ endef
+ 
+ define Package/libnetsnmp/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libnetsnmp{,agent,helpers,mibs}.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libnetsnmp{,agent,helpers,mibs}.so.* $(1)/opt/lib/
+ endef
+ 
+ define Package/snmpd/conffiles
+-/etc/config/snmpd
++/opt/etc/snmp/snmpd.config
+ endef
+ 
+ define Package/snmpd/install
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_DATA) ./files/snmpd.conf $(1)/etc/config/snmpd
+-	$(INSTALL_DIR) $(1)/etc/snmp
+-	ln -sf /var/run/snmpd.conf $(1)/etc/snmp/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/snmpd.init $(1)/etc/init.d/snmpd
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/snmpd $(1)/usr/sbin/snmpd
++	$(INSTALL_DIR) $(1)/opt/etc/snmp
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/snmpd $(1)/opt/sbin/snmpd
+ endef
+ 
+ define Package/snmpd-static/conffiles
+-/etc/config/snmpd
++/opt/etc/snmp/snmpd.config
+ endef
+ 
+ define Package/snmpd-static/install
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_DATA) ./files/snmpd.conf $(1)/etc/config/snmpd
+-	$(INSTALL_DIR) $(1)/etc/snmp
+-	ln -sf /var/run/snmpd.conf $(1)/etc/snmp/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/snmpd.init $(1)/etc/init.d/snmpd
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/agent/snmpd-static $(1)/usr/sbin/snmpd
++	$(INSTALL_DIR) $(1)/opt/etc/snmp
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/agent/snmpd-static $(1)/opt/sbin/snmpd
+ endef
+ 
+ define Package/snmp-utils/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/snmp{get,set,status,test,trap,walk} $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/snmp{get,set,status,test,trap,walk} $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/share/snmp/mibs
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/snmp/mibs/*.txt $(1)/opt/share/snmp/mibs
+ endef
+ 
+ $(eval $(call BuildPackage,libnetsnmp))

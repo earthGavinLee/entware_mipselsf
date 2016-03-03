@@ -1,0 +1,37 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r42803/feeds/packages/net/polipo/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/polipo/Makefile
+@@ -37,23 +37,24 @@
+ 	$(MAKE) -C $(PKG_BUILD_DIR) \
+ 		CC="$(TARGET_CC)" \
+ 		CFLAGS="$(TARGET_CFLAGS)" \
++		LDFLAGS="$(TARGET_LDFLAGS)" \
++		LOCAL_ROOT="/opt/share/polipo/www" \
++		DISK_CACHE_ROOT="/opt/var/cache/polipo" \
+ 		polipo
+ endef
+ 
+ define Package/polipo/conffiles
+-/etc/config/polipo
+-/etc/polipo/config
++/opt/etc/polipo/config
+ endef
+ 
+ define Package/polipo/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/polipo $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc/polipo
+-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/config.sample $(1)/etc/polipo/config
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_DATA) ./files/polipo.config $(1)/etc/config/polipo
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/polipo.init $(1)/etc/init.d/polipo
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/polipo $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/polipo
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/config.sample $(1)/opt/etc/polipo/config
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S28polipo $(1)/opt/etc/init.d
++	$(INSTALL_DIR) $(1)/opt/share/polipo/www $(1)/opt/var/cache/polipo
+ endef
+ 
+ $(eval $(call BuildPackage,polipo))

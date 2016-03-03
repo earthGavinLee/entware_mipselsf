@@ -1,0 +1,34 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/utils/nano/Makefile	2015-04-20 10:09:28.958135359 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/nano/Makefile	2015-04-20 10:09:48.542135002 +0300
+@@ -38,18 +38,23 @@
+ endef
+ 
+ CONFIGURE_ARGS += \
+-	--enable-tiny \
+ 	--disable-glibtest \
+ 	--disable-utf8 \
+-        --without-slang \
+-        --disable-color \
+-
+-CONFIGURE_VARS += \
+-	ac_cv_header_regex_h=no \
++	--without-slang \
++	--enable-wrapping \
++	--disable-help \
++	--disable-justify \
++	--disable-mouse \
++	--disable-operatingdir \
++	--disable-speller \
++	--disable-tabcomp \
++	--disable-browser \
++	--enable-color \
++	--disable-libmagic \
+ 
+ define Package/nano/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/$(PKG_NAME) $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/$(PKG_NAME) $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,nano))

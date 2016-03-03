@@ -1,0 +1,63 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44486/package/network/utils/curl/Makefile	2015-02-18 12:16:58.264306320 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/utils/curl/Makefile	2015-02-18 16:57:04.819998259 +0300
+@@ -112,15 +112,15 @@
+ 	\
+ 	$(call autoconf_bool,CONFIG_IPV6,ipv6) \
+ 	\
+-	$(if $(CONFIG_LIBCURL_AXTLS),--with-axtls="$(STAGING_DIR)/usr" --without-ca-path,--without-axtls) \
+-	$(if $(CONFIG_LIBCURL_CYASSL),--with-cyassl="$(STAGING_DIR)/usr" --without-ca-path,--without-cyassl) \
+-	$(if $(CONFIG_LIBCURL_GNUTLS),--with-gnutls="$(STAGING_DIR)/usr" --without-ca-path,--without-gnutls) \
+-	$(if $(CONFIG_LIBCURL_OPENSSL),--with-ssl="$(STAGING_DIR)/usr" --with-ca-path=/etc/ssl/certs,--without-ssl) \
+-	$(if $(CONFIG_LIBCURL_POLARSSL),--with-polarssl="$(STAGING_DIR)/usr" --with-ca-path=/etc/ssl/certs,--without-polarssl) \
++	$(if $(CONFIG_LIBCURL_AXTLS),--with-axtls="$(STAGING_DIR)/opt" --without-ca-path,--without-axtls) \
++	$(if $(CONFIG_LIBCURL_CYASSL),--with-cyassl="$(STAGING_DIR)/opt" --without-ca-path,--without-cyassl) \
++	$(if $(CONFIG_LIBCURL_GNUTLS),--with-gnutls="$(STAGING_DIR)/opt" --without-ca-path,--without-gnutls) \
++	$(if $(CONFIG_LIBCURL_OPENSSL),--with-ssl="$(STAGING_DIR)/opt" --with-ca-path=/opt/etc/ssl/certs,--without-ssl) \
++	$(if $(CONFIG_LIBCURL_POLARSSL),--with-polarssl="$(STAGING_DIR)/opt" --with-ca-path=/opt/etc/ssl/certs,--without-polarssl) \
+ 	\
+-	$(if $(CONFIG_LIBCURL_LIBIDN),--with-libidn="$(STAGING_DIR)/usr",--without-libidn) \
+-	$(if $(CONFIG_LIBCURL_SSH2),--with-libssh2="$(STAGING_DIR)/usr",--without-libssh2) \
+-	$(if $(CONFIG_LIBCURL_ZLIB),--with-zlib="$(STAGING_DIR)/usr",--without-zlib) \
++	$(if $(CONFIG_LIBCURL_LIBIDN),--with-libidn="$(STAGING_DIR)/opt",--without-libidn) \
++	$(if $(CONFIG_LIBCURL_SSH2),--with-libssh2="$(STAGING_DIR)/opt",--without-libssh2) \
++	$(if $(CONFIG_LIBCURL_ZLIB),--with-zlib="$(STAGING_DIR)/opt",--without-zlib) \
+ 	\
+ 	$(call autoconf_bool,CONFIG_LIBCURL_DICT,dict) \
+ 	$(call autoconf_bool,CONFIG_LIBCURL_FILE,file) \
+@@ -154,24 +154,24 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(2)/bin $(1)/usr/bin $(1)/usr/include $(1)/usr/lib $(1)/usr/lib/pkgconfig
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/curl-config $(1)/usr/bin/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/curl $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcurl.{a,so*} $(1)/usr/lib/
+-	$(CP) $(PKG_BUILD_DIR)/libcurl.pc $(1)/usr/lib/pkgconfig/
+-	$(SED) 's,-L$$$${exec_prefix}/lib,,g' $(1)/usr/bin/curl-config
+-	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/usr/lib/pkgconfig/libcurl.pc || true
+-	$(LN) $(STAGING_DIR)/usr/bin/curl-config $(2)/bin/
++	$(INSTALL_DIR) $(2)/bin $(1)/opt/bin $(1)/opt/include $(1)/opt/lib $(1)/opt/lib/pkgconfig
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/curl-config $(1)/opt/bin/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/curl $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libcurl.{a,so*} $(1)/opt/lib/
++	$(CP) $(PKG_BUILD_DIR)/libcurl.pc $(1)/opt/lib/pkgconfig/
++	$(SED) 's,-L$$$${exec_prefix}/lib,,g' $(1)/opt/bin/curl-config
++	[ -n "$(TARGET_LDFLAGS)" ] && $(SED) 's#$(TARGET_LDFLAGS)##g' $(1)/opt/lib/pkgconfig/libcurl.pc || true
++	$(LN) $(STAGING_DIR)/opt/bin/curl-config $(2)/bin/
+ endef
+ 
+ define Package/curl/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/curl $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/curl $(1)/opt/bin/
+ endef
+ 
+ define Package/libcurl/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libcurl.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libcurl.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,curl))

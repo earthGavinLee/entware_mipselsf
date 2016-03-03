@@ -1,0 +1,378 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/base.config ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/base.config
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/base.config	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/base.config	2015-09-23 13:34:43.288365816 +0300
+@@ -690,21 +690,21 @@
+ inc_version_list_init='0'
+ incpath=''
+ inews=''
+-initialinstalllocation='/usr/bin'
+-installbin='/usr/bin'
++initialinstalllocation='/opt/bin'
++installbin='/opt/bin'
+ installhtml1dir=''
+ installhtml3dir=''
+ installman1dir=''
+ installman3dir=''
+-installprefix='/usr'
+-installprefixexp='/usr'
+-installscript='/usr/bin'
+-installsitebin='/usr/bin'
++installprefix='/opt'
++installprefixexp='/opt'
++installscript='/opt/bin'
++installsitebin='/opt/bin'
+ installsitehtml1dir=''
+ installsitehtml3dir=''
+ installsiteman1dir=''
+ installsiteman3dir=''
+-installsitescript='/usr/bin'
++installsitescript='/opt/bin'
+ installstyle='lib/perl5'
+ installusrbinperl='define'
+ installvendorarch=''
+@@ -727,9 +727,9 @@
+ libc=''
+ libdb_needs_pthread='N'
+ libperl='libperl.so'
+-libpth="$owrt:staging_dir/lib $owrt:staging_dir/usr/lib"
+-libsdirs="$owrt:staging_dir/lib $owrt:staging_dir/usr/lib"
+-libspath="$owrt:staging_dir/lib $owrt:staging_dir/usr/lib"
++libpth="$owrt:staging_dir/lib $owrt:staging_dir/opt/lib"
++libsdirs="$owrt:staging_dir/lib $owrt:staging_dir/opt/lib"
++libspath="$owrt:staging_dir/lib $owrt:staging_dir/opt/lib"
+ libswanted_uselargefiles=''
+ line=''
+ lint=''
+@@ -798,15 +798,15 @@
+ perl5=''
+ perl_patchlevel=''
+ perl_static_inline='static __inline__'
+-perlpath='/usr/bin/perl'
++perlpath='/opt/bin/perl'
+ pg='pg'
+ phostname='hostname'
+ pidtype='pid_t'
+ plibpth=''
+ pmake=''
+ pr=''
+-prefix='/usr'
+-prefixexp='/usr'
++prefix='/opt'
++prefixexp='/opt'
+ procselfexe='"/proc/self/exe"'
+ prototype='define'
+ randbits='48'
+@@ -820,8 +820,8 @@
+ run=''
+ runnm='false'
+ sched_yield='sched_yield()'
+-scriptdir='/usr/bin'
+-scriptdirexp='/usr/bin'
++scriptdir='/opt/bin'
++scriptdirexp='/opt/bin'
+ sed='sed'
+ seedfunc='srand48'
+ selecttype='fd_set *'
+@@ -843,8 +843,8 @@
+ signal_t='void'
+ sitearch=''
+ sitearchexp=''
+-sitebin='/usr/bin'
+-sitebinexp='/usr/bin'
++sitebin='/opt/bin'
++sitebinexp='/opt/bin'
+ sitehtml1dir=''
+ sitehtml1direxp=''
+ sitehtml3dir=''
+@@ -855,10 +855,10 @@
+ siteman1direxp=''
+ siteman3dir=''
+ siteman3direxp=''
+-siteprefix='/usr'
+-siteprefixexp='/usr'
+-sitescript='/usr/bin'
+-sitescriptexp='/usr/bin'
++siteprefix='/opt'
++siteprefixexp='/opt'
++sitescript='/opt/bin'
++sitescriptexp='/opt/bin'
+ sizetype='size_t'
+ sleep=''
+ smail=''
+@@ -873,7 +873,7 @@
+ ssizetype='ssize_t'
+ st_ino_sign='1'
+ st_ino_size='8'
+-startperl='#!/usr/bin/perl'
++startperl='#!/opt/bin/perl'
+ startsh='#!/bin/sh'
+ static_ext=' '
+ stdchar='char'
+@@ -884,7 +884,7 @@
+ stdio_ptr='((fp)->_ptr)'
+ stdio_stream_array=''
+ submit=''
+-sysman='/usr/share/man/man1'
++sysman='/opt/share/man/man1'
+ sysroot=''
+ tail=''
+ tar=''
+@@ -942,7 +942,7 @@
+ usevendorprefix='undef'
+ useversionedarchname='undef'
+ usevfork='false'
+-usrinc="$owrt:staging_dir/include $owrt:staging_dir/usr/include"
++usrinc="$owrt:staging_dir/include $owrt:staging_dir/opt/include"
+ uuname=''
+ uvXUformat='"lX"'
+ uvoformat='"lo"'
+@@ -992,9 +992,9 @@
+ cppflags="$owrt:cflags"
+ ccflags="-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 $owrt:cflags"
+ ccflags_uselargefiles='-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'
+-ccdlflags="-fPIC -Wl,-rpath,$owrt:perllibpath/CORE"
++ccdlflags="-fPIC -Wl,-rpath,$owrt:perllibpath/CORE:/opt/lib"
+ cccdlflags='-fPIC'
+-ldflags=''
++ldflags="$owrt:ldflags"
+ ldflags_uselargefiles=''
+ lddlflags="-shared $owrt:ldflags"
+ 
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/misc.config ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/misc.config
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/misc.config	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/misc.config	2015-09-23 12:41:55.500313091 +0300
+@@ -1,6 +1,6 @@
+ cf_email='naoir@gmx.net'
+-osvers='3.18.19'
+-gccversion='4.8.0'
++osvers='2.6.22'
++gccversion='4.6.4'
+ myhostname='OpenWrt'
+ cf_time='Thu Jan 1 12:00:00 CEST 2015'
+ 
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/perl-run_tests.sh ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/perl-run_tests.sh
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/perl-run_tests.sh	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/perl-run_tests.sh	2015-09-22 16:07:39.614303809 +0300
+@@ -1,7 +1,7 @@
+ #!/bin/sh
+ 
+-PERL_TESTSDIR="/usr/share/perl/perl-tests"
+-PERL_LIBDIR="/usr/lib/perl5/%%PERL_VERSION%%/"
++PERL_TESTSDIR="/opt/share/perl/perl-tests"
++PERL_LIBDIR="/opt/lib/perl5/%%PERL_VERSION%%/"
+ PERL_DISABLEDTESTS="%%PERL_DISABLEDTESTS%%"
+ 
+ no_run=""
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/version.config ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/version.config
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/files/version.config	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/files/version.config	2015-09-22 16:07:39.614303809 +0300
+@@ -14,7 +14,7 @@
+ dynamic_ext='B Compress/Raw/Bzip2 Compress/Raw/Zlib Cwd DB_File Data/Dumper Devel/PPPort Devel/Peek Digest/MD5 Digest/SHA Encode Fcntl File/DosGlob File/Glob Filter/Util/Call GDBM_File Hash/Util Hash/Util/FieldHash I18N/Langinfo IO IPC/SysV List/Util MIME/Base64 Math/BigInt/FastCalc Opcode POSIX PerlIO/encoding PerlIO/mmap PerlIO/scalar PerlIO/via SDBM_File Socket Storable Sys/Hostname Sys/Syslog Tie/Hash/NamedCapture Time/HiRes Time/Piece Unicode/Collate XS/APItest XS/Typemap arybase attributes mro re threads threads/shared'
+ 
+ # No need to change anything from here on
+-owrt:perllibpath="/usr/lib/perl5/$PERL_REVISION.$PERL_VERSION"
++owrt:perllibpath="/opt/lib/perl5/$PERL_REVISION.$PERL_VERSION"
+ 
+ revision="$PERL_REVISION"
+ patchlevel="$PERL_VERSION"
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/Makefile	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/Makefile	2015-09-23 13:46:42.152377781 +0300
+@@ -96,8 +96,8 @@
+ 	                                -Dowrt:target_cross='$(TARGET_CROSS)' \
+ 	                                -Dowrt:cflags='$(TARGET_CFLAGS_PERL) $(TARGET_CPPFLAGS_PERL)' \
+ 	                                -Dowrt:ldflags='-rdynamic $(TARGET_LDFLAGS)' \
+-	                                -Dowrt:libc=$(CONFIG_LIBC) \
+-	                                -Dowrt:ipv6=$(if $($(CONFIG_IPV6)),define,undef) \
++	                                -Dowrt:libc='uclibc' \
++	                                -Dowrt:ipv6='define' \
+ 	                                -Dowrt:threads=$(if $(CONFIG_PERL_THREADS),yes,no) \
+ 	                                -Dowrt:staging_dir='$(STAGING_DIR)' \
+ 	                                -Dowrt:host_perl_prefix='$(HOST_PERL_PREFIX)' \
+@@ -119,17 +119,17 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/lib/perl5/$(PERL_VERSION)
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/perl5/$(PERL_VERSION) $(1)/usr/lib/perl5/
++	$(INSTALL_DIR) $(1)/opt/lib/perl5/$(PERL_VERSION)
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/perl5/$(PERL_VERSION) $(1)/opt/lib/perl5/
+ endef
+ 
+ define Package/perl/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/perl$(PKG_VERSION) $(1)/usr/bin
+-	ln -nsf perl$(PKG_VERSION) $(1)/usr/bin/perl
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/perl$(PKG_VERSION) $(1)/opt/bin
++	ln -nsf perl$(PKG_VERSION) $(1)/opt/bin/perl
+ 	
+-	$(INSTALL_DIR) $(1)/usr/lib/perl5/$(PERL_VERSION)/CORE
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/perl5/$(PERL_VERSION)/CORE/libperl.so $(1)/usr/lib/perl5/$(PERL_VERSION)/CORE/
++	$(INSTALL_DIR) $(1)/opt/lib/perl5/$(PERL_VERSION)/CORE
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/perl5/$(PERL_VERSION)/CORE/libperl.so $(1)/opt/lib/perl5/$(PERL_VERSION)/CORE/
+ endef
+ 
+ 
+@@ -154,9 +154,9 @@
+ 	$(INSTALL_DIR) $(1)/$(PERL_TESTSDIR)/Porting
+ 	$(INSTALL_DIR) $(1)/$(PERL_TESTSDIR)/regen
+ 	$(INSTALL_DIR) $(1)/$(PERL_TESTSDIR)/lib
+-	$(INSTALL_DIR) $(1)/usr/lib/perl5/$(PERL_VERSION)/XS
+-	$(INSTALL_DIR) $(1)/usr/lib/perl5/$(PERL_VERSION)/auto/XS
+-	$(INSTALL_DIR) $(1)/usr/lib/perl5/$(PERL_VERSION)/unicore
++	$(INSTALL_DIR) $(1)/opt/lib/perl5/$(PERL_VERSION)/XS
++	$(INSTALL_DIR) $(1)/opt/lib/perl5/$(PERL_VERSION)/auto/XS
++	$(INSTALL_DIR) $(1)/opt/lib/perl5/$(PERL_VERSION)/unicore
+ 	
+ 	$(CP) $(PKG_BUILD_DIR)/t $(1)/$(PERL_TESTSDIR)
+ 	$(CP) $(PKG_BUILD_DIR)/Porting $(1)/$(PERL_TESTSDIR)
+@@ -165,12 +165,12 @@
+ 	$(CP) $(PKG_BUILD_DIR)/TestInit.pm $(1)/$(PERL_TESTSDIR)
+ 	$(CP) $(PKG_BUILD_DIR)/vutil.c $(1)/$(PERL_TESTSDIR)
+ 	$(CP) $(PKG_BUILD_DIR)/vxs.inc $(1)/$(PERL_TESTSDIR)
+-	$(CP) $(PKG_BUILD_DIR)/lib/XS $(1)/usr/lib/perl5/$(PERL_VERSION)/
+-	$(CP) $(PKG_BUILD_DIR)/lib/auto/XS $(1)/usr/lib/perl5/$(PERL_VERSION)/auto
+-	$(CP) $(PKG_BUILD_DIR)/lib/vmsish.pm $(1)/usr/lib/perl5/$(PERL_VERSION)/
++	$(CP) $(PKG_BUILD_DIR)/lib/XS $(1)/opt/lib/perl5/$(PERL_VERSION)/
++	$(CP) $(PKG_BUILD_DIR)/lib/auto/XS $(1)/opt/lib/perl5/$(PERL_VERSION)/auto
++	$(CP) $(PKG_BUILD_DIR)/lib/vmsish.pm $(1)/opt/lib/perl5/$(PERL_VERSION)/
+ 	$(CP) $(PKG_BUILD_DIR)/lib/vmsish.t $(1)/$(PERL_TESTSDIR)/lib
+ 	$(CP) $(PKG_BUILD_DIR)/lib/Internals.t $(1)/$(PERL_TESTSDIR)/lib
+-	$(CP) $(PKG_BUILD_DIR)/lib/unicore/TestProp.pl $(1)/usr/lib/perl5/$(PERL_VERSION)/unicore
++	$(CP) $(PKG_BUILD_DIR)/lib/unicore/TestProp.pl $(1)/opt/lib/perl5/$(PERL_VERSION)/unicore
+ 	$(CP) files/perl-run_tests.sh $(1)/$(PERL_TESTSDIR)/run_tests.sh
+ 	sed \
+ 		-e 's!%%PERL_DISABLEDTESTS%%!$(PERL_DISABLEDTESTS)!' \
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/perlbase.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/perlbase.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/perlbase.mk	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/perlbase.mk	2015-09-22 16:07:39.614303809 +0300
+@@ -42,10 +42,10 @@
+ define Package/perlbase-archive/install
+ $(call perlmod/Install,$(1),Archive,)
+ $(call perlmod/InstallBaseTests,$(1),cpan/Archive-Tar/bin cpan/Archive-Tar/t)
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/ptar $(1)/usr/bin/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/ptardiff $(1)/usr/bin/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/ptargrep $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/ptar $(1)/opt/bin/
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/ptardiff $(1)/opt/bin/
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/ptargrep $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,perlbase-archive))
+@@ -1143,9 +1143,9 @@
+ $(call perlmod/Install,$(1),Pod,Pod/Usage.pm)
+ $(call perlmod/Install/NoStrip,$(1),Pod/Usage.pm,)
+ $(call perlmod/InstallBaseTests,$(1),cpan/Pod-Checker/t cpan/Pod-Escapes/t cpan/Pod-Parser/lib cpan/Pod-Parser/scripts cpan/Pod-Parser/t cpan/Pod-Perldoc/t cpan/Pod-Simple/t cpan/Pod-Usage/scripts cpan/Pod-Usage/t cpan/podlators/t ext/Pod-Functions/Functions.pm ext/Pod-Functions/t ext/Pod-Html/t lib/Pod/t)
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/pod2man $(1)/usr/bin/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/bin/pod2text $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/pod2man $(1)/opt/bin/
++	$(CP) $(PKG_INSTALL_DIR)/opt/bin/pod2text $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,perlbase-pod))
+@@ -1385,8 +1385,8 @@
+ $(call perlmod/Install,$(1),Test Test.pm ok.pm,Test/Builder.pm Test/Harness/TAP.pod Test/More.pm Test/Tutorial.pod)
+ $(call perlmod/Install/NoStrip,$(1),Test/Builder.pm Test/More.pm,)
+ $(call perlmod/InstallBaseTests,$(1),cpan/Test-Harness/t cpan/Test-Simple/t cpan/Test/t)
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/prove $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/prove $(1)/opt/bin
+ endef
+ 
+ $(eval $(call BuildPackage,perlbase-test))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/perlmod.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/perlmod.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/lang/perl/perlmod.mk	2015-09-22 16:07:32.074303683 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/perl/perlmod.mk	2015-09-22 16:07:39.614303809 +0300
+@@ -7,7 +7,7 @@
+ HOST_PERL_PREFIX:=$(STAGING_DIR_HOST)/usr
+ ifneq ($(CONFIG_USE_GLIBC),)
+ 	EXTRA_LIBS:=bsd
+-	EXTRA_LIBDIRS:=$(STAGING_DIR)/lib
++	EXTRA_LIBDIRS:=$(STAGING_DIR)/opt/lib
+ endif
+ PERL_CMD:=$(STAGING_DIR_HOST)/usr/bin/perl$(PERL_VERSION).0
+ 
+@@ -17,10 +17,10 @@
+ endif
+ 
+ # Module install prefix
+-PERL_SITELIB:=/usr/lib/perl5/$(PERL_VERSION)
+-PERL_TESTSDIR:=/usr/share/perl/perl-tests
+-PERLBASE_TESTSDIR:=/usr/share/perl/perlbase-tests
+-PERLMOD_TESTSDIR:=/usr/share/perl/perlmod-tests
++PERL_SITELIB:=/opt/lib/perl5/$(PERL_VERSION)
++PERL_TESTSDIR:=/opt/share/perl/perl-tests
++PERLBASE_TESTSDIR:=/opt/share/perl/perlbase-tests
++PERLMOD_TESTSDIR:=/opt/share/perl/perlmod-tests
+ 
+ define perlmod/host/relink
+ 	rm -f $(1)/Makefile.aperl
+@@ -57,18 +57,18 @@
+ 	(cd $(if $(3),$(3),$(PKG_BUILD_DIR)); \
+ 	PERL_MM_USE_DEFAULT=1 \
+ 	$(2) \
+-	$(PERL_CMD) -MConfig -e '$$$${tied %Config::Config}{cpprun}="$(GNU_TARGET_NAME)-cpp -E"; do "Makefile.PL"' \
++	$(PERL_CMD) -MConfig -e '$$$${tied %Config::Config}{cpprun}="$(TARGET_CROSS)cpp -E"; do "Makefile.PL"' \
+ 		$(1) \
+ 		AR=ar \
+-		CC=$(GNU_TARGET_NAME)-gcc \
++		CC=$(TARGET_CROSS)gcc \
+ 		CCFLAGS="$(MOD_CFLAGS_PERL)" \
+ 		CCCDLFLAGS=-fPIC \
+ 		CCDLFLAGS=-Wl,-E \
+ 		DLEXT=so \
+ 		DLSRC=dl_dlopen.xs \
+ 		EXE_EXT=" " \
+-		FULL_AR=$(GNU_TARGET_NAME)-ar \
+-		LD=$(GNU_TARGET_NAME)-gcc \
++		FULL_AR=$(TARGET_CROSS)ar \
++		LD=$(TARGET_CROSS)gcc \
+ 		LDDLFLAGS="-shared -rdynamic $(TARGET_LDFLAGS)"  \
+ 		LDFLAGS="$(EXTRA_LIBDIRS:%=-L%) $(EXTRA_LIBS:%=-l%) " \
+ 		LIBC=" " \
+@@ -82,29 +82,29 @@
+ 		SO=so  \
+ 		VENDORARCHEXP=" " \
+ 		VENDORLIBEXP=" " \
+-		SITEPREFIX=/usr \
++		SITEPREFIX=/opt \
+ 		INSTALLPRIVLIB=$(PERL_SITELIB) \
+ 		INSTALLSITELIB=$(PERL_SITELIB) \
+ 		INSTALLVENDORLIB=" " \
+ 		INSTALLARCHLIB=$(PERL_SITELIB) \
+ 		INSTALLSITEARCH=$(PERL_SITELIB) \
+ 		INSTALLVENDORARCH=" " \
+-		INSTALLBIN=/usr/bin \
+-		INSTALLSITEBIN=/usr/bin \
++		INSTALLBIN=/opt/bin \
++		INSTALLSITEBIN=/opt/bin \
+ 		INSTALLVENDORBIN=" " \
+-		INSTALLSCRIPT=/usr/bin \
+-		INSTALLSITESCRIPT=/usr/bin \
++		INSTALLSCRIPT=/opt/bin \
++		INSTALLSITESCRIPT=/opt/bin \
+ 		INSTALLVENDORSCRIPT=" " \
+-		INSTALLMAN1DIR=/usr/man/man1 \
+-		INSTALLSITEMAN1DIR=/usr/man/man1 \
++		INSTALLMAN1DIR=/opt/man/man1 \
++		INSTALLSITEMAN1DIR=/opt/man/man1 \
+ 		INSTALLVENDORMAN1DIR=" " \
+-		INSTALLMAN3DIR=/usr/man/man3 \
+-		INSTALLSITEMAN3DIR=/usr/man/man3 \
++		INSTALLMAN3DIR=/opt/man/man3 \
++		INSTALLSITEMAN3DIR=/opt/man/man3 \
+ 		INSTALLVENDORMAN3DIR=" " \
+ 		LINKTYPE=dynamic \
+ 		DESTDIR=$(PKG_INSTALL_DIR) \
+ 	);
+-	sed 's!^PERL_INC = .*!PERL_INC = $(STAGING_DIR)/usr/lib/perl5/$(PERL_VERSION)/CORE/!' -i $(if $(3),$(3),$(PKG_BUILD_DIR))/Makefile
++	sed 's!^PERL_INC = .*!PERL_INC = $(STAGING_DIR)/opt/lib/perl5/$(PERL_VERSION)/CORE/!' -i $(if $(3),$(3),$(PKG_BUILD_DIR))/Makefile
+ endef
+ 
+ define perlmod/Compile

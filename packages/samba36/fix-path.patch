@@ -1,0 +1,119 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/samba36/files/smb.conf.template ../../../openwrt_chaos_calmer_entware/package/network/services/samba36/files/smb.conf.template
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/samba36/files/smb.conf.template	2015-09-15 12:24:40.886451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/services/samba36/files/smb.conf.template	2015-09-21 11:08:08.359003445 +0300
+@@ -26,7 +26,7 @@
+ 	printable = no
+ 	security = user
+ 	smb encrypt = disabled
+-	smb passwd file = /etc/samba/smbpasswd
++	smb passwd file = /opt/etc/samba/smbpasswd
+ 	socket options = TCP_NODELAY IPTOS_LOWDELAY
+ 	syslog = 2
+ 	use sendfile = yes
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/samba36/Makefile ../../../openwrt_chaos_calmer_entware/package/network/services/samba36/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/samba36/Makefile	2015-09-15 12:24:40.886451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/services/samba36/Makefile	2015-09-21 11:09:15.519004562 +0300
+@@ -88,7 +88,7 @@
+ 	ac_cv_path_PYTHON_CONFIG=""
+ 
+ CONFIGURE_ARGS += \
+-	--exec-prefix=/usr \
++	--exec-prefix=/opt \
+ 	--prefix=/ \
+ 	--disable-avahi \
+ 	--disable-cups \
+@@ -98,15 +98,15 @@
+ 	--disable-swat \
+ 	--disable-shared-libs \
+ 	--with-libiconv="$(ICONV_PREFIX)" \
+-	--with-codepagedir=/etc/samba \
+-	--with-configdir=/etc/samba \
++	--with-codepagedir=/opt/etc/samba \
++	--with-configdir=/opt/etc/samba \
+ 	--with-included-iniparser \
+ 	--with-included-popt \
+-	--with-lockdir=/var/lock \
+-	--with-logfilebase=/var/log \
+-	--with-nmbdsocketdir=/var/nmbd \
+-	--with-piddir=/var/run \
+-	--with-privatedir=/etc/samba \
++	--with-lockdir=/opt/var/lock \
++	--with-logfilebase=/opt/var/log \
++	--with-nmbdsocketdir=/opt/var/nmbd \
++	--with-piddir=/opt/var/run \
++	--with-privatedir=/opt/etc/samba \
+ 	--with-sendfile-support \
+ 	--without-acl-support \
+ 	--without-cluster-support \
+@@ -127,31 +127,30 @@
+ MAKE_FLAGS += DYNEXP= PICFLAG= MODULES=
+ 
+ define Package/samba36-server/conffiles
+-/etc/config/samba
+-/etc/samba/smb.conf.template
++/opt/etc/samba/smb.conf.template
++/opt/etc/samba/smbpasswd
+ endef
+ 
+ define Package/samba36-server/install
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_CONF) ./files/samba.config $(1)/etc/config/samba
+-	$(INSTALL_DIR) $(1)/etc/samba
+-	$(INSTALL_DATA) ./files/smb.conf.template $(1)/etc/samba
+-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/codepages/lowcase.dat $(1)/etc/samba
+-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/codepages/upcase.dat $(1)/etc/samba
+-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/codepages/valid.dat $(1)/etc/samba
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/samba.init $(1)/etc/init.d/samba
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_BIN)/samba_multicall $(1)/usr/sbin
+-	$(LN) samba_multicall $(1)/usr/sbin/smbd
+-	$(LN) samba_multicall $(1)/usr/sbin/nmbd
+-	$(LN) samba_multicall $(1)/usr/sbin/smbpasswd
++	$(INSTALL_DIR) $(1)/opt/etc/samba
++	$(INSTALL_DATA) ./files/smb.conf.template $(1)/opt/etc/samba
++	$(INSTALL_DATA) $(PKG_BUILD_DIR)/codepages/lowcase.dat $(1)/opt/etc/samba
++	$(INSTALL_DATA) $(PKG_BUILD_DIR)/codepages/upcase.dat $(1)/opt/etc/samba
++	$(INSTALL_DATA) $(PKG_BUILD_DIR)/codepages/valid.dat $(1)/opt/etc/samba
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S08samba $(1)/opt/etc/init.d
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_BIN)/samba_multicall $(1)/opt/sbin
++	$(LN) samba_multicall $(1)/opt/sbin/smbd
++	$(LN) samba_multicall $(1)/opt/sbin/nmbd
++	$(LN) samba_multicall $(1)/opt/sbin/smbpasswd
++	$(INSTALL_DIR) $(1)/opt/var/nmbd
+ endef
+ 
+ define Package/samba36-client/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_BIN)/smbclient $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_BUILD_BIN)/nmblookup $(1)/usr/sbin
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_BIN)/smbclient $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_BIN)/nmblookup $(1)/opt/sbin
+ endef
+ 
+ $(eval $(call BuildPackage,samba36-client))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/samba36/patches/111-owrt_smbpasswd.patch ../../../openwrt_chaos_calmer_entware/package/network/services/samba36/patches/111-owrt_smbpasswd.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/network/services/samba36/patches/111-owrt_smbpasswd.patch	2015-09-15 12:24:40.890451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/network/services/samba36/patches/111-owrt_smbpasswd.patch	2015-09-15 12:28:26.466455418 +0300
+@@ -236,15 +236,15 @@
+ +		}
+ +	}
+ +
+-+	fp = fopen("/etc/samba/smbpasswd", "r+");
+++	fp = fopen("/opt/etc/samba/smbpasswd", "r+");
+ +	if(!fp) {
+-+		fprintf(stderr, "Failed to open /etc/samba/smbpasswd");
+++		fprintf(stderr, "Failed to open /opt/etc/samba/smbpasswd");
+ +		return 3;
+ +	}
+ +
+ +	found = find_passwd_line(fp, user, NULL);
+ +	if (!add && !found) {
+-+		fprintf(stderr, "Could not find user '%s' in /etc/samba/smbpasswd\n", user);
+++		fprintf(stderr, "Could not find user '%s' in /opt/etc/samba/smbpasswd\n", user);
+ +		return 3;
+ +	}
+ +

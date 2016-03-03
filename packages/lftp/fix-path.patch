@@ -1,0 +1,22 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/lftp/Makefile	2015-07-14 10:55:19.790308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/lftp/Makefile	2015-07-14 10:55:48.638308653 +0300
+@@ -60,7 +60,7 @@
+ 	--without-gnutls \
+ 	--without-libidn \
+ 	--without-libresolv \
+-	--with-openssl="$(STAGING_DIR)/usr" \
++	--with-openssl="$(STAGING_DIR)/opt" \
+ 	--disable-static
+ 
+ #CONFIGURE_VARS += \
+@@ -71,8 +71,8 @@
+ #	LD="$(TARGET_CXX)"
+ 
+ define Package/lftp/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/lftp $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/lftp $(1)/opt/bin/
+ endef
+ 
+ $(eval $(call BuildPackage,lftp))

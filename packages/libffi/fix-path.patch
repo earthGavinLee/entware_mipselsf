@@ -1,0 +1,39 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r34530/feeds/packages/libs/libffi/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libffi/Makefile
+@@ -56,25 +56,25 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libffi.{so*,a,la} \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libffi.{so*,a,la} \
++		$(1)/opt/lib/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* \
+-		$(1)/usr/lib/pkgconfig/
++		$(PKG_INSTALL_DIR)/opt/lib/pkgconfig/* \
++		$(1)/opt/lib/pkgconfig/
+ 
+-	$(INSTALL_DIR) $(1)/usr/include
++	$(INSTALL_DIR) $(1)/opt/include
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libffi-$(PKG_VERSION)/include/*.h \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/lib/libffi-$(PKG_VERSION)/include/*.h \
++		$(1)/opt/include/
+ endef
+ 
+ define Package/libffi/install
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libffi.so.* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libffi.so.* \
++		$(1)/opt/lib/
+ endef
+ 
+ $(eval $(call HostBuild))

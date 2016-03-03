@@ -1,0 +1,27 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/telephony/libs/libsrtp/Makefile	2015-04-20 10:09:29.074135357 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/telephony/libs/libsrtp/Makefile	2015-04-20 10:09:47.330135024 +0300
+@@ -47,17 +47,17 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/srtp $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libsrtp.{a,so*} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/srtp $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsrtp.{a,so*} $(1)/opt/lib/
+ endef
+ 
+ 
+ define Package/libsrtp/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libsrtp.so.* \
+-		$(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsrtp.so.* \
++		$(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libsrtp))

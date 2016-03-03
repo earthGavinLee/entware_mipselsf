@@ -1,0 +1,32 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r34568/feeds/packages/libs/libao/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libao/Makefile
+@@ -49,19 +49,19 @@
+ TARGET_CFLAGS += $(FPIC)
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/ao $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libao.{a,so*} $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/ao.pc $(1)/usr/lib/pkgconfig/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/ao $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libao.{a,so*} $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/ao.pc $(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/libao/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libao.so.* $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/ao/plugins-4
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/ao/plugins-4/lib*.so $(1)/usr/lib/ao/plugins-4/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libao.so.* $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/ao/plugins-4
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/ao/plugins-4/lib*.so $(1)/opt/lib/ao/plugins-4/
+ endef
+ 
+ $(eval $(call BuildPackage,libao))

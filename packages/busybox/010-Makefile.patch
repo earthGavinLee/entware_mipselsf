@@ -1,0 +1,92 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/utils/busybox/Makefile	2015-09-15 12:24:40.850451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/utils/busybox/Makefile	2015-09-21 09:53:53.534929299 +0300
+@@ -71,13 +71,13 @@
+ 
+ LDLIBS:=m crypt
+ ifdef CONFIG_BUSYBOX_USE_LIBRPC
+-  TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
++  TARGET_CFLAGS += -I$(STAGING_DIR)/opt/include
+   export LDFLAGS=$(TARGET_LDFLAGS)
+   LDLIBS += rpc
+ endif
+ 
+ ifdef CONFIG_BUSYBOX_CONFIG_PAM
+-  TARGET_CFLAGS += -I$(STAGING_DIR)/usr/include
++  TARGET_CFLAGS += -I$(STAGING_DIR)/opt/include
+   export LDFLAGS=$(TARGET_LDFLAGS)
+   LDLIBS += pam pam_misc pthread
+ endif
+@@ -87,7 +87,8 @@
+ 		CC="$(TARGET_CC)" \
+ 		CROSS_COMPILE="$(TARGET_CROSS)" \
+ 		KBUILD_HAVE_NLS=no \
+-		EXTRA_CFLAGS="$(TARGET_CFLAGS)" \
++ 		EXTRA_CFLAGS="$(TARGET_CFLAGS)" \
++		EXTRA_LDFLAGS="$(TARGET_LDFLAGS)" \
+ 		ARCH="$(ARCH)" \
+ 		SKIP_STRIP=y \
+ 		LDLIBS="$(LDLIBS)" \
+@@ -98,22 +99,54 @@
+ 	$(MAKE) -C $(PKG_BUILD_DIR) \
+ 		CC="$(TARGET_CC)" \
+ 		CROSS_COMPILE="$(TARGET_CROSS)" \
+-		EXTRA_CFLAGS="$(TARGET_CFLAGS)" \
++ 		EXTRA_CFLAGS="$(TARGET_CFLAGS)" \
++		EXTRA_LDFLAGS="$(TARGET_LDFLAGS)" \
+ 		ARCH="$(ARCH)" \
+-		CONFIG_PREFIX="$(PKG_INSTALL_DIR)" \
++		CONFIG_PREFIX="$(PKG_INSTALL_DIR)/opt" \
+ 		LDLIBS="$(LDLIBS)" \
+ 		$(BB_MAKE_VERBOSE) \
+ 		install
+ endef
+ 
+ define Package/busybox/install
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(CP) $(PKG_INSTALL_DIR)/* $(1)/
+-	$(INSTALL_BIN) ./files/cron $(1)/etc/init.d/cron
+-	$(INSTALL_BIN) ./files/telnet $(1)/etc/init.d/telnet
+-	$(INSTALL_BIN) ./files/sysntpd $(1)/etc/init.d/sysntpd
+-	$(INSTALL_BIN) ./files/ntpd-hotplug $(1)/usr/sbin/ntpd-hotplug
+-	-rm -rf $(1)/lib64
++	$(INSTALL_DIR) $(1)/opt/{bin,sbin}
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/busybox $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/share
++	(cd $(PKG_INSTALL_DIR); \
++	    find ./opt -lname "*" | sed "s|^./opt/||g" > $(1)/opt/share/busybox_applets.lst.dist)
++endef
++
++define Package/busybox/postinst
++#!/bin/sh
++
++cd /opt
++rm -f share/busybox_applets.lst
++for applet in $$(cat share/busybox_applets.lst.dist)
++do
++    if [ ! -e $$applet ]
++    then
++       ln -s /opt/bin/busybox $$applet
++       echo "$$applet" >> share/busybox_applets.lst
++    else
++       echo "Warning: '/opt/$$applet' is already exists, skipping."
++    fi
++done
++endef
++
++define Package/busybox/postrm
++#!/bin/sh
++
++cd /opt
++for applet in $$(cat share/busybox_applets.lst)
++do
++    if [ -L $$applet ]
++    then
++       rm -f $$applet
++    else
++       echo "Warning: '/opt/$$applet' has been deleted\modified before, skipping."
++    fi
++done
++rm -f share/busybox_applets.lst
+ endef
+ 
+ $(eval $(call BuildPackage,busybox))

@@ -1,0 +1,32 @@
+--- ../../../openwrt_chaos_calmer_entware.orig/feeds/packages/libs/libogg/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libogg/Makefile
+@@ -41,19 +41,19 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include/ogg/
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/include/ogg/* $(1)/usr/include/ogg/
+-	$(INSTALL_DIR) $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.{so*,a,la} $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig/
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/* $(1)/usr/lib/pkgconfig/
+-	$(INSTALL_DIR) $(1)/usr/share/aclocal/
+-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/usr/share/aclocal/* $(1)/usr/share/aclocal/
++	$(INSTALL_DIR) $(1)/opt/include/ogg/
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/include/ogg/* $(1)/opt/include/ogg/
++	$(INSTALL_DIR) $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/*.{so*,a,la} $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig/
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/* $(1)/opt/lib/pkgconfig/
++	$(INSTALL_DIR) $(1)/opt/share/aclocal/
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/share/aclocal/* $(1)/opt/share/aclocal/
+ endef
+ 
+ define Package/libogg/install
+-	$(INSTALL_DIR) $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/*.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/*.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libogg))

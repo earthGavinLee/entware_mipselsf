@@ -1,0 +1,29 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/package/utils/busybox/Config-defaults.in	2015-04-20 10:09:30.574135331 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/utils/busybox/Config-defaults.in	2015-04-21 09:27:42.860664285 +0300
+@@ -99,7 +99,7 @@
+ 	default y
+ config BUSYBOX_DEFAULT_PID_FILE_PATH
+ 	string
+-	default "/var/run"
++	default "/opt/var/run"
+ config BUSYBOX_DEFAULT_FEATURE_SUID
+ 	bool
+ 	default y
+@@ -1644,7 +1644,7 @@
+ 	default n
+ config BUSYBOX_DEFAULT_FEATURE_CROND_DIR
+ 	string
+-	default "/etc"
++	default "/opt/etc"
+ config BUSYBOX_DEFAULT_LESS
+ 	bool
+ 	default y
+@@ -2289,7 +2289,7 @@
+ 	default n
+ config BUSYBOX_DEFAULT_UDHCPC_DEFAULT_SCRIPT
+ 	string
+-	default "/usr/share/udhcpc/default.script"
++	default "/opt/share/udhcpc/default.script"
+ config BUSYBOX_DEFAULT_UDHCPC_SLACK_FOR_BUGGY_SERVERS
+ 	int
+ 	default 80

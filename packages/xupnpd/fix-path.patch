@@ -1,0 +1,66 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/multimedia/xupnpd/Makefile	2015-04-23 10:21:55.505457455 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/multimedia/xupnpd/Makefile	2015-04-29 15:09:52.735697938 +0300
+@@ -10,7 +10,7 @@
+ PKG_NAME:=xupnpd
+ PKG_REV:=404
+ PKG_VERSION:=$(PKG_REV)
+-PKG_RELEASE:=1
++PKG_RELEASE:=1a
+ 
+ PKG_SOURCE_PROTO:=svn
+ PKG_SOURCE_VERSION:=$(PKG_REV)
+@@ -36,9 +36,9 @@
+ endef
+ 
+ define Package/xupnpd/conffiles
+-/usr/share/xupnpd/xupnpd.lua
+-/usr/share/xupnpd/config
+-/usr/share/xupnpd/playlists
++/opt/share/xupnpd/xupnpd.lua
++/opt/share/xupnpd/config
++/opt/share/xupnpd/playlists
+ endef
+ 
+ define Package/xupnpd/description
+@@ -49,23 +49,24 @@
+ endef
+ 
+ define Package/xupnpd/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/xupnpd $(1)/usr/bin
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/xupnpd.init $(1)/etc/init.d/xupnpd
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd
+-	$(CP) $(PKG_BUILD_DIR)/*.lua $(1)/usr/share/xupnpd
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd/ui
+-	$(CP) $(PKG_BUILD_DIR)/ui/* $(1)/usr/share/xupnpd/ui
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd/www
+-	$(CP) $(PKG_BUILD_DIR)/www/* $(1)/usr/share/xupnpd/www
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd/playlists
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd/plugins
+-	$(CP) $(PKG_BUILD_DIR)/plugins/* $(1)/usr/share/xupnpd/plugins
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd/config
+-	$(INSTALL_DIR) $(1)/etc/xupnpd
+-	(cd $(1)/etc/xupnpd; ln -s ../../usr/share/xupnpd/config ./; ln -s ../../usr/share/xupnpd/xupnpd.lua ./)
+-	$(INSTALL_DIR) $(1)/usr/share/xupnpd/localmedia
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/xupnpd $(1)/opt/bin
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S94xupnpd $(1)/opt/etc/init.d
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd
++	$(CP) $(PKG_BUILD_DIR)/*.lua $(1)/opt/share/xupnpd
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/ui
++	$(CP) $(PKG_BUILD_DIR)/ui/* $(1)/opt/share/xupnpd/ui
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/www
++	$(CP) $(PKG_BUILD_DIR)/www/* $(1)/opt/share/xupnpd/www
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/playlists
++	$(CP) $(PKG_BUILD_DIR)/playlists/* $(1)/opt/share/xupnpd/playlists
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/plugins
++	$(CP) $(PKG_BUILD_DIR)/plugins/* $(1)/opt/share/xupnpd/plugins
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/config
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/localmedia
++	$(INSTALL_DIR) $(1)/opt/share/xupnpd/profiles
++	$(CP) $(PKG_BUILD_DIR)/profiles/* $(1)/opt/share/xupnpd/profiles
+ endef
+ 
+ $(eval $(call BuildPackage,xupnpd))

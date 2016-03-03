@@ -1,0 +1,24 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/libs/libvorbisidec/Makefile	2015-04-20 10:09:28.906135359 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libvorbisidec/Makefile	2015-04-20 10:09:47.522135022 +0300
+@@ -48,15 +48,15 @@
+ CONFIGURE_ARGS += --enable-shared --enable-static
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/tremor $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libvorbisidec.{a,so*} $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/tremor $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libvorbisidec.{a,so*} $(1)/opt/lib/
+ endef
+ 
+ define Package/libvorbisidec/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libvorbisidec.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libvorbisidec.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libvorbisidec))

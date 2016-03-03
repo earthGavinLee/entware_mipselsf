@@ -1,0 +1,39 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/libs/libsodium/Makefile	2015-04-20 10:09:28.898135362 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libsodium/Makefile	2015-04-20 10:09:47.306135026 +0300
+@@ -50,23 +50,27 @@
+ endmenu
+ endef
+ 
++TARGET_CFLAGS += \
++	-std=gnu99
++
+ CONFIGURE_ARGS+= \
+ 	--disable-ssp \
++	--disable-asm \
+ 	$(if $(CONFIG_LIBSODIUM_MINIMAL),--enable-minimal=yes,--enable-minimal=no)
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include/sodium
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/sodium.h $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/sodium/*.h $(1)/usr/include/sodium
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libsodium.{a,so*} $(1)/usr/lib
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/pkgconfig/libsodium.pc $(1)/usr/lib/pkgconfig/
++	$(INSTALL_DIR) $(1)/opt/include/sodium
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/sodium.h $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/sodium/*.h $(1)/opt/include/sodium
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsodium.{a,so*} $(1)/opt/lib
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/pkgconfig/libsodium.pc $(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/libsodium/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libsodium.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsodium.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libsodium))

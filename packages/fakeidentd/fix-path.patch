@@ -1,0 +1,17 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44497/feeds/packages/net/fakeidentd/Makefile	2015-02-21 21:16:27.905891455 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/fakeidentd/Makefile	2015-02-21 21:57:50.461841637 +0300
+@@ -39,10 +39,10 @@
+ endef
+ 
+ define Package/fakeidentd/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(CP) $(PKG_BUILD_DIR)/$(PKG_NAME) $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/$(PKG_NAME).init $(1)/etc/init.d/$(PKG_NAME)
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(CP) $(PKG_BUILD_DIR)/$(PKG_NAME) $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S85fakeidentd $(1)/opt/etc/init.d/
+ endef
+ 
+ $(eval $(call BuildPackage,fakeidentd))

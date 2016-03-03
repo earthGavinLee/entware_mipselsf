@@ -1,0 +1,30 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/net/umurmur/Makefile	2015-04-20 10:09:28.922135362 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/umurmur/Makefile	2015-04-20 10:09:51.714134946 +0300
+@@ -72,19 +72,19 @@
+ endef
+ 
+ define Package/umurmur-openssl/conffiles
+-/etc/umurmur.conf
++/opt/etc/umurmur.conf
+ endef
+ 
+ Package/umurmur-polarssl/conffiles = $(Package/umurmur-openssl/conffiles)
+ 
+ define Package/umurmur-openssl/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/umurmurd $(1)/usr/bin/
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/openwrt/files/umurmur.conf $(1)/etc/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/openwrt/files/umurmur.init $(1)/etc/init.d/umurmur
+-	$(INSTALL_DIR) $(1)/etc/umurmur
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/umurmurd $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/etc
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/openwrt/files/umurmur.conf $(1)/opt/etc/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S73umurmurd $(1)/opt/etc/init.d/umurmur
++	$(INSTALL_DIR) $(1)/opt/etc/umurmur
+ endef
+ 
+ Package/umurmur-polarssl/install = $(Package/umurmur-openssl/install)

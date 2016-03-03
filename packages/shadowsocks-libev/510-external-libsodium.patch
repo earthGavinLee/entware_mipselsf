@@ -1,0 +1,74 @@
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,7 +1,7 @@
+ if USE_SYSTEM_SHARED_LIB
+ SUBDIRS = libcork libipset src
+ else
+-SUBDIRS = libsodium libcork libipset libudns src
++SUBDIRS = libcork libipset libudns src
+ endif
+ 
+ ACLOCAL_AMFLAGS = -I m4
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -4,7 +4,6 @@
+ AM_CFLAGS += $(PTHREAD_CFLAGS)
+ if !USE_SYSTEM_SHARED_LIB
+ AM_CFLAGS += -I$(top_srcdir)/libudns
+-AM_CFLAGS += -I$(top_srcdir)/libsodium/src/libsodium/include
+ endif
+ AM_CFLAGS += -I$(top_srcdir)/libipset/include
+ AM_CFLAGS += -I$(top_srcdir)/libcork/include
+@@ -15,7 +14,7 @@
+ if USE_SYSTEM_SHARED_LIB
+ SS_COMMON_LIBS += -lev -lsodium -lm
+ else
+-SS_COMMON_LIBS += $(top_builddir)/libsodium/src/libsodium/libsodium.la
++SS_COMMON_LIBS += 
+ endif
+ 
+ bin_PROGRAMS = ss-local ss-tunnel
+--- a/src/encrypt.c
++++ b/src/encrypt.c
+@@ -118,7 +118,6 @@
+     "seed-cfb",
+     "salsa20",
+     "chacha20",
+-    "chacha20-ietf"
+ };
+ 
+ #ifdef USE_CRYPTO_POLARSSL
+@@ -140,7 +139,6 @@
+     CIPHER_UNSUPPORTED,
+     "salsa20",
+     "chacha20",
+-    "chacha20-ietf"
+ };
+ #endif
+ 
+@@ -163,7 +161,6 @@
+     CIPHER_UNSUPPORTED,
+     "salsa20",
+     "chacha20",
+-    "chacha20-ietf"
+ };
+ #endif
+ 
+@@ -247,8 +244,6 @@
+         return crypto_stream_salsa20_xor_ic(c, m, mlen, n, ic, k);
+     case CHACHA20:
+         return crypto_stream_chacha20_xor_ic(c, m, mlen, n, ic, k);
+-    case CHACHA20IETF:
+-        return crypto_stream_chacha20_ietf_xor_ic(c, m, mlen, n, (uint32_t)ic, k);
+     }
+     // always return 0
+     return 0;
+@@ -1434,7 +1429,7 @@
+     cipher_kt_t *cipher;
+     cipher_kt_t cipher_info;
+ 
+-    if (method == SALSA20 || method == CHACHA20 || method == CHACHA20IETF) {
++    if (method == SALSA20 || method == CHACHA20 ) {
+         if (sodium_init() == -1) {
+             FATAL("Failed to initialize sodium");
+         }

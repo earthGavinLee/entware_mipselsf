@@ -1,0 +1,31 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44486/feeds/packages/libs/libmms/Makefile	2015-02-18 12:16:57.588306331 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libmms/Makefile	2015-02-18 12:17:29.328305754 +0300
+@@ -45,19 +45,19 @@
+ TARGET_LDFLAGS += $(if $(ICONV_FULL),-liconv)
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/libmms $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libmms.{a,so*} $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/libmms $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libmms.{a,so*} $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
+ 	$(INSTALL_DATA) \
+-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/*.pc \
+-		$(1)/usr/lib/pkgconfig
++		$(PKG_INSTALL_DIR)/opt/lib/pkgconfig/*.pc \
++		$(1)/opt/lib/pkgconfig
+ endef
+ 
+ define Package/libmms/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libmms.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libmms.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,libmms))

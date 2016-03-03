@@ -1,0 +1,41 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/xinetd/files/xinetd.conf ../../../openwrt_chaos_calmer_entware/feeds/packages/net/xinetd/files/xinetd.conf
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/xinetd/files/xinetd.conf	2015-07-14 10:55:19.782308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/xinetd/files/xinetd.conf	2015-07-14 10:55:55.118308761 +0300
+@@ -3,4 +3,4 @@
+ 
+ }
+ 
+-includedir /etc/xinetd.d
++includedir /opt/etc/xinetd.d
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/xinetd/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/net/xinetd/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/xinetd/Makefile	2015-07-14 10:55:19.782308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/xinetd/Makefile	2015-07-14 10:55:55.118308761 +0300
+@@ -38,7 +38,7 @@
+ endef
+ 
+ define Package/xinetd/conffiles
+-/etc/xinetd.conf
++/opt/etc/xinetd.conf
+ endef
+ 
+ TARGET_CFLAGS += -DNO_RPC
+@@ -54,13 +54,12 @@
+ 	ac_cv_header_rpc_rpcent_h=no
+ 
+ define Package/xinetd/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/xinetd $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_DATA) ./files/xinetd.conf $(1)/etc/xinetd.conf
+-	$(INSTALL_DIR) $(1)/etc/xinetd.d
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/xinetd.init $(1)/etc/init.d/xinetd
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/xinetd $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_DATA) ./files/xinetd.conf $(1)/opt/etc/xinetd.conf
++	$(INSTALL_DIR) $(1)/opt/etc/xinetd.d
++	$(INSTALL_BIN) ./files/S10xinetd $(1)/opt/etc/init.d
+ endef
+ 
+ $(eval $(call BuildPackage,xinetd))

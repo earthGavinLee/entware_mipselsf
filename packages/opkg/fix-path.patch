@@ -1,0 +1,147 @@
+diff -ur ../../../downloads/openwrt_chaos_calmer_entware-r47008/package/system/opkg/files/opkg-key ../../../openwrt_chaos_calmer_entware/package/system/opkg/files/opkg-key
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/package/system/opkg/files/opkg-key	2015-09-21 12:01:28.527056708 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/system/opkg/files/opkg-key	2015-09-21 12:02:47.299058019 +0300
+@@ -19,7 +19,7 @@
+ 	(
+ 		zcat "$msgfile" 2>/dev/null ||
+ 		cat "$msgfile" 2>/dev/null
+-	) | usign -V -P /etc/opkg/keys -q -x "$sigfile" -m -
++	) | usign -V -P /opt/etc/opkg/keys -q -x "$sigfile" -m -
+ }
+ 
+ opkg_key_add() {
+@@ -27,8 +27,8 @@
+ 	[ -n "$key" ] || usage
+ 	[ -f "$key" ] || echo "Cannot open file $1"
+ 	local fingerprint="$(usign -F -p "$key")"
+-	mkdir -p "/etc/opkg/keys"
+-	cp "$key" "/etc/opkg/keys/$fingerprint"
++	mkdir -p "/opt/etc/opkg/keys"
++	cp "$key" "/opt/etc/opkg/keys/$fingerprint"
+ }
+ 
+ opkg_key_remove() {
+@@ -36,7 +36,7 @@
+ 	[ -n "$key" ] || usage
+ 	[ -f "$key" ] || echo "Cannot open file $1"
+ 	local fingerprint="$(usign -F -p "$key")"
+-	rm -f "/etc/opkg/keys/$fingerprint"
++	rm -f "/opt/etc/opkg/keys/$fingerprint"
+ }
+ 
+ case "$1" in
+diff -ur ../../../downloads/openwrt_chaos_calmer_entware-r47008/package/system/opkg/Makefile ../../../openwrt_chaos_calmer_entware/package/system/opkg/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/package/system/opkg/Makefile	2015-09-21 12:01:28.527056708 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/system/opkg/Makefile	2015-09-21 16:02:28.195297374 +0300
+@@ -5,7 +5,6 @@
+ # See /LICENSE for more information.
+ 
+ include $(TOPDIR)/rules.mk
+-include $(INCLUDE_DIR)/kernel.mk
+ include $(INCLUDE_DIR)/version.mk
+ include $(INCLUDE_DIR)/feeds.mk
+ 
+@@ -38,6 +37,7 @@
+ define Package/opkg/Default
+   SECTION:=base
+   CATEGORY:=Base system
++  DEPENDS:=+uclibc-opt
+   TITLE:=opkg package manager
+   MAINTAINER:=Jo-Philipp Wich <xm@subsignal.org>
+   URL:=http://wiki.openmoko.org/wiki/Opkg
+@@ -62,11 +62,6 @@
+   $(call Package/opkg/Default/description)
+ endef
+ 
+-define Package/opkg/conffiles
+-/etc/opkg.conf
+-endef
+-
+-
+ define Package/opkg-smime
+   $(call Package/opkg/Default)
+   TITLE+= (with S/MIME signature support)
+@@ -80,18 +75,17 @@
+   This package allows the Package index to be verified with S/MIME.
+ endef
+ 
+-Package/opkg-smime/conffiles = $(Package/opkg/conffiles)
+-
+ TARGET_CFLAGS += $(if $(CONFIG_GCC_VERSION_4_3)$(CONFIG_GCC_VERSION_4_4),-Wno-array-bounds)
+-TARGET_CFLAGS += -ffunction-sections -fdata-sections
++TARGET_CFLAGS += -ffunction-sections -fdata-sections -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+ EXTRA_CFLAGS += $(TARGET_CPPFLAGS)
+ 
+ CONFIGURE_ARGS += \
+ 	--disable-curl \
+ 	--disable-gpg \
+ 	--enable-sha256 \
+-	--with-opkgetcdir=/etc \
+-	--with-opkglockfile=/var/lock/opkg.lock
++	--with-opkgetcdir=/opt/etc \
++	--with-opkglibdir=/opt/lib \
++	--with-opkglockfile=/opt/var/lock/opkg.lock
+ 
+ ifeq ($(BUILD_VARIANT),smime)
+ 	CONFIGURE_ARGS += --enable-openssl --disable-usign
+@@ -105,36 +99,33 @@
+ 		CC="$(TARGET_CC)" \
+ 		DESTDIR="$(PKG_INSTALL_DIR)" \
+ 		HOST_CPU="$(PKGARCH)" \
+-		LDFLAGS="-Wl,--gc-sections" \
++		LDFLAGS="-Wl,--gc-sections --static" \
+ 
+ define Package/opkg/Default/install
+-	$(INSTALL_DIR) $(1)/usr/lib/opkg
+-	$(INSTALL_DIR) $(1)/bin
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_DATA) ./files/opkg$(2).conf $(1)/etc/opkg.conf
+-	$(call FeedSourcesAppend,$(1)/etc/opkg.conf)
+-	$(VERSION_SED) $(1)/etc/opkg.conf
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/opkg-cl $(1)/bin/opkg
++	$(INSTALL_DIR) $(1)/opt/lib/opkg
++	$(INSTALL_DIR) $(1)/opt/{bin,etc,tmp}
++	$(INSTALL_DIR) $(1)/opt/var/{lock,log,run}
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/opkg-cl $(1)/opt/bin/opkg
+ endef
+ 
+ define Package/opkg/install
+ 	$(call Package/opkg/Default/install,$(1),)
+   ifneq ($(CONFIG_SIGNED_PACKAGES),)
+-	echo "option check_signature 1" >> $(1)/etc/opkg.conf
++	echo "option check_signature 1" >> $(1)/opt/etc/opkg.conf
+   endif
+-	mkdir $(1)/usr/sbin
+-	$(INSTALL_BIN) ./files/opkg-key $(1)/usr/sbin/
++	mkdir $(1)/opt/sbin
++	$(INSTALL_BIN) ./files/opkg-key $(1)/opt/sbin/
+ endef
+ 
+ define Package/opkg-smime/install
+ 	$(call Package/opkg/Default/install,$(1),-smime)
+-	$(INSTALL_DIR) $(1)/etc/ssl/certs
+-	$(if $(CONFIG_OPKGSMIME_CERT),$(INSTALL_DATA) $(call qstrip,$(CONFIG_OPKGSMIME_CERT)) $(1)/etc/ssl/certs/opkg.pem,)
++	$(INSTALL_DIR) $(1)/opt/etc/ssl/certs
++	$(if $(CONFIG_OPKGSMIME_CERT),$(INSTALL_DATA) $(call qstrip,$(CONFIG_OPKGSMIME_CERT)) $(1)/opt/etc/ssl/certs/opkg.pem,)
+ endef
+ 
+ define Build/InstallDev
+-	mkdir -p $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/libopkg $(1)/usr/include/
++	mkdir -p $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/libopkg $(1)/opt/include/
+ endef
+ 
+ 
+diff -ur ../../../downloads/openwrt_chaos_calmer_entware-r47008/package/system/opkg/patches/200-usign_support.patch ../../../openwrt_chaos_calmer_entware/package/system/opkg/patches/200-usign_support.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/package/system/opkg/patches/200-usign_support.patch	2015-09-21 12:01:28.527056708 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/system/opkg/patches/200-usign_support.patch	2015-09-21 12:02:47.299058019 +0300
+@@ -76,7 +76,7 @@
+ +		return -1;
+ +
+ +	if (!pid) {
+-+		execl("/usr/sbin/opkg-key", "opkg-key", "verify", sig_file, text_file, NULL);
+++		execl("/opt/sbin/opkg-key", "opkg-key", "verify", sig_file, text_file, NULL);
+ +		exit(255);
+ +	}
+ +

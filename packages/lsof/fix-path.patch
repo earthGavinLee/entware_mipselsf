@@ -1,0 +1,36 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/utils/lsof/Makefile	2015-09-21 12:01:28.415056706 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/lsof/Makefile	2015-09-21 16:54:17.295349122 +0300
+@@ -22,8 +22,6 @@
+ 
+ include $(INCLUDE_DIR)/package.mk
+ 
+-TARGET_LDFLAGS += $(LIBRPC)
+-
+ define Package/lsof
+   SECTION:=utils
+   CATEGORY:=Utilities
+@@ -48,11 +46,13 @@
+ 	cd $(PKG_BUILD_DIR); \
+ 		LINUX_CLIB="-DGLIBCV=2 $(LINUX_CLIB_IPV6)" \
+ 		LSOF_CC="$(TARGET_CC)" \
++		LSOF_INCLUDE="-I$(LINUX_DIR)/include" \
+ 		LSOF_VSTR="$(LINUX_VERSION)" \
+ 		LSOF_CFGF="$(TARGET_CFLAGS)" \
+ 		LSOF_CFGL="$(TARGET_LDFLAGS)" \
+ 		LSOF_AR="$(TARGET_CROSS)ar cr" \
+ 		LSOF_RANLIB="$(TARGET_CROSS)ranlib" \
++		LSOF_ARCH="$(ARCH)" \
+ 		./Configure -n linux
+ endef
+ 
+@@ -61,8 +61,8 @@
+ endef
+ 
+ define Package/lsof/install	
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lsof $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/lsof $(1)/opt/bin
+ endef
+ 
+ $(eval $(call BuildPackage,lsof))

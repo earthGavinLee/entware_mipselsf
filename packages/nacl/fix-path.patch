@@ -1,0 +1,17 @@
+--- ../../../openwrt_chaos_calmer_entware.orig/feeds/packages/libs/nacl/Makefile
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/nacl/Makefile
+@@ -40,10 +40,10 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include/nacl
+-	$(CP) $(PKG_BUILD_DIR)/build/include/*.h $(1)/usr/include/nacl/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_BUILD_DIR)/build/lib/libnacl.a $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/include/nacl
++	$(CP) $(PKG_BUILD_DIR)/build/include/*.h $(1)/opt/include/nacl/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_BUILD_DIR)/build/lib/libnacl.a $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,nacl))

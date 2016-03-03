@@ -1,0 +1,13 @@
+--- ../../../openwrt_chaos_calmer_entware.orig/package/libs/ocf-crypto-headers/Makefile
++++ ../../../openwrt_chaos_calmer_entware/package/libs/ocf-crypto-headers/Makefile
+@@ -32,8 +32,8 @@
+ endef
+ 
+ define Build/InstallDev
+-	mkdir -p $(1)/usr/include/crypto
+-	$(CP) ./src/cryptodev.h $(1)/usr/include/crypto
++	mkdir -p $(1)/opt/include/crypto
++	$(CP) ./src/cryptodev.h $(1)/opt/include/crypto
+ endef
+ 
+ $(eval $(call BuildPackage,ocf-crypto-headers))

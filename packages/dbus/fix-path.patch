@@ -1,0 +1,166 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/utils/dbus/files/dbus-launch ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/dbus/files/dbus-launch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/utils/dbus/files/dbus-launch	2015-07-14 10:55:19.826308174 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/dbus/files/dbus-launch	2015-07-14 10:55:47.650308637 +0300
+@@ -5,8 +5,8 @@
+ # dbus-launch-x package. The script is used to prefer dbus-launch with x over
+ # the dbus-lauch without x.
+ 
+-if [ -f /usr/bin/dbus-launch-x ]; then
+-	exec /usr/bin/dbus-launch-x $@
++if [ -f /opt/bin/dbus-launch-x ]; then
++	exec /opt/bin/dbus-launch-x $@
+ else
+-	exec /usr/bin/dbus-launch.real $@
++	exec /opt/bin/dbus-launch.real $@
+ fi
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/utils/dbus/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/dbus/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/utils/dbus/Makefile	2015-07-14 10:55:19.826308174 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/dbus/Makefile	2015-07-14 10:55:47.650308637 +0300
+@@ -25,9 +25,6 @@
+ include $(INCLUDE_DIR)/host-build.mk
+ include $(INCLUDE_DIR)/package.mk
+ 
+-TARGET_LDFLAGS+= \
+-	-Wl,-rpath-link=$(STAGING_DIR)/usr/lib \
+-
+ define Package/dbus/Default
+   SECTION:=utils
+   CATEGORY:=Utilities
+@@ -98,11 +95,11 @@
+ 	--disable-xml-docs \
+ 	--with-xml="expat" \
+ 	--with-dbus-user=root \
+-	--with-dbus-daemondir="/usr/sbin" \
+-	--with-system-socket="/var/run/dbus/system_bus_socket" \
+-	--with-system-pid-file="/var/run/dbus.pid" \
++	--with-dbus-daemondir="/opt/sbin" \
++	--with-system-socket="/opt/var/run/dbus/system_bus_socket" \
++	--with-system-pid-file="/opt/var/run/dbus.pid" \
+ 	--without-x \
+-	--libexecdir=/usr/lib/dbus-1
++	--libexecdir=/opt/lib/dbus-1
+ 
+ CONFIGURE_VARS+= \
+ 	ac_cv_have_abstract_sockets="yes" \
+@@ -133,79 +130,81 @@
+ 	ac_cv_lib_expat_XML_ParserCreate_MM="yes" \
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
++	$(INSTALL_DIR) $(1)/opt/include
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/dbus-1.0 \
+-		$(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib/dbus-1.0/include/dbus/
++		$(PKG_INSTALL_DIR)/opt/include/dbus-1.0 \
++		$(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib/dbus-1.0/include/dbus/
+ 	$(INSTALL_DATA) \
+-		$(PKG_INSTALL_DIR)/usr/lib/dbus-1.0/include/dbus/*.h \
+-		$(1)/usr/lib/dbus-1.0/include/dbus/
++		$(PKG_INSTALL_DIR)/opt/lib/dbus-1.0/include/dbus/*.h \
++		$(1)/opt/lib/dbus-1.0/include/dbus/
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(INSTALL_DATA) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libdbus-1.{so*,la,a} \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libdbus-1.{so*,la,a} \
++		$(1)/opt/lib/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/dbus-1.0 \
+-		$(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/pkgconfig
++		$(PKG_INSTALL_DIR)/opt/lib/dbus-1.0 \
++		$(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/pkgconfig
+ 	$(INSTALL_DATA) \
+-		$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/dbus-1.pc \
+-		$(1)/usr/lib/pkgconfig/
++		$(PKG_INSTALL_DIR)/opt/lib/pkgconfig/dbus-1.pc \
++		$(1)/opt/lib/pkgconfig/
+ endef
+ 
+ define Package/dbus/conffiles
+-/etc/dbus-1/session.conf
+-/etc/dbus-1/system.conf
++/opt/etc/dbus-1/session.conf
++/opt/etc/dbus-1/system.conf
+ endef
+ 
+ define Package/libdbus/install
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libdbus-1.so.* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libdbus-1.so.* \
++		$(1)/opt/lib/
+ endef
+ 
+ define Package/dbus/install
+-	$(INSTALL_DIR) $(1)/etc
++	$(INSTALL_DIR) $(1)/opt/etc
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/etc/dbus-1 \
+-		$(1)/etc/
++		$(PKG_INSTALL_DIR)/opt/etc/dbus-1 \
++		$(1)/opt/etc/
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib/dbus-1
++	$(INSTALL_DIR) $(1)/opt/lib/dbus-1
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/lib/dbus-1/dbus-daemon-launch-helper \
+-		$(1)/usr/lib/dbus-1/
++		$(PKG_INSTALL_DIR)/opt/lib/dbus-1/dbus-daemon-launch-helper \
++		$(1)/opt/lib/dbus-1/
+ 
+-	$(INSTALL_DIR) $(1)/usr/sbin
++	$(INSTALL_DIR) $(1)/opt/sbin
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/sbin/dbus-daemon \
+-		$(1)/usr/sbin/
++		$(PKG_INSTALL_DIR)/opt/sbin/dbus-daemon \
++		$(1)/opt/sbin/
+ 
+-	$(INSTALL_DIR) $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/bin/dbus-uuidgen \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/dbus-uuidgen \
++		$(1)/opt/bin/
+ 
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/bin/dbus-launch \
+-		$(1)/usr/bin/dbus-launch.real
++		$(PKG_INSTALL_DIR)/opt/bin/dbus-launch \
++		$(1)/opt/bin/dbus-launch.real
+ 	$(INSTALL_BIN) \
+ 		./files/dbus-launch \
+-		$(1)/usr/bin/
++		$(1)/opt/bin/
++
++	$(INSTALL_DIR) $(1)/opt/var/run/dbus
+ 
+-	$(INSTALL_DIR) $(1)/etc/init.d
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
+ 	$(INSTALL_BIN) \
+-		./files/dbus.init \
+-		$(1)/etc/init.d/dbus
++		./files/S20dbus \
++		$(1)/opt/etc/init.d/
+ endef
+ 
+ define Package/dbus-utils/install
+-	$(INSTALL_DIR) $(1)/usr/bin
++	$(INSTALL_DIR) $(1)/opt/bin
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/bin/dbus-{send,monitor,cleanup-sockets} \
+-		$(1)/usr/bin/
++		$(PKG_INSTALL_DIR)/opt/bin/dbus-{send,monitor,cleanup-sockets} \
++		$(1)/opt/bin/
+ endef
+ 
+ $(eval $(call HostBuild))

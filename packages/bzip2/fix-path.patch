@@ -1,0 +1,45 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/package/utils/bzip2/Makefile	2015-09-15 12:24:40.850451663 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/utils/bzip2/Makefile	2015-09-15 12:24:42.946451698 +0300
+@@ -56,31 +56,29 @@
+ 	$(FPIC) \
+ 	$(TARGET_LDFLAGS)
+ 
+-CONFIGURE_ARGS += --prefix=/usr
+-
+ MAKE_FLAGS += \
+ 	-f Makefile-libbz2_so \
+ 	CFLAGS="$(TARGET_CFLAGS)" \
+ 	all
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_BUILD_DIR)/bzlib.h $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_BUILD_DIR)/libbz2.so.$(PKG_VERSION) $(1)/usr/lib/
+-	$(LN) libbz2.so.$(PKG_VERSION) $(1)/usr/lib/libbz2.so.1.0
+-	$(LN) libbz2.so.$(PKG_VERSION) $(1)/usr/lib/libbz2.so
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_BUILD_DIR)/bzlib.h $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_BUILD_DIR)/libbz2.so.$(PKG_VERSION) $(1)/opt/lib/
++	$(LN) libbz2.so.$(PKG_VERSION) $(1)/opt/lib/libbz2.so.1.0
++	$(LN) libbz2.so.$(PKG_VERSION) $(1)/opt/lib/libbz2.so
+ endef
+ 
+ define Package/libbz2/install
+-	$(INSTALL_DIR) $(1)/usr/lib/
+-	$(CP) $(PKG_BUILD_DIR)/libbz2.so.$(PKG_VERSION) $(1)/usr/lib/
+-	$(LN) libbz2.so.$(PKG_VERSION) $(1)/usr/lib/libbz2.so.1.0
++	$(INSTALL_DIR) $(1)/opt/lib/
++	$(CP) $(PKG_BUILD_DIR)/libbz2.so.$(PKG_VERSION) $(1)/opt/lib/
++	$(LN) libbz2.so.$(PKG_VERSION) $(1)/opt/lib/libbz2.so.1.0
+ endef
+ 
+ define Package/bzip2/install
+-	$(INSTALL_DIR) $(1)/usr/bin/
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bzip2-shared $(1)/usr/bin/bzip2
++	$(INSTALL_DIR) $(1)/opt/bin/
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bzip2-shared $(1)/opt/bin/bzip2
+ endef
+ 
+ $(eval $(call BuildPackage,libbz2))

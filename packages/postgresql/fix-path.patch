@@ -1,0 +1,186 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/libs/postgresql/Makefile	2015-09-21 12:01:28.363056705 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/postgresql/Makefile	2015-09-22 16:01:50.698298001 +0300
+@@ -42,7 +42,7 @@
+ define Package/pgsql-cli
+   SECTION:=utils
+   CATEGORY:=Utilities
+-  DEPENDS:=+libpq @USE_UCLIBC:+librt
++  DEPENDS:=+libpq +librt
+   TITLE:=Command Line Interface (CLI) to PostgreSQL databases
+   URL:=http://www.postgresql.org/
+   SUBMENU:=database
+@@ -55,7 +55,7 @@
+ define Package/pgsql-server
+   SECTION:=utils
+   CATEGORY:=Utilities
+-  DEPENDS:=+libpq @USE_UCLIBC:+librt
++  DEPENDS:=+libpq +librt
+   TITLE:=PostgreSQL databases Server
+   URL:=http://www.postgresql.org/
+   SUBMENU:=database
+@@ -68,7 +68,8 @@
+ 
+ PGSQL_CONFIG_VARS:= \
+ 	pgac_cv_snprintf_long_long_int_format="%lld" \
+-	pgac_cv_snprintf_size_t_support=yes
++	pgac_cv_snprintf_size_t_support=yes \
++	pgac_cv_type_locale_t=no
+ 
+ ifeq ($(CONFIG_USE_UCLIBC),y)
+ # PostgreSQL does not build against uClibc with locales
+@@ -86,18 +87,18 @@
+ 	(cd $(PKG_BUILD_DIR); rm -f config.cache; \
+ 		$(PGSQL_CONFIG_VARS) \
+ 		./configure \
+-			--prefix=/usr \
+-			--exec-prefix=/usr \
+-			--bindir=/usr/bin \
+-			--datadir=/usr/share \
+-			--includedir=/usr/include \
+-			--infodir=/usr/share/info \
+-			--libdir=/usr/lib \
+-			--libexecdir=/usr/lib \
+-			--localstatedir=/var \
+-			--mandir=/usr/share/man \
+-			--sbindir=/usr/sbin \
+-			--sysconfdir=/etc \
++			--prefix=/opt \
++			--exec-prefix=/opt \
++			--bindir=/opt/bin \
++			--datadir=/opt/share \
++			--includedir=/opt/include \
++			--infodir=/opt/share/info \
++			--libdir=/opt/lib \
++			--libexecdir=/opt/lib \
++			--localstatedir=/opt/var \
++			--mandir=/opt/share/man \
++			--sbindir=/opt/sbin \
++			--sysconfdir=/opt/etc \
+ 			$(DISABLE_NLS) \
+ 			--enable-shared \
+ 			--enable-static \
+@@ -114,7 +115,7 @@
+ 			--without-tcl \
+ 			--with-zlib="yes" \
+ 			--enable-depend \
+-			--with-system-timezone=/tmp \
++			--with-system-timezone=/opt/tmp \
+ 	);
+ 	$(MAKE) -C $(PKG_BUILD_DIR)/src/interfaces/ecpg/preproc CC="$(HOSTCC)" CFLAGS+="-I../../libpq"
+ 	mv $(PKG_BUILD_DIR)/src/interfaces/ecpg/preproc/ecpg \
+@@ -139,18 +140,18 @@
+ 			--build=$(GNU_HOST_NAME) \
+ 			--program-prefix="" \
+ 			--program-suffix="" \
+-			--prefix=/usr \
+-			--exec-prefix=/usr \
+-			--bindir=/usr/bin \
+-			--datadir=/usr/share \
+-			--includedir=/usr/include \
+-			--infodir=/usr/share/info \
+-			--libdir=/usr/lib \
+-			--libexecdir=/usr/lib \
+-			--localstatedir=/var \
+-			--mandir=/usr/share/man \
+-			--sbindir=/usr/sbin \
+-			--sysconfdir=/etc \
++			--prefix=/opt \
++			--exec-prefix=/opt \
++			--bindir=/opt/bin \
++			--datadir=/opt/share \
++			--includedir=/opt/include \
++			--infodir=/opt/share/info \
++			--libdir=/opt/lib \
++			--libexecdir=/opt/lib \
++			--localstatedir=/opt/var \
++			--mandir=/opt/share/man \
++			--sbindir=/opt/sbin \
++			--sysconfdir=/opt/etc \
+ 			$(DISABLE_NLS) \
+ 			$(DISABLE_LARGEFILE) \
+ 			--enable-shared \
+@@ -187,55 +188,48 @@
+ endef
+ 
+ define Package/libpq/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libpq.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libpq.so.* $(1)/opt/lib/
+ endef
+ 
+ define Package/pgsql-cli/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/psql $(1)/usr/bin/
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/psql $(1)/opt/bin/
+ endef
+ 
+ define Package/pgsql-server/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_DIR) $(1)/usr/share/postgresql
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_DIR) $(1)/etc/config
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/* $(1)/usr/bin
+-	ln -sf postgres $(1)/usr/bin/postmaster
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_DIR) $(1)/opt/share/postgresql
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/* $(1)/opt/bin
++	ln -sf postgres $(1)/opt/bin/postmaster
+ 
+-	$(INSTALL_BIN) ./files/postgresql.init $(1)/etc/init.d/postgresql
++	$(INSTALL_BIN) ./files/S98postgresql $(1)/opt/etc/init.d/
+ 
+-	$(CP) -r $(PKG_INSTALL_DIR)/usr/share/postgresql/* \
+-		$(1)/usr/share/postgresql
+-
+-	$(INSTALL_DATA) ./files/postgresql.config $(1)/etc/config/postgresql
++	$(CP) -r $(PKG_INSTALL_DIR)/opt/share/postgresql/* \
++		$(1)/opt/share/postgresql
+ 
+ 	$(CP) -r \
+-		$(PKG_INSTALL_DIR)/usr/lib/postgresql \
+-		$(1)/usr/lib
+-endef
+-
+-define Package/pgsql-server/conffiles
+-/etc/config/postgresql
++		$(PKG_INSTALL_DIR)/opt/lib/postgresql \
++		$(1)/opt/lib
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/bin/pg_config/pg_config.host $(1)/usr/bin/pg_config
+-	$(INSTALL_DIR) $(1)/usr/include
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/libpq $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/libpq-fe.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/pg_config.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/pg_config_manual.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/postgres_ext.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/pg_config_ext.h $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/postgresql $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libpq.{a,so*} $(1)/usr/lib/
+-	$(CP) $(PKG_BUILD_DIR)/src/interfaces/ecpg/preproc/ecpg.host $(1)/usr/bin/ecpg
+-	$(CP) $(PKG_BUILD_DIR)/host-zic $(1)/usr/bin/zic
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/bin/pg_config/pg_config.host $(1)/opt/bin/pg_config
++	$(INSTALL_DIR) $(1)/opt/include
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/libpq $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/libpq-fe.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/pg_config.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/pg_config_manual.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/postgres_ext.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/pg_config_ext.h $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/postgresql $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libpq.{a,so*} $(1)/opt/lib/
++	$(CP) $(PKG_BUILD_DIR)/src/interfaces/ecpg/preproc/ecpg.host $(1)/opt/bin/ecpg
++	$(CP) $(PKG_BUILD_DIR)/host-zic $(1)/opt/bin/zic
+ endef
+ 
+ $(eval $(call BuildPackage,libpq))

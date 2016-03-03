@@ -1,0 +1,13 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/net/mtr/Makefile	2015-07-14 10:55:19.798308173 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/mtr/Makefile	2015-07-14 10:55:49.938308675 +0300
+@@ -66,8 +66,8 @@
+ endef
+ 
+ define Package/mtr/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/mtr $(1)/usr/sbin/
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/mtr $(1)/opt/sbin/
+ endef
+ 
+ $(eval $(call BuildPackage,mtr))

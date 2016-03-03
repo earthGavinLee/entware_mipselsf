@@ -1,0 +1,34 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r45513/feeds/packages/ipv6/tayga/Makefile	2015-04-20 10:09:28.958135359 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/ipv6/tayga/Makefile	2015-04-20 10:09:51.462134951 +0300
+@@ -19,7 +19,6 @@
+ define Package/tayga
+   SECTION:=net
+   CATEGORY:=Network
+-  DEPENDS:=+ip +kmod-ipv6 +kmod-tun
+   TITLE:=Out-of-kernel stateless NAT64 implementation for Linux
+   URL:=http://www.litech.org/tayga/
+   MAINTAINER:=Ondrej Caletka <ondrej@caletka.cz>
+@@ -31,19 +30,9 @@
+   kernel, which is the same driver used by OpenVPN and QEMU/KVM.
+ endef
+ 
+-ifdef CONFIG_PACKAGE_netifd
+-  define Package/tayga/install
+-	$(INSTALL_DIR) $(1)/usr/sbin $(1)/lib/netifd/proto
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tayga $(1)/usr/sbin/
+-	$(INSTALL_BIN) ./files/tayga-proto.sh $(1)/lib/netifd/proto/tayga.sh
+-  endef
+-else
+-  define Package/tayga/install
+-	$(INSTALL_DIR) $(1)/usr/sbin $(1)/lib/network $(1)/etc/hotplug.d/iface
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tayga $(1)/usr/sbin/
+-	$(INSTALL_DATA) ./files/tayga.sh $(1)/lib/network/tayga.sh
+-	$(INSTALL_DATA) ./files/tayga.hotplug $(1)/etc/hotplug.d/iface/95-tayga
+-  endef
+-endif
++define Package/tayga/install
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tayga $(1)/opt/sbin/
++endef
+ 
+ $(eval $(call BuildPackage,tayga))

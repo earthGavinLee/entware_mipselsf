@@ -1,0 +1,386 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-codecs.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-codecs.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-codecs.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-codecs.mk	2015-07-14 10:55:50.426308683 +0300
+@@ -12,12 +12,12 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-codecs, \
+-	/usr/lib/python$(PYTHON_VERSION)/encodings \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_cn.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_hk.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_iso2022.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_jp.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_kr.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_tw.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/unicodedata.so \
++	/opt/lib/python$(PYTHON_VERSION)/encodings \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_cn.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_hk.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_iso2022.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_jp.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_kr.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_codecs_tw.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/unicodedata.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-compiler.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-compiler.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-compiler.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-compiler.mk	2015-07-14 10:55:50.426308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-compiler, \
+-	/usr/lib/python$(PYTHON_VERSION)/compiler \
++	/opt/lib/python$(PYTHON_VERSION)/compiler \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-ctypes.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-ctypes.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-ctypes.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-ctypes.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,7 +12,7 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-ctypes, \
+-	/usr/lib/python$(PYTHON_VERSION)/ctypes \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_ctypes.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_ctypes_test.so \
++	/opt/lib/python$(PYTHON_VERSION)/ctypes \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_ctypes.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_ctypes_test.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-db.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-db.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-db.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-db.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,7 +12,7 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-db, \
+-	/usr/lib/python$(PYTHON_VERSION)/bsddb \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_bsddb.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/dbm.so \
++	/opt/lib/python$(PYTHON_VERSION)/bsddb \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_bsddb.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/dbm.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-decimal.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-decimal.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-decimal.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-decimal.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-decimal, \
+-	/usr/lib/python$(PYTHON_VERSION)/decimal.py \
++	/opt/lib/python$(PYTHON_VERSION)/decimal.py \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-distutils.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-distutils.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-distutils.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-distutils.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-distutils, \
+-	/usr/lib/python$(PYTHON_VERSION)/distutils \
++	/opt/lib/python$(PYTHON_VERSION)/distutils \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-email.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-email.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-email.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-email.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-email, \
+-	/usr/lib/python$(PYTHON_VERSION)/email \
++	/opt/lib/python$(PYTHON_VERSION)/email \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-gdbm.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-gdbm.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-gdbm.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-gdbm.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-gdbm, \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/gdbm.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/gdbm.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-logging.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-logging.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-logging.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-logging.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-logging, \
+-	/usr/lib/python$(PYTHON_VERSION)/logging \
++	/opt/lib/python$(PYTHON_VERSION)/logging \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -8,12 +8,12 @@
+ PYTHON_VERSION:=2.7
+ PYTHON_VERSION_MICRO:=10
+ 
+-PYTHON_DIR:=$(STAGING_DIR)/usr
++PYTHON_DIR:=$(STAGING_DIR)/opt
+ PYTHON_BIN_DIR:=$(PYTHON_DIR)/bin
+ PYTHON_INC_DIR:=$(PYTHON_DIR)/include/python$(PYTHON_VERSION)
+ PYTHON_LIB_DIR:=$(PYTHON_DIR)/lib/python$(PYTHON_VERSION)
+ 
+-PYTHON_PKG_DIR:=/usr/lib/python$(PYTHON_VERSION)/site-packages
++PYTHON_PKG_DIR:=/opt/lib/python$(PYTHON_VERSION)/site-packages
+ 
+ PYTHON:=python$(PYTHON_VERSION)
+ 
+@@ -37,8 +37,8 @@
+ # using autotools.
+ CONFIGURE_ARGS += \
+ 	_python_sysroot="$(STAGING_DIR)" \
+-	_python_prefix="/usr" \
+-	_python_exec_prefix="/usr"
++	_python_prefix="/opt" \
++	_python_exec_prefix="/opt"
+ 
+ PKG_USE_MIPS16:=0
+ # This is required in addition to PKG_USE_MIPS16:=0 because otherwise MIPS16
+@@ -109,7 +109,7 @@
+ 		CPPFLAGS="$(TARGET_CPPFLAGS) -I$(PYTHON_INC_DIR)" \
+ 		LDFLAGS="$(TARGET_LDFLAGS) -lpython$(PYTHON_VERSION)" \
+ 		_PYTHON_HOST_PLATFORM=linux2 \
+-		__PYVENV_LAUNCHER__="/usr/bin/$(PYTHON)" \
++		__PYVENV_LAUNCHER__="/opt/bin/$(PYTHON)" \
+ 		$(3) \
+ 		, \
+ 		./setup.py $(2) \
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-multiprocessing.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-multiprocessing.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-multiprocessing.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-multiprocessing.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,6 +12,6 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-multiprocessing, \
+-	/usr/lib/python$(PYTHON_VERSION)/multiprocessing \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_multiprocessing.so \
++	/opt/lib/python$(PYTHON_VERSION)/multiprocessing \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_multiprocessing.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-ncurses.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-ncurses.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-ncurses.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-ncurses.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,7 +12,7 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-ncurses, \
+-	/usr/lib/python$(PYTHON_VERSION)/curses \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_curses.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_curses_panel.so \
++	/opt/lib/python$(PYTHON_VERSION)/curses \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_curses.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_curses_panel.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-openssl.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-openssl.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-openssl.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-openssl.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,6 +12,6 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-openssl, \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_hashlib.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_ssl.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_hashlib.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_ssl.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-pydoc.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-pydoc.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-pydoc.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-pydoc.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,7 +12,7 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-pydoc, \
+-	/usr/lib/python$(PYTHON_VERSION)/doctest.py \
+-	/usr/lib/python$(PYTHON_VERSION)/pydoc.py \
+-	/usr/lib/python$(PYTHON_VERSION)/pydoc_data \
++	/opt/lib/python$(PYTHON_VERSION)/doctest.py \
++	/opt/lib/python$(PYTHON_VERSION)/pydoc.py \
++	/opt/lib/python$(PYTHON_VERSION)/pydoc_data \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-sqlite3.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-sqlite3.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-sqlite3.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-sqlite3.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,6 +12,6 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-sqlite3, \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_sqlite3.so \
+-	/usr/lib/python$(PYTHON_VERSION)/sqlite3 \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_sqlite3.so \
++	/opt/lib/python$(PYTHON_VERSION)/sqlite3 \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-unittest.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-unittest.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-unittest.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-unittest.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,5 +12,5 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-unittest, \
+-	/usr/lib/python$(PYTHON_VERSION)/unittest \
++	/opt/lib/python$(PYTHON_VERSION)/unittest \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-xml.mk ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-xml.mk
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/files/python-package-xml.mk	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/files/python-package-xml.mk	2015-07-14 10:55:50.430308683 +0300
+@@ -12,9 +12,9 @@
+ endef
+ 
+ $(eval $(call PyBasePackage,python-xml, \
+-	/usr/lib/python$(PYTHON_VERSION)/xml \
+-	/usr/lib/python$(PYTHON_VERSION)/xmllib.py \
+-	/usr/lib/python$(PYTHON_VERSION)/xmlrpclib.py \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_elementtree.so \
+-	/usr/lib/python$(PYTHON_VERSION)/lib-dynload/pyexpat.so \
++	/opt/lib/python$(PYTHON_VERSION)/xml \
++	/opt/lib/python$(PYTHON_VERSION)/xmllib.py \
++	/opt/lib/python$(PYTHON_VERSION)/xmlrpclib.py \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_elementtree.so \
++	/opt/lib/python$(PYTHON_VERSION)/lib-dynload/pyexpat.so \
+ ))
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/feeds/packages/lang/python/Makefile	2015-07-14 10:55:19.758308172 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/lang/python/Makefile	2015-07-14 10:55:50.430308683 +0300
+@@ -118,11 +118,11 @@
+ endif
+ 
+ CONFIGURE_ARGS+= \
+-	--sysconfdir=/etc \
++	--sysconfdir=/opt/etc \
+ 	--enable-shared \
+ 	--without-cxx-main \
+ 	--with-threads \
+-	--with-system-ffi="$(STAGING_DIR)/usr" \
++	--with-system-ffi="$(STAGING_DIR)/opt" \
+ 	--without-pymalloc \
+ 	$(ENABLE_IPV6) \
+ 	CONFIG_SITE="$(PKG_BUILD_DIR)/config.site" \
+@@ -135,78 +135,78 @@
+ 
+ define Build/InstallDev
+ 	$(INSTALL_DIR) $(STAGING_DIR)/mk/
+-	$(INSTALL_DIR) $(1)/usr/include/ $(1)/usr/lib/ $(1)/usr/lib/pkgconfig
+-	$(INSTALL_DIR) $(1)/usr/lib/python$(PYTHON_VERSION)/
++	$(INSTALL_DIR) $(1)/opt/include/ $(1)/opt/lib/ $(1)/opt/lib/pkgconfig
++	$(INSTALL_DIR) $(1)/opt/lib/python$(PYTHON_VERSION)/
+ 	$(INSTALL_DATA) ./files/python-package.mk $(STAGING_DIR)/mk/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/python$(PYTHON_VERSION) \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/python$(PYTHON_VERSION) \
++		$(1)/opt/include/
+ 	$(CP) \
+ 		$(STAGING_DIR_HOST)/lib/python$(PYTHON_VERSION) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libpython$(PYTHON_VERSION).so* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libpython$(PYTHON_VERSION).so* \
++		$(1)/opt/lib/
+ 	$(CP) \
+ 		$(STAGING_DIR_HOST)/lib/pkgconfig/python.pc \
+ 		$(STAGING_DIR_HOST)/lib/pkgconfig/python2.pc \
+ 		$(STAGING_DIR_HOST)/lib/pkgconfig/python-$(PYTHON_VERSION).pc \
+-		$(1)/usr/lib/pkgconfig
++		$(1)/opt/lib/pkgconfig
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/python$(PYTHON_VERSION)/config \
+-		$(1)/usr/lib/python$(PYTHON_VERSION)/
++		$(PKG_INSTALL_DIR)/opt/lib/python$(PYTHON_VERSION)/config \
++		$(1)/opt/lib/python$(PYTHON_VERSION)/
+ endef
+ 
+ PYTHON_BASE_LIB_FILES:= \
+-	/usr/lib/python$(PYTHON_VERSION)/_abcoll.py \
+-	/usr/lib/python$(PYTHON_VERSION)/_sysconfigdata.py \
+-	/usr/lib/python$(PYTHON_VERSION)/_weakrefset.py \
+-	/usr/lib/python$(PYTHON_VERSION)/abc.py \
+-	/usr/lib/python$(PYTHON_VERSION)/copy_reg.py \
+-	/usr/lib/python$(PYTHON_VERSION)/genericpath.py \
+-	/usr/lib/python$(PYTHON_VERSION)/linecache.py \
+-	/usr/lib/python$(PYTHON_VERSION)/posixpath.py \
+-	/usr/lib/python$(PYTHON_VERSION)/os.py \
+-	/usr/lib/python$(PYTHON_VERSION)/re.py \
+-	/usr/lib/python$(PYTHON_VERSION)/site.py \
+-	/usr/lib/python$(PYTHON_VERSION)/sre_compile.py \
+-	/usr/lib/python$(PYTHON_VERSION)/sre_constants.py \
+-	/usr/lib/python$(PYTHON_VERSION)/sre_parse.py \
+-	/usr/lib/python$(PYTHON_VERSION)/sysconfig.py \
+-	/usr/lib/python$(PYTHON_VERSION)/stat.py \
+-	/usr/lib/python$(PYTHON_VERSION)/traceback.py \
+-	/usr/lib/python$(PYTHON_VERSION)/types.py \
+-	/usr/lib/python$(PYTHON_VERSION)/UserDict.py \
+-	/usr/lib/python$(PYTHON_VERSION)/warnings.py
++	/opt/lib/python$(PYTHON_VERSION)/_abcoll.py \
++	/opt/lib/python$(PYTHON_VERSION)/_sysconfigdata.py \
++	/opt/lib/python$(PYTHON_VERSION)/_weakrefset.py \
++	/opt/lib/python$(PYTHON_VERSION)/abc.py \
++	/opt/lib/python$(PYTHON_VERSION)/copy_reg.py \
++	/opt/lib/python$(PYTHON_VERSION)/genericpath.py \
++	/opt/lib/python$(PYTHON_VERSION)/linecache.py \
++	/opt/lib/python$(PYTHON_VERSION)/posixpath.py \
++	/opt/lib/python$(PYTHON_VERSION)/os.py \
++	/opt/lib/python$(PYTHON_VERSION)/re.py \
++	/opt/lib/python$(PYTHON_VERSION)/site.py \
++	/opt/lib/python$(PYTHON_VERSION)/sre_compile.py \
++	/opt/lib/python$(PYTHON_VERSION)/sre_constants.py \
++	/opt/lib/python$(PYTHON_VERSION)/sre_parse.py \
++	/opt/lib/python$(PYTHON_VERSION)/sysconfig.py \
++	/opt/lib/python$(PYTHON_VERSION)/stat.py \
++	/opt/lib/python$(PYTHON_VERSION)/traceback.py \
++	/opt/lib/python$(PYTHON_VERSION)/types.py \
++	/opt/lib/python$(PYTHON_VERSION)/UserDict.py \
++	/opt/lib/python$(PYTHON_VERSION)/warnings.py
+ 
+ PYTHON_LIB_FILES_DEL+=$(PYTHON_BASE_LIB_FILES)
+ 
+ define PyPackage/python-base/filespec
+-+|/usr/bin/python$(PYTHON_VERSION)
+++|/opt/bin/python$(PYTHON_VERSION)
+ $(subst $(space),$(newline),$(foreach lib_file,$(PYTHON_BASE_LIB_FILES),+|$(lib_file)))
+ endef
+ 
+ define PyPackage/python-light/filespec
+-+|/usr/lib/python$(PYTHON_VERSION)
+--|/usr/lib/python$(PYTHON_VERSION)/config
+--|/usr/lib/python$(PYTHON_VERSION)/distutils/cygwinccompiler.py
+--|/usr/lib/python$(PYTHON_VERSION)/distutils/command/wininst*
+--|/usr/lib/python$(PYTHON_VERSION)/ensurepip
+--|/usr/lib/python$(PYTHON_VERSION)/idlelib
+--|/usr/lib/python$(PYTHON_VERSION)/lib2to3
+--|/usr/lib/python$(PYTHON_VERSION)/lib-tk
+--|/usr/lib/python$(PYTHON_VERSION)/lib-dynload/_testcapi.so
+--|/usr/lib/python$(PYTHON_VERSION)/pdb.doc
+--|/usr/lib/python$(PYTHON_VERSION)/test
+--|/usr/lib/python$(PYTHON_VERSION)/webbrowser.py
+--|/usr/lib/python$(PYTHON_VERSION)/*/test
+--|/usr/lib/python$(PYTHON_VERSION)/*/tests
+--|/usr/lib/python$(PYTHON_VERSION)/lib-dynload/readline.so
+++|/opt/lib/python$(PYTHON_VERSION)
++-|/opt/lib/python$(PYTHON_VERSION)/config
++-|/opt/lib/python$(PYTHON_VERSION)/distutils/cygwinccompiler.py
++-|/opt/lib/python$(PYTHON_VERSION)/distutils/command/wininst*
++-|/opt/lib/python$(PYTHON_VERSION)/ensurepip
++-|/opt/lib/python$(PYTHON_VERSION)/idlelib
++-|/opt/lib/python$(PYTHON_VERSION)/lib2to3
++-|/opt/lib/python$(PYTHON_VERSION)/lib-tk
++-|/opt/lib/python$(PYTHON_VERSION)/lib-dynload/_testcapi.so
++-|/opt/lib/python$(PYTHON_VERSION)/pdb.doc
++-|/opt/lib/python$(PYTHON_VERSION)/test
++-|/opt/lib/python$(PYTHON_VERSION)/webbrowser.py
++-|/opt/lib/python$(PYTHON_VERSION)/*/test
++-|/opt/lib/python$(PYTHON_VERSION)/*/tests
++-|/opt/lib/python$(PYTHON_VERSION)/lib-dynload/readline.so
+ $(subst $(space),$(newline),$(foreach lib_file,$(PYTHON_LIB_FILES_DEL),-|$(lib_file)))
+ endef
+ 
+ define PyPackage/python-base/install
+-	$(LN) python$(PYTHON_VERSION) $(1)/usr/bin/python
+-	$(LN) python$(PYTHON_VERSION) $(1)/usr/bin/python2
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libpython$(PYTHON_VERSION).so* $(1)/usr/lib/
++	$(LN) python$(PYTHON_VERSION) $(1)/opt/bin/python
++	$(LN) python$(PYTHON_VERSION) $(1)/opt/bin/python2
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libpython$(PYTHON_VERSION).so* $(1)/opt/lib/
+ endef
+ 
+ define PyPackage/python/filespec

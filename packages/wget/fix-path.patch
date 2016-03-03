@@ -1,0 +1,66 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43708/feeds/packages/net/wget/Makefile	2014-12-15 12:19:58.020388958 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/wget/Makefile	2014-12-15 12:20:25.240388462 +0300
+@@ -75,7 +75,7 @@
+ ifeq ($(BUILD_VARIANT),ssl)
+ 	CONFIGURE_ARGS+= \
+ 		--with-ssl=openssl \
+-		--with-libssl-prefix="$(STAGING_DIR)/usr"
++		--with-libssl-prefix="$(STAGING_DIR)/opt"
+ endif
+ 
+ ifeq ($(BUILD_VARIANT),nossl)
+@@ -85,49 +85,14 @@
+ endif
+ 
+ define Package/wget/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/wget $(1)/usr/bin/wget-ssl
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/wget $(1)/opt/bin/wget-ssl
++	$(LN) wget-ssl $(1)/opt/bin/wget
+ endef
+ 
+ define Package/wget-nossl/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/wget $(1)/usr/bin/wget-nossl
+-endef
+-
+-define Package/wget/postinst
+-#!/bin/sh
+-if [ -e $${IPKG_INSTROOT}/usr/bin/wget ]; then
+-  rm -rf $${IPKG_INSTROOT}/usr/bin/wget;
+-fi
+-ln -sf ./wget-ssl $${IPKG_INSTROOT}/usr/bin/wget
+-endef
+-
+-define Package/wget/postrm
+-#!/bin/sh
+-rm $${IPKG_INSTROOT}/usr/bin/wget
+-[ -x $${IPKG_INSTROOT}/usr/bin/wget-nossl ] && ln -s ./wget-nossl $${IPKG_INSTROOT}/usr/bin/wget || {
+-  ln -s ../../bin/busybox $${IPKG_INSTROOT}/usr/bin/wget
+-  $${IPKG_INSTROOT}/usr/bin/wget 2>&1 | grep 'applet not found' > /dev/null 2>&1 && rm $${IPKG_INSTROOT}/usr/bin/wget
+-}
+-exit 0
+-endef
+-
+-define Package/wget-nossl/postinst
+-#!/bin/sh
+-if [ -e $${IPKG_INSTROOT}/usr/bin/wget ]; then
+-  rm -rf $${IPKG_INSTROOT}/usr/bin/wget;
+-fi
+-ln -s ./wget-nossl $${IPKG_INSTROOT}/usr/bin/wget
+-endef
+-
+-define Package/wget-nossl/postrm
+-#!/bin/sh
+-rm $${IPKG_INSTROOT}/usr/bin/wget
+-[ -x $${IPKG_INSTROOT}/usr/bin/wget-ssl ] && ln -s ./wget-ssl $${IPKG_INSTROOT}/usr/bin/wget || {
+-  ln -s ../../bin/busybox $${IPKG_INSTROOT}/usr/bin/wget
+-  $${IPKG_INSTROOT}/usr/bin/wget 2>&1 | grep 'applet not found' > /dev/null 2>&1 && rm $${IPKG_INSTROOT}/usr/bin/wget
+-}
+-exit 0
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/wget $(1)/opt/bin/wget-nossl
+ endef
+ 
+ $(eval $(call BuildPackage,wget))

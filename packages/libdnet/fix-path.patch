@@ -1,0 +1,55 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r44486/feeds/packages/libs/libdnet/Makefile	2015-02-18 12:16:57.592306331 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/libdnet/Makefile	2015-02-19 14:56:19.582559185 +0300
+@@ -52,36 +52,36 @@
+ define Build/InstallDev
+ 	$(INSTALL_DIR) $(2)/bin
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/bin/dnet-config \
++		$(PKG_INSTALL_DIR)/opt/bin/dnet-config \
+ 		$(2)/bin/
+ 	$(SED) \
+-		's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/usr,g' \
++		's,^\(prefix\|exec_prefix\)=.*,\1=$(STAGING_DIR)/opt,g' \
+ 		$(2)/bin/dnet-config
+ 
+-	$(INSTALL_DIR) $(1)/usr/include
++	$(INSTALL_DIR) $(1)/opt/include
+ 	$(INSTALL_DATA)\
+-		$(PKG_INSTALL_DIR)/usr/include/dnet.h \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/dnet.h \
++		$(1)/opt/include/
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/include/dnet \
+-		$(1)/usr/include/
++		$(PKG_INSTALL_DIR)/opt/include/dnet \
++		$(1)/opt/include/
+ 
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libdnet.{la,a,so*} \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libdnet.{la,a,so*} \
++		$(1)/opt/lib/
+ endef
+ 
+ define Package/libdnet/install
+-	$(INSTALL_DIR) $(1)/usr/lib
++	$(INSTALL_DIR) $(1)/opt/lib
+ 	$(CP) \
+-		$(PKG_INSTALL_DIR)/usr/lib/libdnet.so.* \
+-		$(1)/usr/lib/
++		$(PKG_INSTALL_DIR)/opt/lib/libdnet.so.* \
++		$(1)/opt/lib/
+ 
+-	$(INSTALL_DIR) $(1)/usr/sbin
++	$(INSTALL_DIR) $(1)/opt/sbin
+ 	$(INSTALL_BIN) \
+-		$(PKG_INSTALL_DIR)/usr/sbin/dnet \
+-		$(1)/usr/sbin/
++		$(PKG_INSTALL_DIR)/opt/sbin/dnet \
++		$(1)/opt/sbin/
+ endef
+ 
+ $(eval $(call BuildPackage,libdnet))

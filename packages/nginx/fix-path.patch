@@ -1,0 +1,169 @@
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/net/nginx/Makefile ../../../openwrt_chaos_calmer_entware/feeds/packages/net/nginx/Makefile
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/net/nginx/Makefile	2015-09-15 12:24:40.766451661 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/nginx/Makefile	2015-09-21 10:26:52.958962244 +0300
+@@ -76,7 +76,7 @@
+ config_files=nginx.conf mime.types fastcgi_params koi-utf koi-win win-utf
+ 
+ define Package/nginx/conffiles
+-/etc/nginx/
++/opt/etc/nginx/
+ endef
+ 
+ ADDITIONAL_MODULES:=
+@@ -103,7 +103,7 @@
+ endif
+ ifeq ($(CONFIG_NGINX_SPNEGO),y)
+   ADDITIONAL_MODULES += --add-module=$(PKG_BUILD_DIR)/spnego-http-auth-nginx-module
+-  TARGET_CFLAGS += -I $(STAGING_DIR)/usr/include/krb5
++  TARGET_CFLAGS += -I $(STAGING_DIR)/opt/include/krb5
+ endif
+ ifneq ($(CONFIG_NGINX_HTTP_CACHE),y)
+   ADDITIONAL_MODULES += --without-http-cache
+@@ -190,31 +190,38 @@
+ define Build/Configure
+ 	# TODO: fix --crossbuild
+ 	(cd $(PKG_BUILD_DIR) ;\
+-		$(if $(CONFIG_NGINX_LUA),LUA_INC=$(STAGING_DIR)/usr/include LUA_LIB=$(STAGING_DIR)/usr/lib) \
++		$(if $(CONFIG_NGINX_LUA),LUA_INC=$(STAGING_DIR)/opt/include LUA_LIB=$(STAGING_DIR)/opt/lib) \
+ 		./configure \
+ 			--crossbuild=Linux::$(ARCH) \
+-			--prefix=/usr \
+-			--conf-path=/etc/nginx/nginx.conf \
++			--prefix=/opt \
++			--conf-path=/opt/etc/nginx/nginx.conf \
+ 			$(ADDITIONAL_MODULES) \
+-			--error-log-path=/var/log/nginx/error.log \
+-			--pid-path=/var/run/nginx.pid \
+-			--lock-path=/var/lock/nginx.lock \
+-			--http-log-path=/var/log/nginx/access.log \
+-			--http-client-body-temp-path=/var/lib/nginx/body \
+-			--http-proxy-temp-path=/var/lib/nginx/proxy \
+-			--http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
++			--error-log-path=/opt/var/log/nginx/error.log \
++			--pid-path=/opt/var/run/nginx.pid \
++			--lock-path=/opt/var/lock/nginx.lock \
++			--http-log-path=/opt/var/log/nginx/access.log \
++			--http-client-body-temp-path=/opt/var/lib/nginx/body \
++			--http-proxy-temp-path=/opt/var/lib/nginx/proxy \
++			--http-fastcgi-temp-path=/opt/var/lib/nginx/fastcgi \
++			--http-uwsgi-temp-path=/opt/var/lib/nginx/uwsgi \
++			--http-scgi-temp-path=/opt/var/lib/nginx/scgi \
+ 			--with-cc="$(TARGET_CC)" \
+ 			--with-cc-opt="$(TARGET_CPPFLAGS) $(TARGET_CFLAGS)" \
+ 			--with-ld-opt="$(TARGET_LDFLAGS)" )
+ endef
+ 
+ define Package/nginx/install
+-	$(INSTALL_DIR) $(1)/usr/sbin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/nginx $(1)/usr/sbin/
+-	$(INSTALL_DIR) $(1)/etc/nginx
+-	$(INSTALL_DATA) $(addprefix $(PKG_INSTALL_DIR)/etc/nginx/,$(config_files)) $(1)/etc/nginx/
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/nginx.init $(1)/etc/init.d/nginx
++	$(INSTALL_DIR) $(1)/opt/sbin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/nginx $(1)/opt/sbin/
++	$(INSTALL_DIR) $(1)/opt/etc/nginx
++	$(INSTALL_DATA) $(addprefix $(PKG_INSTALL_DIR)/opt/etc/nginx/,$(config_files)) $(1)/opt/etc/nginx/
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S80nginx $(1)/opt/etc/init.d
++	$(INSTALL_DIR) $(1)/opt/share/nginx/html
++	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/opt/html/{index,50x}.html $(1)/opt/share/nginx/html
++	$(INSTALL_DIR) $(1)/opt/var/{run,lock}
++	$(INSTALL_DIR) $(1)/opt/var/log/nginx
++	$(INSTALL_DIR) $(1)/opt/var/lib/nginx/{body,proxy,fastcgi}
+ endef
+ 
+ define Build/Prepare
+@@ -302,9 +309,9 @@
+ endef
+ 
+ define Package/nginx-naxsi/install
+-	$(INSTALL_DIR) $(1)/etc/nginx
+-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nginx-naxsi/naxsi_config/naxsi_core.rules $(1)/etc/nginx
+-	chmod 0640 $(1)/etc/nginx/naxsi_core.rules
++	$(INSTALL_DIR) $(1)/opt/etc/nginx
++	$(INSTALL_BIN) $(PKG_BUILD_DIR)/nginx-naxsi/naxsi_config/naxsi_core.rules $(1)/opt/etc/nginx
++	chmod 0640 $(1)/opt/etc/nginx/naxsi_core.rules
+ endef
+ 
+ define Download/nginx-syslog
+@@ -321,15 +328,15 @@
+ endef
+ 
+ define Package/nginx-proxyprotocol/install
+-	$(INSTALL_DIR) $(1)/etc/nginx
+-	$(INSTALL_BIN) ./files/nginx.proxyprotocol.example $(1)/etc/nginx/nginx.conf.proxyprotocol
+-	chmod 0640 $(1)/etc/nginx/nginx.conf.proxyprotocol
++	$(INSTALL_DIR) $(1)/opt/etc/nginx
++	$(INSTALL_BIN) ./files/nginx.proxyprotocol.example $(1)/opt/etc/nginx/nginx.conf.proxyprotocol
++	chmod 0640 $(1)/opt/etc/nginx/nginx.conf.proxyprotocol
+ endef
+ 
+ define Package/nginx-syslog/install
+-	$(INSTALL_DIR) $(1)/etc/nginx
+-	$(INSTALL_BIN) ./files/nginx.syslog.example $(1)/etc/nginx/nginx.conf.syslog
+-	chmod 0640 $(1)/etc/nginx/nginx.conf.syslog
++	$(INSTALL_DIR) $(1)/opt/etc/nginx
++	$(INSTALL_BIN) ./files/nginx.syslog.example $(1)/opt/etc/nginx/nginx.conf.syslog
++	chmod 0640 $(1)/opt/etc/nginx/nginx.conf.syslog
+ endef
+ 
+ 
+diff -urx .svn ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/net/nginx/patches/200-config.patch ../../../openwrt_chaos_calmer_entware/feeds/packages/net/nginx/patches/200-config.patch
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46940/feeds/packages/net/nginx/patches/200-config.patch	2015-09-15 12:24:40.766451661 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/net/nginx/patches/200-config.patch	2015-09-15 12:28:17.010455260 +0300
+@@ -1,18 +1,43 @@
+---- a/conf/nginx.conf
+-+++ b/conf/nginx.conf
+-@@ -1,5 +1,5 @@
++--- a/conf/nginx.conf	2011-06-27 19:47:51.000000000 +0400
+++++ b/conf/nginx.conf	2012-07-18 00:22:18.000000000 +0400
++@@ -1,16 +1,16 @@
+  
+ -#user  nobody;
+-+user nobody nogroup;
+++user  nobody;
+  worker_processes  1;
+  
+- #error_log  logs/error.log;
+-@@ -16,7 +16,7 @@ events {
++-#error_log  logs/error.log;
++-#error_log  logs/error.log  notice;
++-#error_log  logs/error.log  info;
+++#error_log  /opt/var/log/nginx/error.log;
+++#error_log  /opt/var/log/nginx/error.log  notice;
+++#error_log  /opt/var/log/nginx/error.log  info;
+  
+- http {
+-     include       mime.types;
+--    default_type  application/octet-stream;
+-+    #default_type  application/octet-stream;
++-#pid        logs/nginx.pid;
+++#pid        /opt/var/run/nginx.pid;
+  
+-     #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
++ 
++ events {
++-    worker_connections  1024;
+++    worker_connections  64;
++ }
++ 
++ 
++@@ -22,7 +22,7 @@
+      #                  '$status $body_bytes_sent "$http_referer" '
++     #                  '"$http_user_agent" "$http_x_forwarded_for"';
++ 
++-    #access_log  logs/access.log  main;
+++    #access_log  /opt/var/log/nginx/access.log;
++ 
++     sendfile        on;
++     #tcp_nopush     on;
++@@ -38,7 +38,7 @@
++ 
++         #charset koi8-r;
++ 
++-        #access_log  logs/host.access.log  main;
+++        #access_log  /opt/var/log/nginx/host.access.log;
++ 
++         location / {
++             root   html;

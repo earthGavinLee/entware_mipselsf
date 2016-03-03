@@ -1,0 +1,46 @@
+--- ../../../openwrt_chaos_calmer_entware.orig/package/libs/zlib/Makefile
++++ ../../../openwrt_chaos_calmer_entware/package/libs/zlib/Makefile
+@@ -33,7 +33,7 @@
+ 		LDSHARED="$(TARGET_CC) -shared -Wl,-soname,libz.so.1" \
+ 		CFLAGS="$(TARGET_CFLAGS) $(FPIC)" \
+ 		./configure \
+-			--prefix=/usr \
++			--prefix=/opt \
+ 			--shared \
+ 			--uname=Linux \
+ 	);
+@@ -51,22 +51,22 @@
+ endef
+ 
+ define Build/InstallDev
+-	mkdir -p $(1)/usr/include
+-	$(CP)	$(PKG_INSTALL_DIR)/usr/include/z{conf,lib}.h \
+-		$(1)/usr/include/
+-	mkdir -p $(1)/usr/lib
+-	$(CP)	$(PKG_INSTALL_DIR)/usr/lib/libz.{a,so*} \
+-		$(1)/usr/lib/
+-	mkdir -p $(1)/usr/lib/pkgconfig
+-	$(CP)	$(PKG_INSTALL_DIR)/usr/lib/pkgconfig/zlib.pc \
+-		$(1)/usr/lib/pkgconfig/
++	mkdir -p $(1)/opt/include
++	$(CP)	$(PKG_INSTALL_DIR)/opt/include/z{conf,lib}.h \
++		$(1)/opt/include/
++	mkdir -p $(1)/opt/lib
++	$(CP)	$(PKG_INSTALL_DIR)/opt/lib/libz.{a,so*} \
++		$(1)/opt/lib/
++	mkdir -p $(1)/opt/lib/pkgconfig
++	$(CP)	$(PKG_INSTALL_DIR)/opt/lib/pkgconfig/zlib.pc \
++		$(1)/opt/lib/pkgconfig/
+ endef
+ 
+ # libz.so is needed for openssl (zlib-dynamic)
+ define Package/zlib/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libz.so $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libz.so.* $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libz.so $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libz.so.* $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,zlib))

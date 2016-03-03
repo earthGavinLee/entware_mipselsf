@@ -1,0 +1,45 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/libs/cyrus-sasl/Makefile	2014-12-10 12:26:32.898951682 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/libs/cyrus-sasl/Makefile	2014-12-12 16:07:32.876862295 +0300
+@@ -67,7 +67,7 @@
+ 	--without-authdaemond \
+ 	--without-pwcheck \
+ 	--with-ipctype=unix \
+-	--with-openssl="$(STAGING_DIR)/usr" \
++	--with-openssl="$(STAGING_DIR)/opt" \
+ 	--without-des \
+ 	--without-opie \
+ 	--without-ldap \
+@@ -92,21 +92,21 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(1)/usr/include/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/include/sasl $(1)/usr/include/
+-	$(INSTALL_DIR) $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libsasl2.{a,so*} $(1)/usr/lib/
+-	ln -sf libsasl2.a $(1)/usr/lib/libsasl.a
+-	ln -sf libsasl2.so $(1)/usr/lib/libsasl.so
+-	$(INSTALL_DIR) $(1)/usr/lib/sasl2
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/sasl2/lib*.{a,so*} $(1)/usr/lib/sasl2/
++	$(INSTALL_DIR) $(1)/opt/include/
++	$(CP) $(PKG_INSTALL_DIR)/opt/include/sasl $(1)/opt/include/
++	$(INSTALL_DIR) $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsasl2.{a,so*} $(1)/opt/lib/
++	ln -sf libsasl2.a $(1)/opt/lib/libsasl.a
++	ln -sf libsasl2.so $(1)/opt/lib/libsasl.so
++	$(INSTALL_DIR) $(1)/opt/lib/sasl2
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/sasl2/lib*.{a,so*} $(1)/opt/lib/sasl2/
+ endef
+ 
+ define Package/libsasl2/install
+-	$(INSTALL_DIR) $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/libsasl2.so* $(1)/usr/lib/
+-	$(INSTALL_DIR) $(1)/usr/lib/sasl2
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/sasl2/lib*.so* $(1)/usr/lib/sasl2/
++	$(INSTALL_DIR) $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/libsasl2.so* $(1)/opt/lib/
++	$(INSTALL_DIR) $(1)/opt/lib/sasl2
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/sasl2/lib*.so* $(1)/opt/lib/sasl2/
+ endef
+ 
+ $(eval $(call BuildPackage,libsasl2))

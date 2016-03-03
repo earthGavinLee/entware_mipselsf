@@ -1,0 +1,32 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/utils/bash/Makefile	2014-12-10 12:26:33.030951680 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/utils/bash/Makefile	2014-12-12 16:00:53.844860114 +0300
+@@ -43,7 +43,7 @@
+ define Build/Configure
+ 	$(call Build/Configure/Default, \
+ 		--without-bash-malloc \
+-                --bindir=/bin \
++                --bindir=/opt/bin \
+ 	)
+ endef
+ 
+@@ -56,17 +56,10 @@
+ 		all install
+ endef
+ 
+-define Package/bash/postinst
+-#!/bin/sh
+-grep bash $${IPKG_INSTROOT}/etc/shells || \
+-	echo "/bin/bash" >> $${IPKG_INSTROOT}/etc/shells
+-	echo "/bin/rbash" >> $${IPKG_INSTROOT}/etc/shells
+-endef
+-
+ define Package/bash/install
+-	$(INSTALL_DIR) $(1)/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/bash $(1)/bin/
+-	ln -sf bash $(1)/bin/rbash
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/bash $(1)/opt/bin/
++	ln -sf bash $(1)/opt/bin/rbash
+ endef
+ 
+ 

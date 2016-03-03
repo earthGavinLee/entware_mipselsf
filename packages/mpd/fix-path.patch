@@ -1,0 +1,120 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r47008/feeds/packages/sound/mpd/Makefile	2015-09-21 12:01:28.403056706 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/sound/mpd/Makefile	2015-09-21 12:22:08.967077354 +0300
+@@ -36,7 +36,7 @@
+   TITLE:=Music Player Daemon
+   URL:=http://www.musicpd.org/
+   DEPENDS:= +glib2 +libcurl +libpthread +libmpdclient +libstdcpp $(ICONV_DEPENDS) \
+-	    +libflac +BUILD_PATENTED:libmad +libvorbisidec +AUDIO_SUPPORT:alsa-lib \
++	    +libflac +BUILD_PATENTED:libmad +libvorbisidec +alsa-lib \
+             +boost +boost-container +libexpat
+ endef
+ 
+@@ -64,7 +64,7 @@
+ endef
+ 
+ define Package/mpd-full/conffiles
+-/etc/mpd.conf
++/opt/etc/mpd.conf
+ endef
+ 
+ define Package/mpd-mini
+@@ -82,7 +82,7 @@
+ endef
+ 
+ define Package/mpd-mini/conffiles
+-/etc/mpd.conf
++/opt/etc/mpd.conf
+ endef
+ 
+ define Package/mpd-avahi-service
+@@ -99,7 +99,7 @@
+ endef
+ 
+ define Package/mpd-avahi-service/conffiles
+-/etc/avahi/services/mpd.service
++/opt/etc/avahi/services/mpd.service
+ endef
+ 
+ CONFIGURE_ARGS += \
+@@ -108,7 +108,7 @@
+ 	--disable-documentation \
+ 	--disable-test \
+ 	--disable-werror \
+-	\
++	--disable-signalfd \
+ 	--disable-ao \
+ 	--disable-bzip2 \
+ 	--disable-fluidsynth \
+@@ -142,17 +142,19 @@
+ 	--enable-flac \
+ 	--enable-httpd-output \
+ 	$(call autoconf_bool,CONFIG_BUILD_PATENTED,mad) \
+-	$(call autoconf_bool,CONFIG_AUDIO_SUPPORT,alsa) \
++	--enable-alsa \
+ 	--enable-tcp \
+ 	--enable-un \
++	--disable-epoll \
++	--disable-mvp \
+ 
+ CONFIGURE_VARS += \
+-	FLAC_CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/FLAC" \
++	FLAC_CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/opt/include/FLAC" \
+ 	FLAC_LIBS="$(TARGET_LDFLAGS) -lFLAC" \
+ 	$(if $(CONFIG_BUILD_PATENTED),MAD_CFLAGS="$(TARGET_CFLAGS)") \
+ 	$(if $(CONFIG_BUILD_PATENTED),MAD_LIBS="$(TARGET_LDFLAGS) -lmad") \
+ 
+-TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/usr/lib $(if $(ICONV_FULL),-liconv)
++TARGET_LDFLAGS += -Wl,-rpath-link=$(STAGING_DIR)/opt/lib $(if $(ICONV_FULL),-liconv)
+ 
+ ifeq ($(BUILD_VARIANT),full)
+ 
+@@ -163,16 +165,16 @@
+ 	--enable-fifo \
+ 	--enable-ffmpeg \
+ 	--enable-id3 \
+-	--enable-lastfm \
++	--disable-lastfm \
+ 	--enable-mms \
+-	--enable-oggflac \
++	--disable-oggflac \
+ 	--enable-pipe-output \
+ 	--enable-recorder-output \
+ 	--disable-shout \
+ 	--enable-sndfile \
+ 	--enable-vorbis \
+ 	--disable-vorbis-encoder \
+-	--with-faad="$(STAGING_DIR)/usr" \
++	--with-faad="$(STAGING_DIR)/opt" \
+ 	--with-tremor=yes \
+ 
+ endif
+@@ -199,12 +201,12 @@
+ endif
+ 
+ define Package/mpd/install
+-	$(INSTALL_DIR) $(1)/usr/bin
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/mpd $(1)/usr/bin/
+-	$(INSTALL_DIR) $(1)/etc
+-	$(INSTALL_CONF) $(PKG_BUILD_DIR)/doc/mpdconf.example $(1)/etc/mpd.conf
+-	$(INSTALL_DIR) $(1)/etc/init.d
+-	$(INSTALL_BIN) ./files/mpd.init $(1)/etc/init.d/mpd
++	$(INSTALL_DIR) $(1)/opt/bin
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/mpd $(1)/opt/bin/
++	$(INSTALL_DIR) $(1)/opt/etc
++	$(INSTALL_CONF) $(PKG_BUILD_DIR)/doc/mpdconf.example $(1)/opt/etc/mpd.conf
++	$(INSTALL_DIR) $(1)/opt/etc/init.d
++	$(INSTALL_BIN) ./files/S89mpd $(1)/opt/etc/init.d/
+ endef
+ 
+ define Package/mpd-full/install
+@@ -216,8 +218,8 @@
+ endef
+ 
+ define Package/mpd-avahi-service/install
+-	$(INSTALL_DIR) $(1)/etc/avahi/services
+-	$(INSTALL_DATA) ./files/mpd.service $(1)/etc/avahi/services/
++	$(INSTALL_DIR) $(1)/opt/etc/avahi/services
++	$(INSTALL_DATA) ./files/mpd.service $(1)/opt/etc/avahi/services/
+ endef
+ 
+ $(eval $(call BuildPackage,mpd-full))

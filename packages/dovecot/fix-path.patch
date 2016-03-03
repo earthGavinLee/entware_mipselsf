@@ -1,0 +1,49 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r43593/feeds/packages/mail/dovecot/Makefile	2014-12-10 12:26:32.942951682 +0300
++++ ../../../openwrt_chaos_calmer_entware/feeds/packages/mail/dovecot/Makefile	2014-12-10 12:49:03.278927084 +0300
+@@ -52,7 +52,7 @@
+ CONFIGURE_ARGS += \
+ 	--without-gssapi \
+ 	--without-pam \
+-	--with-moduledir=/usr/lib/dovecot/modules \
++	--with-moduledir=/opt/lib/dovecot/modules \
+ 	--with-notify=dnotify \
+ 	--without-lzma \
+ 	--without-lz4
+@@ -78,21 +78,23 @@
+ 	lib_cv___va_copy=yes \
+ 	lib_cv_va_val_copy=yes
+ 
++TARGET_LDFLAGS += -Wl,--allow-multiple-definition
++
+ define Package/dovecot/install
+-	$(INSTALL_DIR)  $(1)/etc/init.d \
+-			$(1)/etc/dovecot \
+-			$(1)/usr/share/doc/dovecot/example-config \
+-			$(1)/usr/lib/dovecot \
+-			$(1)/usr/bin \
+-			$(1)/usr/sbin
+-	$(CP) $(PKG_INSTALL_DIR)/etc/dovecot/* $(1)/etc/dovecot/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/lib/dovecot/* $(1)/usr/lib/dovecot/
+-	$(CP) $(PKG_INSTALL_DIR)/usr/share/doc/dovecot/example-config $(1)/usr/share/doc/dovecot/example-config
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/doveconf $(1)/usr/bin/
+-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/* $(1)/usr/sbin/
+-	$(INSTALL_BIN) ./files/dovecot.init $(1)/etc/init.d/dovecot
+-	rm  $(1)/usr/lib/dovecot/dovecot-config
+-	find $(1)/usr/lib/dovecot/ -name "*.a" -o -name "*.la" | xargs rm
++	$(INSTALL_DIR)  $(1)/opt/etc/init.d \
++			$(1)/opt/etc/dovecot \
++			$(1)/opt/share/doc/dovecot/example-config \
++			$(1)/opt/lib/dovecot \
++			$(1)/opt/bin \
++			$(1)/opt/sbin
++	$(CP) $(PKG_INSTALL_DIR)/opt/etc/dovecot/* $(1)/opt/etc/dovecot/
++	$(CP) $(PKG_INSTALL_DIR)/opt/lib/dovecot/* $(1)/opt/lib/dovecot/
++	$(CP) $(PKG_INSTALL_DIR)/opt/share/doc/dovecot/example-config $(1)/opt/share/doc/dovecot/example-config
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/bin/doveconf $(1)/opt/bin/
++	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/opt/sbin/* $(1)/opt/sbin/
++	$(INSTALL_BIN) ./files/S90dovecot $(1)/opt/etc/init.d/
++	rm  $(1)/opt/lib/dovecot/dovecot-config
++	find $(1)/opt/lib/dovecot/ -name "*.a" -o -name "*.la" | xargs rm
+ endef
+ 
+ $(eval $(call BuildPackage,dovecot))

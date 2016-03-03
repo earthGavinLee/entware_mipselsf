@@ -1,0 +1,32 @@
+--- ../../../downloads/openwrt_chaos_calmer_entware-r46338/package/libs/uclibc++/Makefile	2015-07-14 10:55:19.950308176 +0300
++++ ../../../openwrt_chaos_calmer_entware/package/libs/uclibc++/Makefile	2015-07-14 17:12:40.822684253 +0300
+@@ -70,12 +70,12 @@
+ endef
+ 
+ define Build/InstallDev
+-	$(INSTALL_DIR) $(2)/bin $(1)/usr/include/uClibc++ $(1)/usr/lib
++	$(INSTALL_DIR) $(2)/bin $(1)/opt/include/uClibc++ $(1)/opt/lib
+ 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/bin/g++-uc $(TOOLCHAIN_DIR)/bin/
+-	$(CP) $(PKG_INSTALL_DIR)/include/* $(1)/usr/include/uClibc++/
+-	$(CP) $(PKG_INSTALL_DIR)/lib/libuClibc++*.{a,so}* $(1)/usr/lib/
++	$(CP) $(PKG_INSTALL_DIR)/include/* $(1)/opt/include/uClibc++/
++	$(CP) $(PKG_INSTALL_DIR)/lib/libuClibc++*.{a,so}* $(1)/opt/lib/
+ 	$(SED) 's!\(^\|[[:space:]]\)-[IL]$(TOOLCHAIN_DIR)/[^[:space:]]*!!g' $(TOOLCHAIN_DIR)/bin/g++-uc
+-	$(SED) 's|-I/include/|-I$$$${STAGING_DIR:-$(STAGING_DIR)}/usr/include/uClibc++/|g' $(TOOLCHAIN_DIR)/bin/g++-uc
++	$(SED) 's|-I/include/|-I$$$${STAGING_DIR:-$(STAGING_DIR)}/opt/include/uClibc++/|g' $(TOOLCHAIN_DIR)/bin/g++-uc
+ 	$(SED) 's|-L/lib/|-L$$$${STAGING_DIR:-$(STAGING_DIR)}/lib/|g' $(TOOLCHAIN_DIR)/bin/g++-uc
+ # add another wrapper which links against both uClibc++ and libstdc++ 
+ 	$(INSTALL_BIN) $(TOOLCHAIN_DIR)/bin/g++-uc $(TOOLCHAIN_DIR)/bin/g++-uc+std
+@@ -85,9 +85,9 @@
+ endef
+ 
+ define Package/uclibcxx/install
+-	$(INSTALL_DIR) $(1)/usr/lib
+-	$(CP) $(PKG_INSTALL_DIR)/lib/libuClibc++.so.* $(1)/usr/lib/
+-	$(CP) $(PKG_INSTALL_DIR)/lib/libuClibc++-*.so $(1)/usr/lib/
++	$(INSTALL_DIR) $(1)/opt/lib
++	$(CP) $(PKG_INSTALL_DIR)/lib/libuClibc++.so.* $(1)/opt/lib/
++	$(CP) $(PKG_INSTALL_DIR)/lib/libuClibc++-*.so $(1)/opt/lib/
+ endef
+ 
+ $(eval $(call BuildPackage,uclibcxx))
